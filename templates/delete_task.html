@@ -1,0 +1,11 @@
+<h1>
+    Delete Task
+</h1>
+<form action="" method="POST">
+    {% csrf_token %}
+    <p>
+        Delete "{{obj}}" ? 
+    </p>
+    <a href="{{request.META.HTTP_REFERER}}">Go Back</a>
+    <input type="submit" value="Submit"/>
+</form>

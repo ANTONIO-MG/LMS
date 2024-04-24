@@ -1,0 +1,124 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<main class="profile-page layout layout--2">
+    <div class="container">
+        <!-- Room Start -->
+        <div class="room">
+            <div class="room__top">
+                <div class="room__topLeft">
+                    <a href="{% url 'home' %}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            viewBox="0 0 32 32">
+                            <title>arrow-left</title>
+                            <path
+                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+                            </path>
+                        </svg>
+                    </a>
+                    <h3>SUBJECT RELATED CHAT</h3>
+                </div>
+
+            </div>
+            <div class="room__box scroll">
+                <!-- Room Host Here -->
+                <div class="room__header scroll">
+                    <div class="room__info">
+                        <h3>{{ subj.title }}</h3>
+                        <span>Subject Of: {{subj.room}} Class</span>
+                    </div>
+                    <div class="room__hosted">
+                        <p>Educator</p>
+                        <a href="{% url 'profile' subj.teacher.id %}" class="room__author">
+                            <div class="avatar avatar--small">
+                                <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                            </div>
+                            <span>{{ subj.teacher.first_name }} {{ subj.teacher.last_name }}
+                        </a>
+                    </div>
+                    <div class="room__details">
+                        {{ subj.description }}
+                    </div>
+                    <span class="room__topics">Total Tasks: {{subj.todo_set.all.count}}</span>
+                </div>
+                <!-- messages Here -->
+                
+                <div class="room__conversation">
+                    <div class="threads scroll">
+                        {% for message in messages %}
+                        {% if message.subject == subj %}
+                        <div class="thread">
+                            <div class="thread__top">
+                                <div class="thread__author">
+                                    <a href="{% url 'profile' message.user.id %}" class="thread__authorInfo">
+                                        <div class="avatar avatar--small">
+                                            <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                                        </div>
+                                        <span>@{{ message.user }}</span>
+                                    </a>
+                                    <span class="thread__date">{{ message.updated_at | timesince }}</span>
+                                </div>
+                            </div>
+                            <div class="thread__details">
+                                <small>
+                                    {{ message.content|linebreaksbr }}
+                                </small>
+                            </div>
+                            <br>
+                            <h4>
+                                {% if message.user == request.user %}
+                                <a href="{% url 'edit_message' message.id %}">Edit</a>
+                                <a href="{% url 'delete_message' message.id %}">Delete</a>
+                                {% endif %}
+                            </h4>
+                        </div>
+                        {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                
+            </div>
+            <div class="room__message">
+                
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input name="message"  placeholder="Write your message here..." />
+                </form>
+            </div>
+        </div>
+        <!-- Room End -->
+
+        <!--   Start -->
+        
+        <div class="participants">
+            <h3 class="participants__top">Subject Peers <span>({{ participants.count }})</span></h3>
+            <div class="participants__list scroll">
+                {% for user in participants %}
+                <a href="{% url 'profile' user.id %}" class="participant">
+                    <div class="avatar avatar--medium">
+                        <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                    </div>
+                    <p>
+                        {{ user.first_name }} {{ user.last_name }}
+                        <span>@{{ user }}</span>
+                    </p>
+                </a>
+                {% endfor %}
+            </div>
+            <a class="btn btn--link" href="topics.html">
+                More
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+                    <title>chevron-down</title>
+                    <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
+                </svg>
+            </a>
+        </div>
+        
+        <!--  End -->
+    </div>
+</main>
+
+
+
+{% endblock content %}
+

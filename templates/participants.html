@@ -1,0 +1,21 @@
+{% block content %}
+<div>
+    <h1>
+        My Classroom
+        {% for user in all_users %}
+        {% for room in classrooms %}
+        {% if me in room.participants.all %}
+        <h3>
+            <h3>
+                {% if user in room.participants.all %}
+                {{ user.user_name }}
+                {% endif %}
+            </h3>
+        </h3>
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+    </h1>
+</div>
+
+{% endblock content %}

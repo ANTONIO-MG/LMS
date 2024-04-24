@@ -1,0 +1,30 @@
+{% block content %}
+<h1>
+    Messages
+</h1>
+{% if request.user.user_type != ['Student', 'Educator'] and messages is not None %}
+<h2>
+    <a href="{% url 'send_message' %}">send Message</a>
+</h2>
+<hr>
+{% endif %}
+{% for message in messages %}
+<div>
+    {% if message.class_room == request.user.my_class %}
+    <h4>
+        {{message.content}}
+    </h4>
+    <span>
+        @{{ message.user}}
+    </span>
+    <hr>
+    {% if if request.user.user_type != ['Student', 'Educator'] %}
+    {% if request.user == message.user %}
+    <a href="{% url 'edit_message' message.id %}">Edit</a>
+    <a href="{% url 'delete_message' message.id %}">Delete</a>
+    {% endif %}
+    {% endif %}
+    {% endif %}
+</div>
+{% endfor %}
+{% endblock content %}

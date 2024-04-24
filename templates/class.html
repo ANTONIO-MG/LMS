@@ -1,0 +1,119 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+
+<main class="profile-page layout layout--2">
+    <div class="container">
+        <!-- Room Start -->
+        <div class="room">
+            <div class="room__top">
+                <div class="room__topLeft">
+                    <a href="{{request.META.HTTP_REFERER}}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            viewBox="0 0 32 32">
+                            <title>arrow-left</title>
+                            <path
+                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+                            </path>
+                        </svg>
+                    </a>
+                    <h3>My Classroom</h3>
+                </div>
+
+            </div>
+            <div class="room__box scroll">
+                <div class="room__header scroll">
+                    <div class="room__info">
+                        <h3>{{ classroom.name }}</h3>
+                        <span>Text Here</span>
+                    </div>
+                    <div class="room__hosted">
+                        <p id="currentDateTime"></p>
+                        
+                    </div>
+                    <div class="room__details">
+                        {{ classroom.description}}
+                    </div>
+                    <span class="room__topics">
+                        {% if request.user.is_superuser == True %}
+                            <a href="{% url 'update_classroom' classroom.id %}"> Edit Class</a>
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="room__conversation">
+                    <div class="threads scroll">
+                        {% for post in posts %}
+                        <div class="thread">
+                            <div class="thread__top">
+                                <div class="thread__author">
+                                    <a href="{% url 'profile' post.user.id %}" class="thread__authorInfo">
+                                        <div class="avatar avatar--small">
+                                            <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                                        </div>
+                                        <span>@{{ post.user }}</span>
+                                    </a>
+                                    <span class="thread__date">{{ post.updated_at | timesince }}</span>
+                                </div>
+                                
+                            </div>
+                            <div class="thread__details">
+                                <h2>
+                                    {{ post.title }}
+                                </h2>
+                                <br>
+                                <small>{{ post.post_body }}</small>
+                                {% if post.media != None %}
+                                <h3>media here</h3>
+                                {% endif %}
+                            </div>
+                            <div class="thread__delete">
+                                {% if message.user == request.user %}
+                                <a href="{% url 'edit_post' post.id %}">Edit</a>
+                                <a href="{% url 'delete_post' post.id %}">Delete</a>
+                                {% endif %}
+                            </div>
+                            <br>
+                        </div>
+                        {% endfor %}
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="room__message">
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <input name="post_title" placeholder="Title here..." />
+                    <br>
+                    <input name="content" placeholder="Write your message here..." />
+                    <input type="submit" value="Submit" />
+                </form>
+
+            </div>
+        </div>
+        <!-- Room End -->
+
+        <!--   Start -->
+        <div class="participants">
+            <h3 class="participants__top">Class Mates <span>({{ classroom.participants.count }})</span></h3>
+            
+            <div class="participants__list scroll">
+                {% for participant in participants %}
+                <a href="{% url 'profile' participant.id %}" class="participant">
+                    <div class="avatar avatar--medium">
+                        <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+                    </div>
+                    <p>
+                        {{ participant.first_name }} {{ participant.last_name }}
+                        <span>@{{ participant.username }}</span>
+                    </p>
+                </a>
+                {% endfor %}
+            </div>
+            
+        </div>
+        <!--  End -->
+    </div>
+</main>
+
+{% endblock content %}

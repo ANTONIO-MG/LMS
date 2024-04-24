@@ -1,0 +1,28 @@
+{% block content %}
+<div class="topics">
+    <div class="topics__header">
+        <h2>Browse Subjects</h2>
+    </div>
+    <ul class="topics__list">
+        <ul class="topics__list">
+            <li>
+                <a href="{% url 'class' my_class.id %}" class="active">{{my_class}} <span>{{my_class.subjects.count}} Subj</span></a>
+            </li>
+        </ul>
+        {% for subject in subjects %}
+        {% if subject.room == my_class %}
+        <li>
+            <a href="{% url 'subject' subject.id %}">{{subject.title}} <span>{{subject.participants.count}} Stud</span></a>
+        </li>
+        {% endif %}
+        {% endfor %}
+    </ul>
+    <a class="btn btn--link" href="{% url 'my_subjects' %}">
+        More
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+            <title>chevron-down</title>
+            <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
+        </svg>
+    </a>
+</div>
+{% endblock content %}

@@ -1,0 +1,32 @@
+{% extends "main_user_auth.html" %}
+{% load static %}
+{% load i18n %}
+{% load allauth account %}
+<!-- this is where we display the page title on the web browser -->
+{% block head_title %}
+    {% trans "MLH | Sign In" %}
+    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
+{% endblock head_title %}
+{% block content %}
+    <!-- The url for the login -->
+    {% url 'account_login' as login_url %}
+    <!-- The login form -->
+    <form class="signin-form" method="post" action=login_url tags="entrance,login">
+        {% csrf_token %}
+        {% load crispy_forms_tags %}
+        {% crispy form %}
+        <div class="form-group">
+            <button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
+        </div> 
+    </form>
+    <p class="w-100 text-center">&mdash; <a href="{{ signup_url }}" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
+        Register</a> &mdash;</p>
+
+    <script src="{% static 'dist/js/jquery.min.js' %}"></script>
+    <script src="{% static 'dist/js/popper.js' %}"></script>
+    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'dist/js/main.js' %}"></script>
+{% endblock content %}
+
+
+

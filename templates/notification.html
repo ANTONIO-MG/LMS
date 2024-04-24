@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+
+{% block content %}
+
+<main class="profile-page layout layout--2">
+    <div class="container">
+        <!-- Room Start -->
+        <div class="room">
+            <div class="room__top">
+                <div class="room__topLeft">
+                    <a href="{{request.META.HTTP_REFERER}}">
+                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                            viewBox="0 0 32 32">
+                            <title>arrow-left</title>
+                            <path
+                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
+                            </path>
+                        </svg>
+                    </a>
+                    <h3>Back</h3>
+                </div>
+
+            </div>
+            <div class="room__box scroll">
+                <div class="room__header scroll">
+                    <div class="room__info">
+                        <h3>{{ notification.title }}</h3>
+                    </div>
+                    <div class="room__info">
+                        <h5>Sender: {{ notification.user.first_name }} {{ notification.user.last_name }}</h5>
+                    </div>
+                    <div class="room__details">
+                        <span>{{ notification.updated_at | timesince }}</span>
+                    </div>
+                    {% if notification.user == request.user %}
+                    <span class="room__topics">
+                        <a href="{% url 'edit_notification' notification.id %}"> Edit Notification</a>
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="room__conversation">
+                    <div class="threads scroll">
+                        <h4>
+                            {{notification.content}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Room End -->
+        <div>
+
+        </div>
+    </div>
+</main>
+
+{% endblock content %}
