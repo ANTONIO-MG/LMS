@@ -31,6 +31,7 @@ class Person(AbstractBaseUser):
         User, on_delete=models.CASCADE, related_name='profile')
     first_name = models.CharField(max_length=50, default="firstname")
     last_name = models.CharField(max_length=50, default="lastname")
+    nickname = models.CharField(max_length=50, default="nickname")
     email = models.EmailField(unique=True, blank=False, null=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
     bio = models.TextField(max_length=500, blank=True)
@@ -72,6 +73,7 @@ class Person(AbstractBaseUser):
     
 class Classroom(models.Model):
     name = models.CharField(max_length=255, unique=True)
+    teacher =  models.CharField(max_length=50, default="teacher")
     participants =models.ManyToManyField(
         Person, blank=True)
     subjects = models.ManyToManyField('Subject',  blank=True)
@@ -87,7 +89,7 @@ class Classroom(models.Model):
 
     
 class Subject(models.Model):
-    room = models.ForeignKey(Classroom, on_delete=models.CASCADE)
+    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
     description = models.TextField()
     participants = models.ManyToManyField(

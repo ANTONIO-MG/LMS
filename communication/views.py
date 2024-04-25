@@ -11,8 +11,9 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
-from .forms import ClassRoomForm, MessageForm, NotificationForm, TodoForm, PostForm, PersonForm, PersonEditForm, EditProfileForm
-from .models import Classroom, Notification, TODO, Message, Subject, TaskCompletion, Post, Person
+from .forms import MessageForm, NotificationForm, PostForm
+from usertasks.forms import TodoForm
+from .models import Notification, Message
 from allauth.account.views import SignupView
 
 @login_required

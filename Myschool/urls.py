@@ -5,12 +5,16 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from users_auth import views, urls
+from communication import views, urls
+from usertasks import views, urls
 from Myschool import settings
 
 # added the static files to be able to load the files under the static folder
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include("users_auth.urls")),
+    path('users/', include("users_auth.urls")),
+    path('communication/', include("communication.urls")),
+    path('tasks/', include("usertasks.urls")),
     path('accounts/', include('allauth.urls')),
     
     
