@@ -1,32 +1,45 @@
 {% extends "main_user_auth.html" %}
-{% load static %}
 {% load i18n %}
 {% load allauth account %}
-<!-- this is where we display the page title on the web browser -->
+{% load crispy_forms_tags %}
 {% block head_title %}
-    {% trans "MLH | Sign In" %}
-    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
+    {% trans "Sign In" %}
 {% endblock head_title %}
 {% block content %}
-    <!-- The url for the login -->
-    {% url 'account_login' as login_url %}
-    <!-- The login form -->
-    <form class="signin-form" method="post" action=login_url tags="entrance,login">
-        {% csrf_token %}
-        {% load crispy_forms_tags %}
-        {% crispy form %}
-        <div class="form-group">
-            <button type="submit" class="form-control btn btn-primary submit px-3">Sign In</button>
-        </div> 
-    </form>
-    <p class="w-100 text-center">&mdash; <a href="{{ signup_url }}" class="px-2 py-2 mr-md-1 rounded"><span class="ion-logo-facebook mr-2"></span>
-        Register</a> &mdash;</p>
-
-    <script src="{% static 'dist/js/jquery.min.js' %}"></script>
-    <script src="{% static 'dist/js/popper.js' %}"></script>
-    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'dist/js/main.js' %}"></script>
+<div id="login-form">
+    {% element h1 %}
+        {% trans "Sign In" %}
+    {% endelement %}
+    {% if not SOCIALACCOUNT_ONLY %}
+        {% setvar link %}
+            <a href="{{ signup_url }}">
+            {% endsetvar %}
+            {% setvar end_link %}
+            </a>
+        {% endsetvar %}
+        <br>
+        
+        {% url 'account_login' as login_url %}
+        {% element form form=form method="post" action=login_url tags="entrance,login" %}
+            {% slot body %}
+                {% csrf_token %}
+                {% element fields form=form unlabeled=True %}
+                {% endelement %}
+                {{ redirect_field }}
+            {% endslot %}
+            {% slot actions %}
+                {% element button type="submit" tags="prominent,login" %}
+                    {% trans "Sign In" %}
+                {% endelement %}
+                <br>
+                <p1>
+                    {% blocktranslate %}Not A User ?{{ link }}Sign Up{{ end_link }} Here.{% endblocktranslate %}
+                </p1>
+            {% endslot %}
+        {% endelement %}
+    {% endif %}
+    {% if SOCIALACCOUNT_ENABLED %}
+        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
+    {% endif %}
+</div>
 {% endblock content %}
-
-
-

@@ -46,8 +46,7 @@ INSTALLED_APPS = [
     # the allauth authentication
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.google',
+    'django.contrib.sites',
     # clean up the duplicate files with teh following library
     'django_cleanup.apps.CleanupConfig',
     # python library for cellphone number fields
@@ -104,14 +103,9 @@ ACCOUNT_CHANGE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
-ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = 'http://localhost:8000/register/'
-
-
-
-LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION= True 
-ACCOUNT_LOGOUT_ON_GET=True 
-ACCOUNT_SIGNUP_REDIRECT_URL = 'register/'
+LOGIN_REDIRECT_URL = 'home'
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION= True  
+ACCOUNT_SIGNUP_REDIRECT_URL = 'register'
 
 TEMPLATES = [
     {
@@ -187,7 +181,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # Default primary key field type
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-# AUTH_USER_MODEL = 'users_auth.Person'
+AUTH_USER_MODEL = 'auth.User'
 
 # configure the different social accounts that you can authenticate by
 SOCIALACCOUNT_PROVIDERS = {}

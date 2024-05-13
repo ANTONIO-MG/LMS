@@ -14,10 +14,8 @@ urlpatterns = [
     
     
     # this are the basic user URL's
-    # path('home/', views.Home, name="home"),
-    # path('register/', views.Register, name="register"),
-    # path('login', views.Login, name="login"),
-    # path('logout', views.Logout, name="logout"),
+    path('home/', views.Home, name="home"),
+    path('register/', views.Register, name="register"),
     # path('todo', views.ToDo, name="todo"),
     
     # # Here are the classroom URL's

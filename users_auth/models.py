@@ -29,21 +29,21 @@ USER_TYPE_CHOICES = [
 class Person(AbstractBaseUser):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, related_name='profile')
-    first_name = models.CharField(max_length=50, default="firstname")
-    last_name = models.CharField(max_length=50, default="lastname")
-    nickname = models.CharField(max_length=50, default="nickname")
-    email = models.EmailField(unique=True, blank=False, null=False)
+    first_name = models.CharField(max_length=50, blank=False, null= False)
+    last_name = models.CharField(max_length=50, blank=False, null= False)
+    nickname = models.CharField(max_length=50, blank=False, null= False)
+    email = models.EmailField(blank=False, null=False)
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
-    bio = models.TextField(max_length=500, blank=True)
+    bio = models.TextField(max_length=250, blank=True)
     my_class = models.ForeignKey(
-        'Classroom', on_delete=models.SET_NULL, null=True, blank=True)
+        'Classroom', on_delete=models.SET_NULL, null=True)
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES,
                                  default='Student')
     race = models.CharField(
         max_length=50, choices=Race, default='Other')
-    date_of_birth = models.DateField(blank=True)
-    contact_number = PhoneNumberField(blank=True)
-    emergency_contact = PhoneNumberField(blank=True)
+    date_of_birth = models.DateField()
+    contact_number = PhoneNumberField()
+    emergency_contact = PhoneNumberField()
     subjects = models.ManyToManyField('Subject', blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pics/', null=True, blank=True)

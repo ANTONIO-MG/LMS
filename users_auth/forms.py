@@ -1,6 +1,10 @@
 from django import forms
 from django.forms import ModelForm
 from .models import Classroom, Person
+from communication.forms import MessageForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Field, Fieldset, Div, Submit
+
 
 
 
@@ -12,40 +16,95 @@ class ClassRoomForm(ModelForm):
         fields = '__all__'
 
 
-    # def __init__(self, *args, **kwargs):
-    #     super(MessageForm, self).__init__(*args, **kwargs)
-    #     # Exclude specific fields
-    #     exclude_fields = ['subject', 'subjects', 'user', 'class_room']
-    #     for field_name in exclude_fields:
-    #         if field_name in self.fields:
-    #             del self.fields[field_name]
+    def __init__(self, *args, **kwargs):
+        super(MessageForm, self).__init__(*args, **kwargs)
+        # Exclude specific fields
+        exclude_fields = ['subject', 'subjects', 'user', 'class_room']
+        for field_name in exclude_fields:
+            if field_name in self.fields:
+                del self.fields[field_name]
 
 
 class EditProfileForm(ModelForm):
     class Meta:
         model = Person
         fields = '__all__'
-        exclude = ['last_name', 'gender',
-                   'race', 'emergency_contact',
-                   'is_staff', 'is_active',
+        exclude = ['is_staff', 'is_active',
                    'groups', 'last_login', 'subjects',
-                   'user_permissions', 'is_superuser']
+                   'user_permissions', 'is_superuser', 'last_login']
+        
+    def __init__(self, *args, **kwargs):
+        super(EditProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Fieldset(
+                'Segment 1',  # personal information
+                Div(
+                    Field('first_name', css_class='form-control'),
+                    Field('last_name', css_class='form-control'),
+                    Field('race', css_class='form-control'),
+                    Field('date_of_birth', css_class='form-control'),
+                    Field('gender', css_class='form-control'),
+                    css_class='row'
+                )
+            ),
+            Fieldset(
+                'Segment 2',  # class and conctct details
+                Div(
+                    
+                    
+                    Field('my_class', css_class='form-control'),
+                    Field('contact_number', css_class='form-control'),
+                    Field('emergency_contact', css_class='form-control'),
+                    css_class='row'
+                )
+            ),
+            Fieldset(
+                'Segment 3',  # profile info
+                Div(
+                    
+                    
+                    Field('nickname', css_class='form-control'),
+                    Field('profile_picture', css_class='form-control'),
+                    Field('bio', css_class='form-control'),
+                    css_class='row'
+                )
+            ),
+            Submit('submit', 'Submit', css_class='btn btn-primary')
+        )
 
 
-
-class PersonForm(ModelForm):
-    """ this one is used for user registration"""
+class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
         fields = '__all__'
-        exclude = ['profile_picture', 'contact_number'
-                   'user_category', 'last_name', 'gender',
-                   'race', 'emergency_contact', 'profile_picture',
-                   'is_staff', 'is_active', 'date_of_birth', 'first_name',
-                   'groups', 'superuser', 'last_login', 'subjects',
-                   'user_permissions', 'is_superuser', 'bio', 'date_joined', 'contact_number',]
+        exclude = ['user', 'is_staff', 'is_active', 'created_at', 'updated_at',
+                   'bio', 'profile_picture', 'last_login', 'subjects', 'password', 'email']
+        widgets = {
+            'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super(PersonForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.layout = Layout(
+            Field('first_name', css_class='form-control'),
+            Field('last_name', css_class='form-control'),
+            Field('nickname', css_class='form-control'),
+            Field('date_of_birth', css_class='form-control'),
+            Field('gender', css_class='form-control'),
+            Field('race', css_class='form-control'),
+            Field('user_type', css_class='form-control'),
+            Field('my_class', css_class='form-control'),
+            Field('contact_number', css_class='form-control'),
+            Field('emergency_contact', css_class='form-control'),
+            Submit('submit', 'Submit', css_class='btn btn-primary')
+        )
+
     my_class = forms.ModelChoiceField(
-        queryset=Classroom.objects.all(), required=False)
+        queryset=Classroom.objects.all(), required=True)
 
 
 class PersonEditForm(ModelForm):

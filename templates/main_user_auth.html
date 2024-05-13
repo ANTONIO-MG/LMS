@@ -1,47 +1,184 @@
-{% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>MLH | Sign In</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Design by foolishdeveloper.com -->
+    <title>LMS | MLH</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <!--Stylesheet-->
+    <style media="screen">
+      *,
+*:before,
+*:after{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+body{
+    background-color: #080710;
+    font-family: 'Poppins', sans-serif; /* Apply font family to entire body */
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    height: auto;
+}
 
-    <link rel="stylesheet" href="{% static 'dist/css/style.css' %}">
+.background{
+    width: 40vw; /* Use vw unit for relative width */
+    height: 60vh; /* Use vh unit for relative height */
+    position: relative; /* Use relative positioning */
+    margin: auto; /* Center horizontally */
+    border-radius: 50%;
+}
+/* the two round shapes */
+.background .shape{
+    height: 200px;
+    width: 200px;
+    position: absolute;
+    border-radius: 50%;
+}
 
+.shape:first-child{
+    background: linear-gradient(
+        #1845ad,
+        #23a2f6
+    );
+    left: -80px;
+    top: -80px;
+}
+
+.shape:last-child{
+    background: linear-gradient(
+        to right,
+        #ff512f,
+        #f09819
+    );
+    right: -30px;
+    bottom: -80px;
+}
+
+.container {
+    margin-block: 12rem;
+    height: auto;
+}
+
+.row.g-3.needs-validation{
+
+    min-height: auto;
+}
+
+form {
+    padding-top: 8rem;
+    height:auto;
+    width: auto;
+    text-align:left;
+    background-color: rgba(253, 251, 251, 0.13);
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    margin-top: 20%; /* Adjust this value to add space from the top */
+    margin-bottom: 20%; /* Adjust this value to add space from the bottom */
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 50px 50px;
+    z-index: 1;
+}
+
+
+
+/* Here is the element that controls the size of the login form */
+#login-form {
+    height: 580px;
+    width: 380px;
+
+}
+
+.form-container {
+    position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: auto; /* Set width to auto to match form's content */
+
+}
+
+form h3{
+    font-size: 32px;
+    font-weight: 500px;
+    line-height: 42px;
+    text-align: center; 
+}
+
+form p1{
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+form h1{
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 42px;
+    text-align: center;
+}
+
+label{
+    display: block;
+    margin-top: 30px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+input{
+    display: block;
+    height: 50px;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 0 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+::placeholder{
+    color: #e5e5e5;
+}
+
+button{
+    margin-top: 50px;
+
+    width: 40%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    align-self: auto;
+}
+
+    </style>
 </head>
-{% url 'account_login' as login_url %}
-<body class="img js-fullheight" style="background-image: url({% static 'dist/img/bg.jpg' %});">
-    <section class="ftco-section">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6 text-center mb-5">
-                    <h2 class="heading-section">Sign In</h2>
-                </div>
-            </div>
-            <div class="row justify-content-center">
-                <div class="col-md-6 col-lg-4">
-                    <div class="login-wrap p-0">
-                        <h3 class="mb-4 text-center">Have an account?</h3>
-                        <!-- place your login form here  -->
-                        {% block content %}
+<body>
 
-                        {% endblock content %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div >
+    <div class="container" class="row g-3">
+        {% block content %}
 
-    <script src="{% static 'dist/js/jquery.min.js' %}"></script>
-    <script src="{% static 'dist/js/popper.js' %}"></script>
-    <script src="{% static 'dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'dist/js/main.js' %}"></script>
-
+        {% endblock content %}
+    </div>
 </body>
 
 </html>
