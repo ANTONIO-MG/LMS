@@ -108,3 +108,8 @@ def DeleteTask(request, pk):
         return redirect('home')
 
     return render(request, 'delete_task.html', {'obj': tasks})
+
+def ToDo(request):
+    todo = TODO.objects.all()
+    context = {"todo": todo}
+    return render(request, 'home.html', context)

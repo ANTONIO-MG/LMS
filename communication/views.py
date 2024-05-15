@@ -15,6 +15,9 @@ from .forms import MessageForm, NotificationForm, PostForm
 from usertasks.forms import TodoForm
 from .models import Notification, Message
 from allauth.account.views import SignupView
+from users_auth.models import Person
+from communication.models import Post
+
 
 @login_required
 def SendMessage(request):
@@ -115,6 +118,14 @@ def MyNotification(request, pk):
     context = {'notification': notification}
     return render(request, 'notification.html', context)
 
+def MyNotifications(request):
+
+    me = Person.objects.get(id=request.user.pk)
+    notifications = Notification.objects.all()
+    my_class = request.user.my_class
+    context = {'notifications': notifications, 'my_class': my_class}
+    return render(request, 'notifications_tab.html', context)
+
 
 @login_required
 def MyNotice(request, pk):
@@ -124,3 +135,67 @@ def MyNotice(request, pk):
     context = {"notification": notification}
     return render(request, 'notice.html', context)
 
+@login_required
+def CreatePost(request):
+    
+    create = True
+    
+    form = PostForm(request.POST)
+
+    if request.method == 'POST':
+        new_post = Post.objects.create(
+            user = request.user,
+            title = request.POST.get('title'),
+            post_body = request.POST.get('post'),
+            picture = request.POST.get('post_picture'),
+            media = request.POST.get('post_media'),
+            
+        )
+        return redirect('home')
+    context = {'form': form, 'create': create}
+
+    return render(request, 'post_form.html', context)
+
+
+@login_required
+def EditPost(request, pk):
+    
+    create = False
+    # Get the original task
+    original_post = Post.objects.get(id=pk)
+
+    if request.method == "POST":
+        form = TodoForm(request.POST, instance=original_post)
+        if form.is_valid():
+            # Delete the original post
+            original_post.delete()
+
+            # Create a new task with updated information
+            new_post = form.save(commit=False)
+            new_post.created_at = original_post.created_at  # Keep the original creation date
+            new_post.updated_at = timezone.now()  # Update the updated date to now
+            new_post.save()
+
+            return redirect('home')
+    else:
+        form = PostForm(instance=original_post)
+
+    context = {'form': form, 'create': create}
+    return render(request, 'post_form.html', context)
+
+
+@login_required
+def DeletePost(request, pk):
+    post = Post.objects.get(id=pk)
+    if request.method == "POST":
+        post.delete()
+        return redirect('home')
+
+    return render(request, 'delete_post.html', {'obj': post})
+
+
+@login_required
+def MyPost(request, pk):
+    post = Post.objects.get(id=pk)
+
+    return render(request, 'delete_task.html', {'obj': post})

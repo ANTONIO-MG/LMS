@@ -1,9 +1,12 @@
 from datetime import timezone
 from pyexpat.errors import messages
+from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render
+
+from communication.forms import ClassRoomForm
 from .  forms import PersonForm, PersonEditForm
 from usertasks.models import TaskCompletion, TODO
-from communication.models import Notification, Message
+from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
 
 # Create your views here.
@@ -20,11 +23,13 @@ def Home(request):
     notifications = Notification.objects.all()[0:3]
     tasks = TODO.objects.all()
     all_users = Person.objects.all()
-    assigned_task = TaskCompletion.objects.filter(user=request.user)
+    assigned_task = TaskCompletion.objects.filter(user=request.user.id)
     subjects = Subject.objects.all()
-    me = Person.objects.get(id=request.user.pk)
-    my_class = request.user.my_class
-    print(my_class)
+    print(request.user)
+    me = Person.objects.get(user=request.user.id)
+
+    my_class = me.my_class
+
     context = {"classrooms": classrooms, "messages" : messages,
                "notifications" : notifications, "tasks": tasks,
                "subjects": subjects, 'my_class': my_class,
@@ -93,3 +98,125 @@ def Register(request):
 
     context = {'form': form}
     return render(request, "register.html", context)
+
+
+def MySubject(request, pk):
+    subj = Subject.objects.get(id=pk)
+    messages = Message.objects.all()
+    people = Person.objects.all()
+    person = Person.objects.get(id=request.user.id)
+    participants = subj.participants.all()
+    classroom = Classroom.objects.get(id=subj.room.id)  # Corrected line
+
+    if request.method == 'POST':
+        new_message = Message.objects.create(
+            user=request.user,
+            content=request.POST.get('message'),  # Corrected line
+            subject=subj,
+            class_room =subj.room
+        )
+        return redirect('subject', pk=subj.id)
+
+    context = {"subj": subj, 'messages': messages,
+               'participants': participants, 'classroom': classroom,
+               'people': people, 'person': person}
+    return render(request, 'subject.html', context)
+
+
+def MyClass(request, pk):
+    # create an instance of the of the specific classroom ou want to show using the pk
+    classroom = Classroom.objects.get(id=pk)
+    # pass the context to be rendered on the page
+    subjects = Classroom.objects.all()
+    participants = classroom.participants.all()
+    posts = Post.objects.all()
+    
+    if request.method == 'POST':
+        new_post = Post.objects.create(
+            user=request.user,
+            title=request.POST.get('post_title'),
+            post_body=request.POST.get('content'),
+
+        )
+        return redirect('subject', pk=classroom.id)
+    
+    context = {"classroom": classroom, 'subjects': subjects,
+               'participants': participants, 'posts': posts}
+    return render(request, 'class.html', context)
+
+
+def CreateClassroom(request):
+    
+    create = True
+    # create an instance of the of the specific classroom
+    form = ClassRoomForm
+    # check if the method being returned by the url and the form on teh HTML is post
+    all_subjects = Subject.objects.all()
+    all_students = Person.objects.all()
+    
+    if request.method == 'POST':
+        new_post = Post.objects.create(
+            user=request.user,
+            title=request.POST.get('title'),
+            post_body=request.POST.get('post'),
+            picture=request.POST.get('post_picture'),
+            media=request.POST.get('post_media'),
+
+        )
+        return redirect('home')
+    
+    context = {'form': form, 'create': create,
+               'all_subjects': all_subjects, 'all_students': all_students}
+    return render(request, 'classroom_form.html', context)
+
+
+
+def UpdateClassroom(request, pk):
+    create = False
+    room = Classroom.objects.get(id=pk)
+
+    # Check if the user trying to update is authorized
+    if not request.user.is_superuser:
+        return HttpResponseForbidden("You are not authorized to edit this Classroom.")
+
+    if request.method == "POST":
+        form = ClassRoomForm(request.POST, instance=room)
+        if form.is_valid():
+            # Delete the existing instance
+            room.delete()
+
+            # Save the updated form as a new instance
+            new_instance = form.save(commit=False)
+            new_instance.id = pk  # Set the id to the original id
+            new_instance.save()
+
+            # Redirect to the Home page on success
+            return redirect('home')
+    else:
+        form = ClassRoomForm(instance=room)
+
+    context = {'form': form, 'create': create}
+    return render(request, 'classroom_form.html', context)
+
+
+
+def DeleteClassroom(request, pk):
+    # create an instance of the of the specific classroom ou want to delete using the pk
+    room = Classroom.objects.get(id=pk)
+    
+    if request.user.is_superuser != True:
+        return HttpResponseForbidden("You are not authorized to delete this Classroom.")
+    
+    if request.method == "POST":
+        room.delete()
+        return redirect('home')
+
+    return render(request, 'delete_classroom.html', {'obj': room})
+
+def MySubjects(request):
+    
+    me = Person.objects.get(id=request.user.pk)
+    subjects = Subject.objects.all()
+    my_class = request.user.my_class
+    context = {'subjects': subjects, 'my_class': my_class}
+    return render(request, 'my_subjects.html', context)

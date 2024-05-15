@@ -23,12 +23,11 @@ body{
     font-family: 'Poppins', sans-serif; /* Apply font family to entire body */
     color: #ffffff;
     letter-spacing: 0.5px;
-    height: auto;
 }
 
 .background{
-    width: 40vw; /* Use vw unit for relative width */
-    height: 60vh; /* Use vh unit for relative height */
+    width: 30v; /* Use vw unit for relative width */
+    height: 50vh; /* Use vh unit for relative height */
     position: relative; /* Use relative positioning */
     margin: auto; /* Center horizontally */
     border-radius: 50%;
@@ -60,23 +59,12 @@ body{
     bottom: -80px;
 }
 
-.container {
-    margin-block: 12rem;
-    height: auto;
-}
-
-.row.g-3.needs-validation{
-
-    min-height: auto;
-}
 
 form {
-    padding-top: 8rem;
     height:auto;
     width: auto;
-    text-align:left;
     background-color: rgba(253, 251, 251, 0.13);
-    position: absolute;
+    position:absolute;
     transform: translate(-50%,-50%);
     top: 50%; /* Center vertically */
     left: 50%; /* Center horizontally */
@@ -87,26 +75,9 @@ form {
     border: 2px solid rgba(255,255,255,0.1);
     box-shadow: 0 0 40px rgba(8,7,16,0.6);
     padding: 50px 50px;
-    z-index: 1;
-}
-
-
-
-/* Here is the element that controls the size of the login form */
-#login-form {
-    height: 580px;
-    width: 380px;
 
 }
 
-.form-container {
-    position: absolute;
-    transform: translate(-50%,-50%);
-    top: 50%;
-    left: 50%;
-    width: auto; /* Set width to auto to match form's content */
-
-}
 
 form h3{
     font-size: 32px;
@@ -115,7 +86,7 @@ form h3{
     text-align: center; 
 }
 
-form p1{
+form p{
     font-size: 18px;
     font-weight: 500;
     line-height: 42px;
@@ -136,7 +107,7 @@ label{
     font-weight: 500;
 }
 
-input{
+form.input{
     display: block;
     height: 50px;
     width: 100%;
@@ -163,7 +134,7 @@ button{
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
-    align-self: auto;
+
 }
 
     </style>
@@ -174,11 +145,9 @@ button{
         <div class="shape"></div>
         <div class="shape"></div>
     </div >
-    <div class="container" class="row g-3">
-        {% block content %}
+    {% block content %}
 
-        {% endblock content %}
-    </div>
+    {% endblock content %}
 </body>
 
 </html>
