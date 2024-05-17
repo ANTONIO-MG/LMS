@@ -1,7 +1,7 @@
 from datetime import timezone
 from pyexpat.errors import messages
 from django.http import HttpResponseForbidden
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 
 from communication.forms import ClassRoomForm
 from .  forms import PersonForm, PersonEditForm
@@ -9,7 +9,7 @@ from usertasks.models import TaskCompletion, TODO
 from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
 
-# Create your views here.
+
 
 # The homepage view
 def Home(request):
@@ -17,40 +17,42 @@ def Home(request):
     classroom: stores all the classroom as objects and can be queried
     messages: stores all the messages on teh database and can be queried
     """
-    
+
+    # this are the things that will need to be on every view so that the sidebar and the header remain constant
+    me = Person.objects.get(user=request.user)
     classrooms = Classroom.objects.all()
     messages = Message.objects.all()
     notifications = Notification.objects.all()[0:3]
     tasks = TODO.objects.all()
-    all_users = Person.objects.all()
-    assigned_task = TaskCompletion.objects.filter(user=request.user.id)
+    assigned_task = TaskCompletion.objects.filter(user=me)
     subjects = Subject.objects.all()
-    print(request.user)
-    me = Person.objects.get(user=request.user.id)
 
+    
     my_class = me.my_class
 
     context = {"classrooms": classrooms, "messages" : messages,
                "notifications" : notifications, "tasks": tasks,
                "subjects": subjects, 'my_class': my_class,
-               'all_users': all_users, 'assigned_task': assigned_task}
-    return  render(request, 'home.html', context)
+               'assigned_task': assigned_task,
+               "me":me}
+    return  render(request, 'home.html',)
 
 
-def Profile(request):
-    me = Person.objects.get(id=pk)
-    all_posts = Post.objects.all()
-    all_users = Person.objects.all()
-    subjects = me.participants.all()
-    classrooms = Classroom.objects.all()
-    messages = Message.objects.all()
-    notifications = Notification.objects.all()[0:5]
-    my_class = request.user.my_class
-    context = {"classrooms": classrooms, "messages": messages,
-               "notifications": notifications, "tasks": tasks,
-               'me':me, 'subjects': subjects,
-               'all_users': all_users, 'all_posts': all_posts, 'my_class': my_class, }
-    return render(request, 'profile.html')
+def Profile(request, pk):
+    if request.user.is_authenticated:
+        me = Person.objects.get(user=request.user)
+        all_posts = Post.objects.all()
+        all_users = Person.objects.all()
+        subjects = me.participants.all()
+        classrooms = Classroom.objects.all()
+        messages = Message.objects.all()
+        notifications = Notification.objects.all()[0:5]
+        my_class = me.my_class
+        context = {"classrooms": classrooms, "messages": messages,
+                    "notifications": notifications,
+                    'me':me, 'subjects': subjects,
+                    'all_users': all_users, 'all_posts': all_posts, 'my_class': my_class}
+        return render(request, 'profile.html')
 
 
 
@@ -106,7 +108,7 @@ def MySubject(request, pk):
     people = Person.objects.all()
     person = Person.objects.get(id=request.user.id)
     participants = subj.participants.all()
-    classroom = Classroom.objects.get(id=subj.room.id)  # Corrected line
+    classroom = Classroom.objects.get(id=subj.class_room.id)  # Corrected line
 
     if request.method == 'POST':
         new_message = Message.objects.create(
@@ -144,30 +146,6 @@ def MyClass(request, pk):
                'participants': participants, 'posts': posts}
     return render(request, 'class.html', context)
 
-
-def CreateClassroom(request):
-    
-    create = True
-    # create an instance of the of the specific classroom
-    form = ClassRoomForm
-    # check if the method being returned by the url and the form on teh HTML is post
-    all_subjects = Subject.objects.all()
-    all_students = Person.objects.all()
-    
-    if request.method == 'POST':
-        new_post = Post.objects.create(
-            user=request.user,
-            title=request.POST.get('title'),
-            post_body=request.POST.get('post'),
-            picture=request.POST.get('post_picture'),
-            media=request.POST.get('post_media'),
-
-        )
-        return redirect('home')
-    
-    context = {'form': form, 'create': create,
-               'all_subjects': all_subjects, 'all_students': all_students}
-    return render(request, 'classroom_form.html', context)
 
 
 

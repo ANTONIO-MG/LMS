@@ -22,7 +22,6 @@ urlpatterns = [
     
     # Here are the classroom URL's
     path('class/<str:pk>', MyClass, name="class"),
-    path('create_classroom/', CreateClassroom, name="create_classroom"),
     path('update_classroom/<str:pk>/', UpdateClassroom, name="update_classroom"),
     path('delete_classroom/<str:pk>/', DeleteClassroom, name="delete_classroom"),
     

@@ -29,6 +29,7 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -118,6 +119,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'users_auth.context_processors.global_context',
             ],
         },
     },
@@ -191,3 +193,37 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #CRISPY FORMS
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
+
+
+# the settings that controls the jazzmin admin pannel template
+JAZZMIN_SETTINGS = {
+    "site_title": "MY Learning Hub",
+    "site_header": "My Learning Hub",
+    "site_brand": "MLH",
+    "site_logo": "books/img/logo.png",
+    "login_logo": None,
+    "login_logo_dark": None,
+    "site_icon": None,
+    "welcome_sign": "Welcome MLH Admin",
+    "copyright": "Copyright © 2024 Gerson Antonio. All rights reserved. Credit to AdminLte and Jazzmin for design",
+    "search_model": ["auth.User", "auth.Group"],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+        "auth.Group": "fas fa-users",
+    },
+    # Icons that are used when one is not manually specified
+    "default_icon_parents": "fas fa-chevron-circle-right",
+    "default_icon_children": "fas fa-circle",
+    #############
+    # UI Tweaks #
+    #############
+    # Relative paths to custom CSS/JS scripts (must be present in static files)
+    "custom_css": None,
+    "custom_js": None,
+    # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
+    "use_google_fonts_cdn": True,
+    # Whether to show the UI customizer on the sidebar
+    "show_ui_builder": True,
+
+}

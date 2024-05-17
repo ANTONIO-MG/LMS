@@ -47,8 +47,6 @@ class Person(AbstractBaseUser):
     subjects = models.ManyToManyField('Subject', blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pics/', null=True, blank=True)
-    is_staff = models.BooleanField(default=False)
-    is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # makes the email field teh default base field

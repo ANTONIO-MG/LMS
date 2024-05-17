@@ -6,8 +6,6 @@ from .models import TaskCompletion, TODO, Post
 class TaskCompletionAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
     list_display = ('user', 'task', 'score')
-    # filter the list view by given fields
-    list_filter = ('is_done', 'score')
     # search the list view by given fields
     search_fields = ('user', 'task')
     # show the fields that are not editable
