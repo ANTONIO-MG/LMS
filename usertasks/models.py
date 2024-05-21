@@ -24,7 +24,7 @@ COMMS_STATUS = [
 class TODO(models.Model):
     user = models.ForeignKey(Person, on_delete=models.CASCADE)
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(max_length=255)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, choices=TASK_STATUS, default='sent')
     task_date = models.DateTimeField()

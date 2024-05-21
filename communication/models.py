@@ -39,8 +39,7 @@ class Notification(models.Model):
     content = models.TextField()
     notification_group = models.CharField(
         max_length=25, choices=Notification_Groups, default='All')
-    status = models.CharField(max_length=15, choices=
-        COMMS_STATUS, default='unread')
+    read_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

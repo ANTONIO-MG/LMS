@@ -23,12 +23,13 @@ from communication.models import Post
 def SendMessage(request):
     create = True
     form = MessageForm
-    form.user =  request.user
+    me = Person.objects.get(user=request.user)
+    form.user =  me
     if request.method == "POST":
         form = MessageForm(request.POST)
         if  form.is_valid():
             new = form.save(commit=False)
-            new.user = request.user
+            new.user = me
             return redirect('home')
     
     context = {'form': form, 'create': create}
@@ -39,6 +40,7 @@ def SendMessage(request):
 def EditMessage(request, pk):
     
     create = False
+    me = Person.objects.get(user=request.user)
     message = get_object_or_404(Message, id=pk)
     form = Message.objects.get(id=pk)
     form = MessageForm(instance=form)
@@ -56,8 +58,9 @@ def EditMessage(request, pk):
 @login_required
 def DeleteMessage(request, pk):
     message = Message.objects.get(id=pk)
+    me = Person.objects.get(user=request.user)
     
-    if request.user != message.user:
+    if me != message.user:
         return HttpResponse("Not Allowed to delete")
     
     if request.method == "POST":
@@ -69,12 +72,13 @@ def DeleteMessage(request, pk):
 
 @login_required
 def SendNotification(request):
+    me = Person.objects.get(user=request.user)
     form = NotificationForm
     if request.method == "POST":
         form = NotificationForm(request.POST)
         
         if form.is_valid():
-            form.instance.user = request.user
+            form.instance.user = me
             form.save()
             return redirect('home')
 
@@ -85,6 +89,7 @@ def SendNotification(request):
 def EditNotification(request, pk):
     create = False
     note = get_object_or_404(Notification, id=pk)
+    me = Person.objects.get(user=request.user)
 
     if request.method == "POST":
         form = NotificationForm(request.POST, instance=note)
@@ -93,7 +98,7 @@ def EditNotification(request, pk):
             note.delete()
 
             # Save the updated post
-            form.instance.user = request.user
+            form.instance.user = me
             new_instance = form.save()
 
             return redirect('home')
@@ -122,7 +127,7 @@ def MyNotifications(request):
 
     me = Person.objects.get(id=request.user.pk)
     notifications = Notification.objects.all()
-    my_class = request.user.my_class
+    my_class = me.my_class
     context = {'notifications': notifications, 'my_class': my_class}
     return render(request, 'notifications_tab.html', context)
 
@@ -139,12 +144,12 @@ def MyNotice(request, pk):
 def CreatePost(request):
     
     create = True
-    
+    me = Person.objects.get(user=request.user)
     form = PostForm(request.POST)
 
     if request.method == 'POST':
         new_post = Post.objects.create(
-            user = request.user,
+            user = me,
             title = request.POST.get('title'),
             post_body = request.POST.get('post'),
             picture = request.POST.get('post_picture'),
@@ -195,7 +200,35 @@ def DeletePost(request, pk):
 
 
 @login_required
+def AllPosts(request):
+    all_posts = Post.objects.all()
+
+    context = {'all_posts': all_posts}
+    return render(request, 'all_posts.html', context)
+
+
+@login_required
 def MyPost(request, pk):
     post = Post.objects.get(id=pk)
 
     return render(request, 'delete_task.html', {'obj': post})
+
+@login_required
+def About(request):
+
+    return render(request, 'about.html')
+
+@login_required
+def ContctUs(request):
+
+    return render(request, 'contact.html')
+
+@login_required
+def Finance(request):
+
+    return render(request, 'finance.html')
+
+@login_required
+def Store(request):
+
+    return render(request, 'store.html')

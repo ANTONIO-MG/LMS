@@ -42,7 +42,7 @@ class Person(AbstractBaseUser):
     race = models.CharField(
         max_length=50, choices=Race, default='Other')
     date_of_birth = models.DateField()
-    contact_number = PhoneNumberField()
+    contact_number = PhoneNumberField(blank=True)
     emergency_contact = PhoneNumberField()
     subjects = models.ManyToManyField('Subject', blank=True)
     profile_picture = models.ImageField(
@@ -71,7 +71,7 @@ class Person(AbstractBaseUser):
     
 class Classroom(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    teacher =  models.CharField(max_length=50, default="teacher")
+    teacher =  models.CharField(max_length=25, default="HOD")
     participants =models.ManyToManyField(
         Person, blank=True)
     subjects = models.ManyToManyField('Subject',  blank=True)
@@ -80,7 +80,7 @@ class Classroom(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering  = ['-updated_at', '-created_at']
+        ordering  = ['-created_at']
 
     def __str__(self):
         return str(self.name)
@@ -98,7 +98,7 @@ class Subject(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     class Meta:
-        ordering = ['-updated_at', '-created_at']
+        ordering = ['-created_at']
 
     def __str__(self):
         return str(self.title)

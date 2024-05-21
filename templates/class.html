@@ -7,21 +7,7 @@
     <div class="container">
         <!-- Room Start -->
         <div class="room">
-            <div class="room__top">
-                <div class="room__topLeft">
-                    <a href="{{request.META.HTTP_REFERER}}">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>arrow-left</title>
-                            <path
-                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
-                            </path>
-                        </svg>
-                    </a>
-                    <h3>My Classroom</h3>
-                </div>
-
-            </div>
+            
             <div class="room__box scroll">
                 <div class="room__header scroll">
                     <div class="room__info">
@@ -35,11 +21,6 @@
                     <div class="room__details">
                         {{ classroom.description}}
                     </div>
-                    <span class="room__topics">
-                        {% if request.user.is_superuser == True %}
-                            <a href="{% url 'update_classroom' classroom.id %}"> Edit Class</a>
-                        {% endif %}
-                    </span>
                 </div>
                 <div class="room__conversation">
                     <div class="threads scroll">

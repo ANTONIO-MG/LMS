@@ -10,7 +10,6 @@ from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
 
 
-
 # The homepage view
 def Home(request):
     """
@@ -57,13 +56,14 @@ def Profile(request, pk):
 
 
 def EditProfile(request, pk):
-    person = Person.objects.get(id=pk)
-    form = PersonEditForm(instance=person)
+    person = get_object_or_404(Person, id=pk)  # Use get_object_or_404 for better error handling
     if request.method == "POST":
         form = PersonEditForm(request.POST, request.FILES, instance=person)
         if form.is_valid():
             form.save()
-            return redirect('home')
+            return redirect('home')  # Redirect to a named URL pattern
+    else:
+        form = PersonEditForm(instance=person)
 
     context = {'form': form}
     return render(request, 'edit_profile.html', context)
@@ -103,6 +103,7 @@ def Register(request):
 
 
 def MySubject(request, pk):
+    me = Person.objects.get(user=request.user)
     subj = Subject.objects.get(id=pk)
     messages = Message.objects.all()
     people = Person.objects.all()
@@ -112,10 +113,10 @@ def MySubject(request, pk):
 
     if request.method == 'POST':
         new_message = Message.objects.create(
-            user=request.user,
+            user=me,
             content=request.POST.get('message'),  # Corrected line
             subject=subj,
-            class_room =subj.room
+            class_room =subj.class_room
         )
         return redirect('subject', pk=subj.id)
 
@@ -126,6 +127,7 @@ def MySubject(request, pk):
 
 
 def MyClass(request, pk):
+    me = Person.objects.get(user=request.user)
     # create an instance of the of the specific classroom ou want to show using the pk
     classroom = Classroom.objects.get(id=pk)
     # pass the context to be rendered on the page
@@ -135,7 +137,7 @@ def MyClass(request, pk):
     
     if request.method == 'POST':
         new_post = Post.objects.create(
-            user=request.user,
+            user=me,
             title=request.POST.get('post_title'),
             post_body=request.POST.get('content'),
 
@@ -145,56 +147,3 @@ def MyClass(request, pk):
     context = {"classroom": classroom, 'subjects': subjects,
                'participants': participants, 'posts': posts}
     return render(request, 'class.html', context)
-
-
-
-
-def UpdateClassroom(request, pk):
-    create = False
-    room = Classroom.objects.get(id=pk)
-
-    # Check if the user trying to update is authorized
-    if not request.user.is_superuser:
-        return HttpResponseForbidden("You are not authorized to edit this Classroom.")
-
-    if request.method == "POST":
-        form = ClassRoomForm(request.POST, instance=room)
-        if form.is_valid():
-            # Delete the existing instance
-            room.delete()
-
-            # Save the updated form as a new instance
-            new_instance = form.save(commit=False)
-            new_instance.id = pk  # Set the id to the original id
-            new_instance.save()
-
-            # Redirect to the Home page on success
-            return redirect('home')
-    else:
-        form = ClassRoomForm(instance=room)
-
-    context = {'form': form, 'create': create}
-    return render(request, 'classroom_form.html', context)
-
-
-
-def DeleteClassroom(request, pk):
-    # create an instance of the of the specific classroom ou want to delete using the pk
-    room = Classroom.objects.get(id=pk)
-    
-    if request.user.is_superuser != True:
-        return HttpResponseForbidden("You are not authorized to delete this Classroom.")
-    
-    if request.method == "POST":
-        room.delete()
-        return redirect('home')
-
-    return render(request, 'delete_classroom.html', {'obj': room})
-
-def MySubjects(request):
-    
-    me = Person.objects.get(id=request.user.pk)
-    subjects = Subject.objects.all()
-    my_class = request.user.my_class
-    context = {'subjects': subjects, 'my_class': my_class}
-    return render(request, 'my_subjects.html', context)

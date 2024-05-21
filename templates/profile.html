@@ -3,7 +3,7 @@
 
 {% block content %}
 
-
+{% if request.user.is_authenticated %}
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
@@ -15,17 +15,20 @@
                         <div class="card-body box-profile">
                             <div class="text-center">
                                 <img class="profile-user-img img-fluid img-circle"
-                                    src="{% static 'dist/img/user4-128x128.jpg' %}" alt="User profile picture">
+                                    src="{% static 'LTE/dist/img/user4-128x128.jpg' %}" alt="User profile picture">
                             </div>
 
                             <h3 class="profile-username text-center">{{ me.first_name }} {{ me.last_name }}</h3>
 
                             <p class="text-muted text-center">{{me.my_class}}</p>
-                            
+
                             <ul class="list-group list-group-unbordered mb-3">
                                 <li class="list-group-item">
                                     <b>Grades Ave:</b> <a class="float-right">78%</a>
                                 </li>
+                                {% if me.user == request.user %}
+                                <a href="{% url 'edit_profile' me.id %}" class="btn btn-primary btn-block"><b>Update Profile</b></a>
+                                {% endif %}
                             </ul>
                         </div>
                         <!-- /.card-body -->
@@ -96,7 +99,7 @@
                                     <div class="post">
                                         <div class="user-block">
                                             <img class="img-circle img-bordered-sm"
-                                                src="{% static 'dist/img/user1-128x128.jpg' %}" alt="user image">
+                                                src="{% static 'LTE/dist/img/user1-128x128.jpg' %}" alt="user image">
                                             <span class="username">
                                                 <a href="#">Jonathan Burke Jr.</a>
                                                 <a href="#" class="float-right btn-tool"><i
@@ -134,7 +137,7 @@
                                     <div class="post clearfix">
                                         <div class="user-block">
                                             <img class="img-circle img-bordered-sm"
-                                                src="{% static 'dist/img/user7-128x128.jpg' %}" alt="User Image">
+                                                src="{% static 'LTE/dist/img/user7-128x128.jpg' %}" alt="User Image">
                                             <span class="username">
                                                 <a href="#">Sarah Ross</a>
                                                 <a href="#" class="float-right btn-tool"><i
@@ -167,7 +170,7 @@
                                     <div class="post">
                                         <div class="user-block">
                                             <img class="img-circle img-bordered-sm"
-                                                src="{% static 'dist/img/user6-128x128.jpg' %}" alt="User Image">
+                                                src="{% static 'LTE/dist/img/user6-128x128.jpg' %}" alt="User Image">
                                             <span class="username">
                                                 <a href="#">Adam Jones</a>
                                                 <a href="#" class="float-right btn-tool"><i
@@ -178,7 +181,7 @@
                                         <!-- /.user-block -->
                                         <div class="row mb-3">
                                             <div class="col-sm-6">
-                                                <img class="img-fluid" src="{% static 'dist/img/photo1.png' %}"
+                                                <img class="img-fluid" src="{% static 'LTE/dist/img/photo1.png' %}"
                                                     alt="Photo">
                                             </div>
                                             <!-- /.col -->
@@ -186,15 +189,15 @@
                                                 <div class="row">
                                                     <div class="col-sm-6">
                                                         <img class="img-fluid mb-3"
-                                                            src="{% static 'dist/img/photo2.png' %}" alt="Photo">
-                                                        <img class="img-fluid" src="{% static 'dist/img/photo3.jpg' %}"
+                                                            src="{% static 'LTE/dist/img/photo2.png' %}" alt="Photo">
+                                                        <img class="img-fluid" src="{% static 'LTE/dist/img/photo3.jpg' %}"
                                                             alt="Photo">
                                                     </div>
                                                     <!-- /.col -->
                                                     <div class="col-sm-6">
                                                         <img class="img-fluid mb-3"
-                                                            src="{% static 'dist/img/photo4.jpg' %}" alt="Photo">
-                                                        <img class="img-fluid" src="{% static 'dist/img/photo1.png' %}"
+                                                            src="{% static 'LTE/dist/img/photo4.jpg' %}" alt="Photo">
+                                                        <img class="img-fluid" src="{% static 'LTE/dist/img/photo1.png' %}"
                                                             alt="Photo">
                                                     </div>
                                                     <!-- /.col -->
@@ -340,6 +343,6 @@
             <!-- /.row -->
         </div><!-- /.container-fluid -->
     </section>
-
+{% endif %} 
 
 {% endblock content %}

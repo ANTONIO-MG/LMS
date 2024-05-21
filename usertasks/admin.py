@@ -3,16 +3,6 @@ from django.contrib import admin
 # Register your models here.
 from .models import TaskCompletion, TODO, Post
 
-class TaskCompletionAdmin(admin.ModelAdmin):
-    # show the list view on the admin panel
-    list_display = ('user', 'task', 'score')
-    # search the list view by given fields
-    search_fields = ('user', 'task')
-    # show the fields that are not editable
-    readonly_fields = ('created_at', 'updated_at', 'user', 'score')
-    # show the number of items per page
-    list_per_page = 20
-
 class TODOAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
     list_display = ('user', 'title', 'subject', 'task_date')
@@ -24,6 +14,17 @@ class TODOAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'updated_at', 'description', 'user')
     # show the number of items per page
     list_per_page = 20
+
+class TaskCompletionAdmin(admin.ModelAdmin):
+    # show the list view on the admin panel
+    list_display = ('user', 'task', 'score')
+    # search the list view by given fields
+    search_fields = ('user', 'task')
+    # show the fields that are not editable
+    readonly_fields = ('created_at', 'updated_at', 'user', 'score')
+    # show the number of items per page
+    list_per_page = 20
+
 
 class PostAdmin(admin.ModelAdmin):
     # show the list 
@@ -37,6 +38,7 @@ class PostAdmin(admin.ModelAdmin):
      # show the number of items per page
     list_per_page = 20
 
-admin.site.register(TaskCompletion, TaskCompletionAdmin)
+
 admin.site.register(TODO, TODOAdmin)
+admin.site.register(TaskCompletion, TaskCompletionAdmin)
 admin.site.register(Post, PostAdmin)

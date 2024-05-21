@@ -23,39 +23,39 @@
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 
     {% if request.user.is_authenticated %}
-    <div class="wrapper">
-        <!-- Navbar -->
-        {% include 'navbar.html' %}
-        <!-- /.navbar -->
+        <div class="wrapper">
+            <!-- Navbar -->
+            {% include 'navbar.html' %}
+            <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
-        {% include 'sidebar.html' %}
-        <!-- end of Sidebar Container -->
-        
-        <!-- Content Wrapper. Contains page content for the body -->
-        <div class="content-wrapper">
-            <!-- Put the content of the body in here -->
-            {% block content %}
+            <!-- Main Sidebar Container -->
+            {% include 'sidebar.html' %}
+            <!-- end of Sidebar Container -->
+            
+            <!-- Content Wrapper. Contains page content for the body -->
+            <div class="content-wrapper">
+                <!-- Put the content of the body in here -->
+                {% block content %}
 
-            {% endblock content %}
-        </div>
-        <!-- /.content-wrapper for the body -->
-        
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-        </aside>
-        <!-- /.control-sidebar -->
-
-        <!-- Main Footer -->
-        <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">Gerson Antonio</a>.</strong>
-            All rights reserved. Credit to AdminLte for design
-            <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.0.2
+                {% endblock content %}
             </div>
-        </footer>
-    </div>
+            <!-- /.content-wrapper for the body -->
+            
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+
+            <!-- Main Footer -->
+            <footer class="main-footer">
+                <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">Gerson Antonio</a>.</strong>
+                All rights reserved. Credit to AdminLte for design
+                <div class="float-right d-none d-sm-inline-block">
+                    <b>Version</b> 3.0.2
+                </div>
+            </footer>
+        </div>
     {% endif %}
     <!-- ./wrapper -->
 

@@ -5,6 +5,7 @@ This also manages the database sessions and data management
 """
 
 # the imports
+import json
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
 from django.http import HttpResponse, HttpResponseForbidden
@@ -12,8 +13,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import TodoForm
 from .models import TODO, TaskCompletion, Person
-
-
 
 
 def ToDo(request):
@@ -27,8 +26,8 @@ def MyTasks(request):
     me = Person.objects.get(id=request.user.pk)
     tasks = TODO.objects.all()
     personal_tasks = TaskCompletion.objects.all()
-    my_class = request.user.my_class
-    assigned_task = TaskCompletion.objects.filter(user=request.user)
+    my_class = me.my_class
+    assigned_task = TaskCompletion.objects.filter(user=me)
     context = {'tasks': tasks, 'personal_tasks': personal_tasks,
                'me': me, 'my_class': my_class, 'assigned_task': assigned_task}
     return render(request, 'tasks_list.html', context)
@@ -52,7 +51,6 @@ def CreateTask(request):
         form = TodoForm(request.POST)
         if form.is_valid():
             # Save the task
-            form.instance.user = request.user
             task = form.save()
 
             # Automatically add the task to all participants in the selected subject(s)
@@ -109,7 +107,9 @@ def DeleteTask(request, pk):
 
     return render(request, 'delete_task.html', {'obj': tasks})
 
-def ToDo(request):
-    todo = TODO.objects.all()
-    context = {"todo": todo}
-    return render(request, 'home.html', context)
+@login_required
+def CalenderView(request):
+    all_tasks = TaskCompletion.objects.all()
+    
+    context = {'all_tasks': all_tasks}
+    return render(request, 'calender.html', context)
