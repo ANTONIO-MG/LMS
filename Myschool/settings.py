@@ -107,6 +107,9 @@ LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION= True  
 ACCOUNT_SIGNUP_REDIRECT_URL = 'register'
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
+ACCOUNT_EMAIL_NOTIFICATIONS = True
+
 
 TEMPLATES = [
     {
@@ -184,6 +187,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'auth.User'
+
+# ACCOUNT_SIGNUP_REDIRECT_URL = 'register'
+
 
 # configure the different social accounts that you can authenticate by
 SOCIALACCOUNT_PROVIDERS = {}

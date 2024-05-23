@@ -1,9 +1,8 @@
-from datetime import timezone
+from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.auth.decorators import login_required
 from pyexpat.errors import messages
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
-
-from communication.forms import ClassRoomForm
 from .  forms import PersonForm, PersonEditForm
 from usertasks.models import TaskCompletion, TODO
 from communication.models import Notification, Message, Post
@@ -34,7 +33,7 @@ def Home(request):
                "subjects": subjects, 'my_class': my_class,
                'assigned_task': assigned_task,
                "me":me}
-    return  render(request, 'home.html',)
+    return  render(request, 'home.html', context)
 
 
 def Profile(request, pk):
@@ -57,30 +56,13 @@ def Profile(request, pk):
 
 def EditProfile(request, pk):
     person = get_object_or_404(Person, id=pk)  # Use get_object_or_404 for better error handling
+    form = PersonEditForm(request.POST, request.FILES, instance=person)
     if request.method == "POST":
-        form = PersonEditForm(request.POST, request.FILES, instance=person)
         if form.is_valid():
-            form.save()
-            return redirect('home')  # Redirect to a named URL pattern
-    else:
-        form = PersonEditForm(instance=person)
-
-    context = {'form': form}
-    return render(request, 'edit_profile.html', context)
-
-
-def Register(request):
-    form = PersonForm()
-    if request.method == 'POST':
-        print("passed the request method")
-        form = PersonForm(request.POST)
-        if form.is_valid():
-            print("passed the form is valid")
             new_user = form.save(commit=False)
             new_user.user = request.user
             new_user.email = request.user.email
             new_user.save()
-            print("passed the save method")
 
             # Assuming you have a field in your Person model to store the selected class
             selected_class = new_user.my_class
@@ -92,14 +74,13 @@ def Register(request):
 
             # Add the new user as a participant to the participants of the selected class
             selected_class.participants.add(new_user)
-            
-            print("new user created: " + request.user.email)
-            return redirect('home')
+            return redirect('profile', pk)
         else:
-            print(form.errors)
+            form = PersonEditForm(instance=person)
 
     context = {'form': form}
-    return render(request, "register.html", context)
+    return render(request, 'edit_profile.html', context)
+
 
 
 def MySubject(request, pk):
@@ -107,7 +88,7 @@ def MySubject(request, pk):
     subj = Subject.objects.get(id=pk)
     messages = Message.objects.all()
     people = Person.objects.all()
-    person = Person.objects.get(id=request.user.id)
+    person = Person.objects.get(user=request.user.id)
     participants = subj.participants.all()
     classroom = Classroom.objects.get(id=subj.class_room.id)  # Corrected line
 
@@ -147,3 +128,4 @@ def MyClass(request, pk):
     context = {"classroom": classroom, 'subjects': subjects,
                'participants': participants, 'posts': posts}
     return render(request, 'class.html', context)
+

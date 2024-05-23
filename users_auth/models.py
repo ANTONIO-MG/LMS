@@ -10,6 +10,7 @@ from django.contrib.auth.models import AbstractBaseUser
 GENDER_CHOICES = [
     ('Male', 'Male'),
     ('Female', 'Female'),
+    ('unknown', 'Unknown'),
 ]
 Race = [
     ('Asian', 'Asian'),
@@ -26,14 +27,14 @@ USER_TYPE_CHOICES = [
     ('staff', 'Staff'),
 ]
 
-class Person(AbstractBaseUser):
+class Person(models.Model):
     user = models.OneToOneField(
-        User, on_delete=models.CASCADE, related_name='profile')
-    first_name = models.CharField(max_length=50, blank=False, null= False)
-    last_name = models.CharField(max_length=50, blank=False, null= False)
-    nickname = models.CharField(max_length=50, blank=False, null= False)
-    email = models.EmailField(blank=False, null=False)
-    gender = models.CharField(max_length=10, choices=GENDER_CHOICES)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='profile')
+    first_name = models.CharField(max_length=50, blank=True, null= True)
+    last_name = models.CharField(max_length=50, blank=True, null= True)
+    nickname = models.CharField(max_length=50, blank=True, null= True)
+    email = models.EmailField()
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='unknown')
     bio = models.TextField(max_length=250, blank=True)
     my_class = models.ForeignKey(
         'Classroom', on_delete=models.SET_NULL, null=True)
@@ -41,9 +42,9 @@ class Person(AbstractBaseUser):
                                  default='Student')
     race = models.CharField(
         max_length=50, choices=Race, default='Other')
-    date_of_birth = models.DateField()
-    contact_number = PhoneNumberField(blank=True)
-    emergency_contact = PhoneNumberField()
+    date_of_birth = models.DateField(blank=True, null= True)
+    contact_number = PhoneNumberField(blank=True, null= True)
+    emergency_contact = PhoneNumberField(blank=True, null= True)
     subjects = models.ManyToManyField('Subject', blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pics/', null=True, blank=True)
@@ -58,7 +59,7 @@ class Person(AbstractBaseUser):
         ordering = ['-updated_at', '-created_at']
 
     def __str__(self):
-        return str(self.first_name)
+        return str(self.first_name + " " + self.last_name)
 
     @property
     def avatar(self):
@@ -80,7 +81,7 @@ class Classroom(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering  = ['-created_at']
+        ordering  = ['-name', '-created_at']
 
     def __str__(self):
         return str(self.name)

@@ -1,153 +1,102 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <!-- Design by foolishdeveloper.com -->
-    <title>LMS | MLH</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!--Stylesheet-->
-    <style media="screen">
-      *,
-*:before,
-*:after{
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body{
-    background-color: #080710;
-    font-family: 'Poppins', sans-serif; /* Apply font family to entire body */
-    color: #ffffff;
-    letter-spacing: 0.5px;
-}
-
-.background{
-    width: 30v; /* Use vw unit for relative width */
-    height: 50vh; /* Use vh unit for relative height */
-    position: relative; /* Use relative positioning */
-    margin: auto; /* Center horizontally */
-    border-radius: 50%;
-}
-/* the two round shapes */
-.background .shape{
-    height: 200px;
-    width: 200px;
-    position: absolute;
-    border-radius: 50%;
-}
-
-.shape:first-child{
-    background: linear-gradient(
-        #1845ad,
-        #23a2f6
-    );
-    left: -80px;
-    top: -80px;
-}
-
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
-    );
-    right: -30px;
-    bottom: -80px;
-}
-
-
-form {
-    height:auto;
-    width: auto;
-    background-color: rgba(253, 251, 251, 0.13);
-    position:absolute;
-    transform: translate(-50%,-50%);
-    top: 50%; /* Center vertically */
-    left: 50%; /* Center horizontally */
-    margin-top: 20%; /* Adjust this value to add space from the top */
-    margin-bottom: 20%; /* Adjust this value to add space from the bottom */
-    border-radius: 10px;
-    backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
-    padding: 50px 50px;
-
-}
-
-
-form h3{
-    font-size: 32px;
-    font-weight: 500px;
-    line-height: 42px;
-    text-align: center; 
-}
-
-form p{
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
-}
-
-form h1{
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 42px;
-    text-align: center;
-}
-
-label{
-    display: block;
-    margin-top: 30px;
-    font-size: 16px;
-    font-weight: 500;
-}
-
-form.input{
-    display: block;
-    height: 50px;
-    width: 100%;
-    background-color: rgba(255,255,255,0.07);
-    border-radius: 3px;
-    padding: 0 10px;
-    margin-top: 8px;
-    font-size: 14px;
-    font-weight: 300;
-}
-
-::placeholder{
-    color: #e5e5e5;
-}
-
-button{
-    margin-top: 50px;
-
-    width: 40%;
-    background-color: #ffffff;
-    color: #080710;
-    padding: 15px 0;
-    font-size: 18px;
-    font-weight: 600;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-
-    </style>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static 'LTE/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'LTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'LTE/dist/css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
-<body>
+<body class="hold-transition login-page">
+<div class="login-box">
 
-    <div class="background">
-        <div class="shape"></div>
-        <div class="shape"></div>
-    </div >
-    {% block content %}
+    
+    <div class="login-logo">
+        <a href="">My<b>Learning</b>Hub</a>
+    </div>
+    <!-- /.login-logo -->
+    <div class="card">
+        <div class="card-body login-card-body">
+            {% block content %}
+            <p class="login-box-msg">Sign in to start your session</p>
 
-    {% endblock content %}
+            <form action="../../index3.html" method="post">
+                <div class="input-group mb-3">
+                <input type="email" class="form-control" placeholder="Email">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                    <span class="fas fa-envelope"></span>
+                    </div>
+                </div>
+                </div>
+                <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="Password">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+                </div>
+                <div class="row">
+                <div class="col-8">
+                    <div class="icheck-primary">
+                    <input type="checkbox" id="remember">
+                    <label for="remember">
+                        Remember Me
+                    </label>
+                    </div>
+                </div>
+                <!-- /.col -->
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                </div>
+                <!-- /.col -->
+                </div>
+            </form>
+
+            <div class="social-auth-links text-center mb-3">
+                <p>- OR -</p>
+                <a href="#" class="btn btn-block btn-primary">
+                <i class="fab fa-facebook mr-2"></i> Sign in using Facebook
+                </a>
+                <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
+                </a>
+            </div>
+            <!-- /.social-auth-links -->
+
+            <p class="mb-1">
+                <a href="forgot-password.html">I forgot my password</a>
+            </p>
+            <p class="mb-0">
+                <a href="register.html" class="text-center">Register a new membership</a>
+            </p>
+            </div>
+            {% endblock content %}
+            <!-- /.login-card-body -->
+        </div>
+    </div>
+    <!-- /.login-box -->
+    
+
+<!-- jQuery -->
+<script src="{% static 'LTE/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap 4 -->
+<script src="{% static 'LTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'LTE/dist/js/adminlte.min.js' %}"></script>
+
 </body>
-
 </html>

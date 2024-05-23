@@ -19,7 +19,6 @@ urlpatterns = [
     
     # this are the basic user URL's
     path('home/', Home, name="home"),
-    path('register/', Register, name="register"),
     path('todo', ToDo, name="todo"),
     path('about', About, name="about"),
     path('Contact_us', ContctUs, name="contact"),

@@ -23,7 +23,10 @@ class TodoForm(ModelForm):
                 Field('title', css_class='form-control'),
                 Field('description', css_class='form-control'),
                 Field('subject', css_class='form-control'),
-                Field('task_date', css_class='form-control'),
+                Field('start_date', css_class='form-control'),
+                Field('end_date', css_class='form-control'),
+                Field('start_time', css_class='form-control'),
+                Field('end_time', css_class='form-control'),
                 Field('user', css_class='form-control'),
             )
         

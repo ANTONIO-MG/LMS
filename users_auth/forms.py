@@ -1,5 +1,6 @@
 from django import forms
 from django.forms import ModelForm
+from allauth.account.forms import SignupForm
 from .models import Classroom, Person
 from communication.forms import MessageForm
 from crispy_forms.helper import FormHelper
@@ -68,7 +69,7 @@ class PersonEditForm(ModelForm):
         model = Person
         fields = '__all__'
         exclude = ['password', 'user_type', 'subjects', 'is_staff', 'is_active', 'groups', 'last_login',
-                   'user_permissions', 'is_superuser', 'email', 'my_class', 'user', 'user_type', 'my_class']
+                   'user_permissions', 'is_superuser', 'email', 'user', 'user_type']
         
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
@@ -85,7 +86,20 @@ class PersonEditForm(ModelForm):
             Field('date_of_birth', css_class='form-control'),
             Field('gender', css_class='form-control'),
             Field('race', css_class='form-control'),
+            Field('my_class', css_class='form-control'),
             Field('contact_number', css_class='form-control'),
             Field('emergency_contact', css_class='form-control'),
             Submit('submit', 'Submit', css_class='btn btn-primary')
         )
+
+
+class CustomSignupForm(SignupForm):
+    is_superuser = forms.BooleanField(required=False, label="Register as superuser")
+
+    def save(self, request):
+        user = super().save(request)
+        if self.cleaned_data['is_superuser']:
+            user.is_superuser = True
+            user.is_staff = True
+            user.save()
+        return user

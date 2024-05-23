@@ -5,7 +5,7 @@ from .models import Notification, Message
 
 class NotificationAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
-    list_display = ('user', 'class_room', 'subject', 'created_at', 'updated_at')
+    list_display = ('title', 'class_room', 'subject', 'created_at', 'updated_at')
     # filter the list view by given fields
     list_filter = ('user', 'class_room', 'subject')
     # search the list view by given fields

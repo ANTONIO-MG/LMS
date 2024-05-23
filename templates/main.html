@@ -8,14 +8,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
-
-
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="{% static 'LTE/plugins/fontawesome-free/css/all.min.css' %}">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="{% static 'LTE/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' %}">
     <!-- Theme style -->
-    <link rel="stylesheet" href="{% static 'dist/css/adminlte.min.css' %}">
+    <link rel="stylesheet" href="{% static 'LTE/dist/css/adminlte.min.css' %}">
+    <!-- fullCalendar -->
+    <link rel="stylesheet" href="{% static 'LTE/plugins/fullcalendar/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'LTE/plugins/fullcalendar-daygrid/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'LTE/plugins/fullcalendar-timegrid/main.min.css' %}">
+    <link rel="stylesheet" href="{% static 'LTE/plugins/fullcalendar-bootstrap/main.min.css' %}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -57,32 +62,40 @@
             </footer>
         </div>
     {% endif %}
-    <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
+
+<!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="{% static 'LTE/plugins/jquery/jquery.min.js' %}"></script>
 <!-- Bootstrap -->
 <script src="{% static 'LTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- jQuery UI -->
+<script src="{% static 'LTE/plugins/jquery-ui/jquery-ui.min.js' %}"></script>
 <!-- overlayScrollbars -->
 <script src="{% static 'LTE/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js' %}"></script>
 <!-- AdminLTE App -->
 <script src="{% static 'LTE/dist/js/adminlte.js' %}"></script>
-
+<!-- AdminLTE App -->
+<!-- <script src="{% static 'LTE/dist/js/adminlte.min.js' %}"></script> -->
 <!-- OPTIONAL SCRIPTS -->
 <script src="{% static 'LTE/dist/js/demo.js' %}"></script>
-
-<!-- PAGE PLUGINS -->
 <!-- jQuery Mapael -->
 <script src="{% static 'LTE/plugins/jquery-mousewheel/jquery.mousewheel.js' %}"></script>
 <script src="{% static 'LTE/plugins/raphael/raphael.min.js' %}"></script>
 <script src="{% static 'LTE/plugins/jquery-mapael/jquery.mapael.min.js' %}"></script>
 <script src="{% static 'LTE/plugins/jquery-mapael/maps/usa_states.min.js' %}"></script>
-<!-- ChartJS -->
-<script src="{% static 'LTE/plugins/chart.js/Chart.min.js' %}"></script>
-
 <!-- PAGE SCRIPTS -->
 <script src="{% static 'LTE/dist/js/pages/dashboard2.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'LTE/dist/js/demo.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'LTE/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-interaction/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+
 </body>
 
 </html>

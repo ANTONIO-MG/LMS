@@ -26,8 +26,8 @@ class TODO(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(max_length=255)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    status = models.CharField(max_length=15, choices=TASK_STATUS, default='sent')
-    task_date = models.DateTimeField()
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -43,6 +43,8 @@ class TaskCompletion(models.Model):
     task = models.ForeignKey(TODO, on_delete=models.CASCADE)
     status = models.CharField(max_length=15, choices=TASK_STATUS, default='sent')
     score = models.IntegerField(default=0)
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -50,7 +52,7 @@ class TaskCompletion(models.Model):
         ordering = ['-updated_at', '-created_at']
 
     def __str__(self):
-        return f'{self.user} - {self.task}'
+        return f'{self.task} - {self.user}'
     
 class Post(models.Model):
     user = models.ForeignKey(Person, on_delete=models.CASCADE)
