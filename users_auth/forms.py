@@ -18,7 +18,7 @@ class ClassRoomForm(ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        super(MessageForm, self).__init__(*args, **kwargs)
+        super(ClassRoomForm, self).__init__(*args, **kwargs)
         # Exclude specific fields
         exclude_fields = ['subject', 'subjects', 'user', 'class_room']
         for field_name in exclude_fields:
@@ -61,8 +61,14 @@ class PersonForm(forms.ModelForm):
 class PersonEditForm(ModelForm):
     """ this one is used for user profile editor"""
 
-    contact_number = PhoneNumberField(region='US', widget=PhoneNumberPrefixWidget())
-    emergency_contact = PhoneNumberField(region='US', widget=PhoneNumberPrefixWidget())
+    contact_number = PhoneNumberField(
+    label='Contact Number', 
+    region='US'
+    )
+    emergency_contact = PhoneNumberField(
+    label='Emergency Contact', 
+    region='US'
+    )
 
 
     class Meta:

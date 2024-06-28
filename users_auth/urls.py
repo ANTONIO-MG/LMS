@@ -8,7 +8,7 @@ from .views import *
 from usertasks.views import MyTasks, ToDo, MyTask, CreateTask, EditTask, DeleteTask, CalenderView
 from communication.views import (MyPost, SendMessage, EditMessage, DeleteMessage, MyNotifications,SendNotification, 
                                  DeleteNotification, EditNotification, MyNotification, EditPost, CreatePost, 
-                                 DeletePost, MyNotice, AllPosts, About, ContctUs, Store, Finance
+                                 DeletePost, MyNotice, AllPosts, About, ContctUs, Store, Finance, Conference
 )
 
 urlpatterns = [
@@ -63,5 +63,8 @@ urlpatterns = [
     
     # this is where we but all the calender views
     path('calender', CalenderView, name="calender"),
+
+    # this is where conferenece call urls go
+    path('conference', Conference, name="conference"),
     
 ] 

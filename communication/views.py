@@ -20,6 +20,14 @@ from communication.models import Post
 
 
 @login_required
+def Conference(request):
+    me = Person.objects.get(user=request.user)
+    
+    context = {'me': me.first_name + " " + me.last_name}
+    return render(request, 'conference.html', context)
+
+
+@login_required
 def SendMessage(request):
     create = True
     form = MessageForm
