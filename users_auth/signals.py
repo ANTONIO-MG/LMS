@@ -26,17 +26,13 @@ def create_or_get_person(user):
 @receiver(user_signed_up)
 def handle_user_signed_up(request, user, **kwargs):
     create_or_get_person(user)
-    print("##############################################################")
-    print("# User signed up and 'NO CLASS' was checked.                 #")
-    print("##############################################################")
+
 
 # Signal handler for user login
 @receiver(user_logged_in)
 def handle_user_logged_in(request, user, **kwargs):
     create_or_get_person(user)
-    print("##############################################################")
-    print("# User logged in and 'NO CLASS' was checked.                 #")
-    print("##############################################################")
+
 
 # Signal handler for task creation and update
 @receiver(post_save, sender=TODO)
@@ -52,14 +48,9 @@ def handle_task_save(sender, instance, created, **kwargs):
                 start_date=instance.start_date,
                 end_date=instance.end_date,
             )
-        print("##############################################################")
-        print("# New task created and assigned to all participants.        #")
-        print("##############################################################")
     else:
         TaskCompletion.objects.filter(task=instance).update(
             start_date=instance.start_date,
             end_date=instance.end_date,
         )
-        print("##############################################################")
-        print("# Task updated and re-assigned to all participants.         #")
-        print("##############################################################")
+

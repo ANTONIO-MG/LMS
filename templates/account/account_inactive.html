@@ -5,8 +5,12 @@
     {% trans "Account Inactive" %}
 {% endblock head_title %}
 {% block content %}
-    {% element h1 %}
-        {% trans "Account Inactive" %}
-    {% endelement %}
-    <p>{% trans "This account is inactive." %}</p>
+    <div class="message-box">
+        <div class="card-body message-card-body">
+            <h2>Account Inactive</h2>
+            <p>
+                This account is inactive.
+            </p>
+        </div>
+    </div>
 {% endblock content %}

@@ -3,8 +3,10 @@
 {% block head_title %}
     {% trans "Sign Out" %}
 {% endblock head_title %}
-{% block content %}
-    {% element h1 %}
+{% block content %}  
+    <div class="message-box">
+        <div class="card-body message-card-body">
+        {% element h2 %}
         {% trans "Sign Out" %}
     {% endelement %}
     <p>{% trans 'Are you sure you want to sign out?' %}</p>
@@ -19,9 +21,11 @@
             {% endif %}
         {% endslot %}
         {% slot actions %}
-            {% element button type="submit" %}
-                {% trans 'Sign Out' %}
-            {% endelement %}
+            <div class="col-4">
+                <button type="submit" class="btn btn-danger btn-block" required>Sign Out</button>
+              </div>
         {% endslot %}
     {% endelement %}
+        </div>
+    </div>
 {% endblock content %}

@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'django.contrib.sites',
+    'allauth.socialaccount',
+    # Social providers
+    'allauth.socialaccount.providers.google',
     # clean up the duplicate files with teh following library
     'django_cleanup.apps.CleanupConfig',
     # python library for cellphone number fields
@@ -106,7 +109,6 @@ ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
 ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION= True  
-ACCOUNT_SIGNUP_REDIRECT_URL = 'register'
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 ACCOUNT_EMAIL_NOTIFICATIONS = True
 

@@ -4,32 +4,79 @@
     {% trans "Signup" %}
 {% endblock head_title %}
 {% block content %}
-    {% element h1 %}
-        {% trans "Sign Up" %}
-    {% endelement %}
-    <br>
-    <p1>
-        {% blocktrans %}Already have an account? <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
-    </p1>
-    {% url 'account_signup' as action_url %}
-    {% element form form=form method="post" action=action_url tags="entrance,signup" %}
-        {% slot body %}
+<body class="hold-transition register-page">
+    <div class="register-box">
+    
+      <div class="card">
+        <div class="card-body register-card-body">
+          <p class="login-box-msg">Register a new user</p>
+    
+          <form method="post" action="{% url 'account_signup' %}" id="signup_form">
             {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
-            {% endelement %}
-            {% if redirect_field_value %}
-                <input type="hidden"
-                       name="{{ redirect_field_name }}"
-                       value="{{ redirect_field_value }}" />
-            {% endif %}
-        {% endslot %}
-        {% slot actions %}
-            {% element button tags="prominent,signup" type="submit" %}
-                {% trans "Sign Up" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
+            <div class="input-group mb-3">
+                <input type="text" id="{{ form.username.id_for_label }}" name="{{ form.username.name }}"  placeholder="Username" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-user"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="email" id="{{ form.email.id_for_label }}" name="{{ form.email.name }}" placeholder="Email Address" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" id="{{ form.password1.id_for_label }}" name="{{ form.password1.name }}" placeholder="Password" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" id="{{ form.password2.id_for_label }}" name="{{ form.password2.name }}" placeholder="Confirm Password" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="icheck-primary">
+                  <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                  <label for="agreeTerms">
+                   I agree to the <a href="#">terms</a>
+                  </label>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+              <!-- /.col -->
+              <div class="col-4">
+                <button type="submit" class="btn btn-primary btn-block" required>Register</button>
+              </div>
+              <!-- /.col -->
+            </div>
+          </form>
+    
+          <div class="social-auth-links text-center">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-danger">
+              <i class="fab fa-google-plus mr-2"></i>
+              Sign up using Google+
+            </a>
+            <br>
+            <a href="{% url 'account_login' %}">Alreday a member? Login</a>
+          </div>
+    
+          
+        </div>
+        <!-- /.form-box -->
+      </div><!-- /.card -->
+    </div>
+    <!-- /.register-box -->
+    </body>
 {% endblock content %}

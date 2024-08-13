@@ -1,45 +1,72 @@
 {% extends "main_user_auth.html" %}
-{% load i18n %}
-{% load allauth account %}
-{% load crispy_forms_tags %}
-{% block head_title %}
-    {% trans "Sign In" %}
-{% endblock head_title %}
+{% load allauth i18n %}
 {% block content %}
-<div id="login-form">
-    {% element h1 %}
-        {% trans "Sign In" %}
-    {% endelement %}
-    {% if not SOCIALACCOUNT_ONLY %}
-        {% setvar link %}
-            <a href="{{ signup_url }}">
-            {% endsetvar %}
-            {% setvar end_link %}
+<body class="hold-transition login-page">
+    <div class="login-box">
+        <!-- /.login-logo -->
+        <div class="card-body login-card-body">
+          <p class="login-box-msg">Sign in to start your session</p>
+    
+          <form method="post" action="{% url 'account_login' %}" id="login_form">
+            {% csrf_token %}
+            <div class="input-group mb-3">
+                <input type="text" id="{{ form.login.id_for_label }}" name="{{ form.login.name }}" placeholder="Email" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-envelope"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}" placeholder="Password" required>
+              <div class="input-group-append">
+                <div class="input-group-text">
+                  <span class="fas fa-lock"></span>
+                </div>
+              </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="icheck-primary">
+                    <input type="checkbox" id="{{ form.remember.id_for_label }}" name="{{ form.remember.name }}">
+                    <label for="{{ form.remember.id_for_label }}">
+                      Remember Me
+                    </label>
+              </div>
+            <div class="input-group mb-3">
+                <div class="col-4">
+                    <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+                  </div>
+            </div>
+          </form>
+    
+          <!-- /social links start-->
+        <div class="social-auth-links text-center mb-3">
+            <p>- OR -</p>
+            <a href="#" class="btn btn-block btn-danger">
+                <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
             </a>
-        {% endsetvar %}
-        <div>
-        {% url 'account_login' as login_url %}
-        {% element form form=form method="post" action=login_url tags="entrance,login" %}
-            {% slot body %}
-                {% csrf_token %}
-                {% element fields form=form unlabeled=True %}
-                {% endelement %}
-                {{ redirect_field }}
-            {% endslot %}
-            
-            {% slot actions %}
-                {% element button type="submit" tags="prominent,login" %}
-                    {% trans "Sign In" %}
-                {% endelement %}
-                <p>
-                    {% blocktranslate %}Not A User ?{{ link }}Sign Up{{ end_link }} Here.{% endblocktranslate %}
-                </p>
-            {% endslot %}
         </div>
-        {% endelement %}
-    {% endif %}
-    {% if SOCIALACCOUNT_ENABLED %}
-        {% include "socialaccount/snippets/login.html" with page_layout="entrance" %}
-    {% endif %}
-</div>
-{% endblock content %}
+        <!-- /social links end-->
+        <!-- /error messages start -->
+        {% if form.non_field_errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+        </div>
+        {% endif %}
+        <!-- /error messages end -->
+        <!-- /social accounts start -->
+        <div class="social-auth-links text-center mb-3">
+        <p class="mb-1">
+            <a href="{% url 'account_reset_password' %}" class="forgot-password">Forgot your password?</a>
+            </p>
+            <p class="mb-0">
+            <a href="{% url 'account_signup' %}">Sign up here</a>
+            </p>
+        </div>
+        <!-- /social accounts start -->
+        <!-- /.login-card-body -->
+    
+    </div>
+    <!-- /.login-box -->
+</body>
+{% endblock %} 

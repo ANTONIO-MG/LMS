@@ -70,6 +70,7 @@ body {
   background-color: #ffffff;
 }
 
+
 [tabindex="-1"]:focus {
   outline: 0 !important;
 }
@@ -19989,7 +19990,7 @@ html.maximized-card {
   background: #ffffff;
   border-top: 0;
   color: #666;
-  padding: 20px;
+  padding: 288px;
 }
 
 .login-card-body .input-group .form-control,

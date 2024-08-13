@@ -11,6 +11,7 @@ django-jazzmin
 django-phonenumber-field
 djangorestframework
 mysqlclient
+google-auth
 phonenumbers
 phonenumberslite
 pillow
