@@ -1,24 +1,33 @@
 {% extends "main_user_auth.html" %}
 {% load allauth %}
 {% load i18n %}
+
 {% block reauthenticate_content %}
-    <p>{% blocktranslate %}Enter your password:{% endblocktranslate %}</p>
+<div class="reauthenticate-container">
+    <p class="mb-4">{% blocktranslate %}Enter your password:{% endblocktranslate %}</p>
+
     {% url 'account_reauthenticate' as action_url %}
-    {% element form form=form method="post" action=action_url %}
-        {% slot body %}
-            {% csrf_token %}
-            {% element fields form=form unlabeled=True %}
-            {% endelement %}
-            {% if redirect_field_value %}
-                <input type="hidden"
-                       name="{{ redirect_field_name }}"
-                       value="{{ redirect_field_value }}" />
-            {% endif %}
-        {% endslot %}
-        {% slot actions %}
-            {% element button type="submit" %}
-                {% trans "Confirm" %}
-            {% endelement %}
-        {% endslot %}
-    {% endelement %}
+    <form method="post" action="{{ action_url }}" id="reauthenticate_form">
+        {% csrf_token %}
+
+        <!-- Password Input Field -->
+        <div class="input-group mb-3">
+            <input type="password" id="{{ form.password.id_for_label }}" name="{{ form.password.name }}" class="form-control" placeholder="{% trans 'Password' %}" required>
+            <div class="input-group-append">
+                <div class="input-group-text">
+                    <span class="fas fa-lock"></span>
+                </div>
+            </div>
+        </div>
+
+        {% if redirect_field_value %}
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+
+        <!-- Confirm Button -->
+        <div class="input-group mb-3">
+            <button type="submit" class="btn btn-primary btn-block">{% trans 'Confirm' %}</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

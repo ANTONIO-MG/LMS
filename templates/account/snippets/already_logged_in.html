@@ -6,4 +6,5 @@
     {% slot message %}
         <strong>{% blocktranslate %}Note{% endblocktranslate %}:</strong> {% blocktranslate %}You are already logged in as {{ user_display }}.{% endblocktranslate %}
     {% endslot %}
+    <a href="{% url 'account_login' %}">Back To Login</a>
 {% endelement %}

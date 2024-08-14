@@ -9,33 +9,45 @@
     <div class="message-box">
         <div class="card-body message-card-body">
             <h2>Confirm Email Address</h2>
-    {% endelement %}
-    {% if confirmation %}
-        {% user_display confirmation.email_address.user as user_display %}
-        {% if can_confirm %}
+    {% if confirmation %} <!-- Check if there is a confirmation object -->
+        {% user_display confirmation.email_address.user as user_display %} <!-- Get the user display name -->
+        {% if can_confirm %} <!-- Check if the email can be confirmed -->
             <p>
-                {% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.{% endblocktrans %}
+                {% blocktrans with confirmation.email_address.email as email %}
+                    <!-- Display the email confirmation message -->
+                    Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display }}.
+                {% endblocktrans %}
             </p>
-            {% url 'account_confirm_email' confirmation.key as action_url %}
-            {% element form method="post" action=action_url %}
+            {% url 'account_confirm_email' confirmation.key as action_url %} <!-- Generate the confirmation URL -->
+            {% element form method="post" action=action_url %} <!-- Form for confirming the email -->
                 {% slot actions %}
-                    {% csrf_token %}
-                    {% element button type="submit" %}
-                        {% trans 'Confirm' %}
-                    {% endelement %}
+                    {% csrf_token %} <!-- CSRF token for security -->
+                    <div class="input-group mb-3">
+                        <div class="col-4">
+                            <button type="submit" class="btn btn-success btn-block">Confirm</button>
+                          </div>
+                    </div>
                 {% endslot %}
             {% endelement %}
         {% else %}
             <p>
-                {% blocktrans %}Unable to confirm {{ email }} because it is already confirmed by a different account.{% endblocktrans %}
+                {% blocktrans %}
+                    <!-- Message if the email is already confirmed by a different account -->
+                    Unable to confirm {{ email }} because it is already confirmed by a different account.
+                {% endblocktrans %}
             </p>
         {% endif %}
     {% else %}
-        {% url 'account_email' as email_url %}
+        {% url 'account_email' as email_url %} <!-- Generate the email URL -->
         <p>
-            {% blocktrans %}This email confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new email confirmation request</a>.{% endblocktrans %}
+            {% blocktrans %}
+                <!-- Message if the confirmation link is expired or invalid -->
+                This email confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new email confirmation request</a>.
+            {% endblocktrans %}
         </p>
     {% endif %}
+    </div> <!-- Closing div for the content -->
+    </div> <!-- Closing div for the container -->
         </div>
     </div>
 {% endblock content %}

@@ -7,6 +7,7 @@ from .  forms import PersonForm, PersonEditForm
 from usertasks.models import TaskCompletion, TODO
 from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
+from allauth.account.views import PasswordResetFromKeyView
 
 
 # The homepage view
@@ -129,3 +130,10 @@ def MyClass(request, pk):
                'participants': participants, 'posts': posts}
     return render(request, 'class.html', context)
 
+# Ensure that the view passing the context to the template includes uidb36 and key.
+def password_reset_from_key(request, uidb36=None, key=None):
+    context = {
+        'uidb36': uidb36,
+        'key': key,
+    }
+    return render(request, 'account/password_reset_from_key.html', context)
