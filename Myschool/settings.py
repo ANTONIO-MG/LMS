@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     # clean up the duplicate files with teh following library
     'django_cleanup.apps.CleanupConfig',
     # python library for cellphone number fields
-    "phonenumber_field",
     "crispy_forms",
     "crispy_bootstrap4",
 ]

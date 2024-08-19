@@ -1,6 +1,9 @@
 from .models import Person, Classroom, Subject
 from communication.models import Message, Notification
 from usertasks.models import TODO, TaskCompletion
+from users_auth.country_code import country_phone_codes
+from users_auth.users_informations import RACE, USER_TYPE_CHOICES, GENDER_CHOICES
+from users_auth.countries import country_names
 """
     this imports the models and then creates general context that will be sent to all the pages to be rendared
 """
@@ -27,6 +30,10 @@ def global_context(request):
             # all_notifications_count = int(messages_count) + int(notification_count)
             last_message = class_messages.last
             last_notifications = notifications.last
+            races = RACE
+            user_types = USER_TYPE_CHOICES
+            genders = GENDER_CHOICES
+            coountries = country_names
 
             return {
                 "classrooms": classrooms,
@@ -43,6 +50,10 @@ def global_context(request):
                 'last_notifications': last_notifications,
                 "class_messages": class_messages,
                 "messages_count": messages_count,
-                "notification_count": notification_count
+                "notification_count": notification_count,
+                "races": races,
+                "user_types": user_types,
+                "genders": genders,
+                "countries": coountries
                 }
         return {}

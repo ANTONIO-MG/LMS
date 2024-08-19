@@ -12,7 +12,7 @@ GENDER_CHOICES = [
     ('Female', 'Female'),
     ('unknown', 'Unknown'),
 ]
-Race = [
+RACE = [
     ('Asian', 'Asian'),
     ('Black', 'Black'),
     ('White', 'White'),
@@ -37,19 +37,20 @@ class Person(models.Model):
     gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='unknown')
     bio = models.TextField(max_length=250, blank=True)
     my_class = models.ForeignKey(
-        'Classroom', on_delete=models.SET_NULL, null=True)
+        'Classroom', on_delete=models.SET_NULL, null=True, blank=True)
     user_type = models.CharField(max_length=20, choices=USER_TYPE_CHOICES,
                                  default='Student')
     race = models.CharField(
-        max_length=50, choices=Race, default='Other')
+        max_length=50, choices=RACE, default='Other')
     date_of_birth = models.DateField(blank=True, null= True)
-    contact_number = PhoneNumberField(blank=True, null= True)
-    emergency_contact = PhoneNumberField(blank=True, null= True)
+    contact_number = models.CharField(max_length=25, blank=True, null= True)
+    emergency_contact =models.CharField(max_length=25, blank=True, null= True)
     subjects = models.ManyToManyField('Subject', blank=True)
     profile_picture = models.ImageField(
         upload_to='profile_pics/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    profile_status = models.BooleanField(default=False)
     # makes the email field teh default base field
     USERNAME_FIELD = 'email'
     # created the fields tha are required at user creation stage

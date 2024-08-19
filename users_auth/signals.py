@@ -7,7 +7,8 @@ from usertasks.models import TODO, TaskCompletion
 
 # Helper function to create or ensure a Person profile
 def create_or_get_person(user):
-    no_class, created = Classroom.objects.get_or_create(name='NO CLASS')
+    no_class1, created = Classroom.objects.get_or_create(name='NO CLASS')
+    no_class2, created = Classroom.objects.get_or_create(name='GOBAL CLASS')
     person, created = Person.objects.get_or_create(
         user=user,
         defaults={
@@ -15,11 +16,11 @@ def create_or_get_person(user):
             'last_name': user.last_name,
             'nickname': user.username,
             'email': user.email,
-            'my_class': no_class,
+            'my_class': no_class1,
         }
     )
     if created:
-        no_class.participants.add(person)
+        no_class1.participants.add(person)
     return person
 
 # Signal handler for user signup

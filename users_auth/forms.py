@@ -48,7 +48,7 @@ class PersonForm(forms.ModelForm):
             Field('gender', css_class='form-control'),
             Field('race', css_class='form-control'),
             Field('user_type', css_class='form-control'),
-            Field('my_class', css_class='form-control'),
+            # Field('my_class', css_class='form-control'),
             Field('contact_number', css_class='form-control'),
             Field('emergency_contact', css_class='form-control'),
             Submit('submit', 'Submit', css_class='btn btn-primary')
@@ -61,21 +61,11 @@ class PersonForm(forms.ModelForm):
 class PersonEditForm(ModelForm):
     """ this one is used for user profile editor"""
 
-    contact_number = PhoneNumberField(
-    label='Contact Number', 
-    region='US'
-    )
-    emergency_contact = PhoneNumberField(
-    label='Emergency Contact', 
-    region='US'
-    )
-
-
     class Meta:
         model = Person
         fields = '__all__'
-        exclude = ['password', 'user_type', 'subjects', 'is_staff', 'is_active', 'groups', 'last_login',
-                   'user_permissions', 'is_superuser', 'email', 'user', 'user_type']
+        exclude = ['password', 'subjects', 'is_staff', 'is_active', 'groups', 'last_login',
+                   'user_permissions', 'is_superuser', 'email', 'user']
         
         widgets = {
             'date_of_birth': forms.DateInput(attrs={'type': 'date'}),
@@ -85,6 +75,7 @@ class PersonEditForm(ModelForm):
         super(PersonEditForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = 'post'
+        self.fields['my_class'].queryset = Classroom.objects.all()
         self.helper.layout = Layout(
             Field('first_name', css_class='form-control'),
             Field('last_name', css_class='form-control'),
@@ -93,6 +84,8 @@ class PersonEditForm(ModelForm):
             Field('gender', css_class='form-control'),
             Field('race', css_class='form-control'),
             Field('my_class', css_class='form-control'),
+            Field('bio', css_class='form-control'),
+            Field('user_type', css_class='form-control'),
             Field('contact_number', css_class='form-control'),
             Field('emergency_contact', css_class='form-control'),
             Submit('submit', 'Submit', css_class='btn btn-primary')
