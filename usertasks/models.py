@@ -19,6 +19,12 @@ COMMS_STATUS = [
     ('sent', 'Sent'),
 ]
 
+TIMELINE_ITEMS = [
+    ('message', 'Message'),
+    ('Notification', 'Notification'),
+    ('task', 'Task'),
+]
+
 
 # Create your models here.
 class TODO(models.Model):
@@ -54,20 +60,19 @@ class TaskCompletion(models.Model):
     def __str__(self):
         return f'{self.task} - {self.user}'
     
-class Post(models.Model):
+
+class TimelineItem(models.Model):
     user = models.ForeignKey(Person, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100, blank=True, null=True)
-    post_body = models.TextField()
-    picture = models.ImageField(
-        upload_to='post_pics/', null=True, blank=True)
-    media = models.FileField(upload_to='audio_files/', blank=True, null=True)
-    status = models.CharField(max_length=15, choices=
-        COMMS_STATUS, default='sent')
+    title = models.CharField(max_length=100)
+    content = models.CharField(max_length=200, null=True, blank=True)
+    item_id = models.PositiveIntegerField()
+    category = models.CharField(max_length=15, choices=
+        TIMELINE_ITEMS, default='None')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     class Meta:
         ordering = ['-updated_at', '-created_at']
 
     def __str__(self):
-        return f'{self.title} - {self.user  }'
+        return f'{self.title} - {self.category  } - {self.user.username}'

@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from .models import Message, Notification
 from users_auth.models import Classroom
-from usertasks.models import Post
+from communication.models import Post
 
 
 # form to create a classroom

@@ -13,10 +13,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from .forms import MessageForm, NotificationForm, PostForm
 from usertasks.forms import TodoForm
+from usertasks. models import TaskCompletion, TODO
 from .models import Notification, Message
 from allauth.account.views import SignupView
 from users_auth.models import Person
-from communication.models import Post
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 @login_required

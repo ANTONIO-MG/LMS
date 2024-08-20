@@ -4,7 +4,7 @@ from pyexpat.errors import messages
 from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
 from .  forms import PersonForm, PersonEditForm
-from usertasks.models import TaskCompletion, TODO
+from usertasks.models import TaskCompletion, TODO, TimelineItem
 from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
 from users_auth.countries import country_phone_codes
@@ -56,6 +56,7 @@ def Profile(request, pk):
         messages = Message.objects.all()
         notifications = Notification.objects.all()[0:5]
         my_class = me.my_class
+        timeline_items = TimelineItem.objects.filter(user=request.user).all()
         context = {
             "classrooms": classrooms, 
             "messages": messages,
@@ -64,7 +65,8 @@ def Profile(request, pk):
             'subjects': subjects,
             'all_users': all_users, 
             'all_posts': all_posts, 
-            'my_class': my_class
+            'my_class': my_class,
+            'timeline_items': timeline_items
         }
         return render(request, 'profile.html', context)  # Added 'context' here
 

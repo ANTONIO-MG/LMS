@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import TaskCompletion, TODO, Post
+from .models import TaskCompletion, TODO, TimelineItem
 
 class TODOAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
@@ -25,14 +25,13 @@ class TaskCompletionAdmin(admin.ModelAdmin):
     # show the number of items per page
     list_per_page = 20
 
-
-class PostAdmin(admin.ModelAdmin):
+class TimelineItemAdmin(admin.ModelAdmin):
     # show the list 
-    list_display = ('title', 'created_at', 'user')
+    list_display = ('title', 'category', 'created_at')
     # filter the list view by given fields
-    list_filter = ('user', 'title', 'created_at')
+    list_filter = ('title', 'category', 'created_at')
     # search the list view by given fields
-    search_fields = ('user', 'title', 'created_at', 'post_body')
+    search_fields = ('title', 'category', 'created_at')
     # show the fields that are not editable
     readonly_fields = ()
      # show the number of items per page
@@ -41,4 +40,4 @@ class PostAdmin(admin.ModelAdmin):
 
 admin.site.register(TODO, TODOAdmin)
 admin.site.register(TaskCompletion, TaskCompletionAdmin)
-admin.site.register(Post, PostAdmin)
+admin.site.register(TimelineItem, TimelineItemAdmin)

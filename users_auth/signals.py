@@ -3,7 +3,8 @@ from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_in
 from django.conf import settings
 from .models import Person, Classroom
-from usertasks.models import TODO, TaskCompletion
+from usertasks.models import TODO, TaskCompletion, TimelineItem
+from communication.models import Message, Notification
 
 # Helper function to create or ensure a Person profile
 def create_or_get_person(user):
@@ -55,3 +56,51 @@ def handle_task_save(sender, instance, created, **kwargs):
             end_date=instance.end_date,
         )
 
+
+@receiver(post_save, sender=Message)
+def create_or_update_timeline_for_message(sender, instance, created, **kwargs):
+    if created:
+        TimelineItem.objects.create(
+            user=instance.user,
+            title=f'Message: {instance.content[:50]}',
+            content=instance.content,
+            item_type='Message',
+            item_id=instance.id
+        )
+    else:
+        TimelineItem.objects.filter(item_type='Message', item_id=instance.id).update(
+            updated_at=instance.updated_at,
+            content=instance.content
+        )
+
+@receiver(post_save, sender=Notification)
+def create_or_update_timeline_for_notification(sender, instance, created, **kwargs):
+    if created:
+        TimelineItem.objects.create(
+            user=instance.user,
+            title=f'Notification: {instance.title}',
+            content=instance.content,
+            item_type='Notification',
+            item_id=instance.id
+        )
+    else:
+        TimelineItem.objects.filter(item_type='Notification', item_id=instance.id).update(
+            updated_at=instance.updated_at,
+            content=instance.content
+        )
+
+@receiver(post_save, sender=TaskCompletion)
+def create_or_update_timeline_for_task_completion(sender, instance, created, **kwargs):
+    if created:
+        TimelineItem.objects.create(
+            user=instance.user,
+            title=f'TaskCompletion: Task ID {instance.task.id}',
+            content=f'Task: {instance.task.title}, Status: {instance.status}',
+            item_type='TaskCompletion',
+            item_id=instance.id
+        )
+    else:
+        TimelineItem.objects.filter(item_type='TaskCompletion', item_id=instance.id).update(
+            updated_at=instance.updated_at,
+            content=f'Task: {instance.task.title}, Status: {instance.status}'
+        )
