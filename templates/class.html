@@ -1,115 +1,178 @@
-{% extends 'main.html' %}
+{% extends 'main.html' %} 
+{% load static %}
 {% block content %}
-
+{% if request.user.is_authenticated %}
 <!-- here is the page header with site map -->
 <section class="content-header">
-    <div class="container-fluid">
+  <div class="container-fluid">
     <div class="row mb-2">
-        <div class="col-sm-6">
+      <div class="col-sm-6">
         <h1>{{my_class.name}}</h1>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'class' my_class.id %}">My Class</a></li>
-                <li class="breadcrumb-item active">{{my_class.name}}</li>
-            </ol>
-        </div>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item">
+            <a href="{% url 'class' my_class.id %}">My Class</a>
+          </li>
+          <li class="breadcrumb-item active">{{my_class.name}}</li>
+        </ol>
+      </div>
     </div>
-    </div><!-- /.container-fluid -->
+  </div>
+  <!-- /.container-fluid -->
 </section>
 
-<main class="profile-page layout layout--2">
-    <div class="container">
-        <!-- Room Start -->
-        <div class="room">
-            
-            <div class="room__box scroll">
-                <div class="room__header scroll">
-                    <div class="room__info">
-                        <h3>{{ classroom.name }}</h3>
-                        <span>Text Here</span>
-                    </div>
-                    <div class="room__hosted">
-                        <p id="currentDateTime"></p>
-                        
-                    </div>
-                    <div class="room__details">
-                        {{ classroom.description}}
-                    </div>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- before current content -->
+     <div class="card card-primary card-outline">
+      
+      <div class="card-body">
+        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">About Class</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Members</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" id="custom-content-above-profile-tab-messages-tab" data-toggle="pill" href="#custom-content-above-messages" role="tab" aria-controls="custom-content-above-messages" aria-selected="false">Messages</a>
+          </li>
+        </ul>
+        <div class="tab-custom-content">
+          <p class="lead mb-0">  {{ my_class.name }}: {{ my_class.description }}</p>
+        </div>
+        <div class="tab-content" id="custom-content-above-tabContent">
+          <!-- about class here -->
+          <div class="tab-pane fade show active col-md-12" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+            <div class="row">
+              <div class="col-md-4">
+                <!-- Widget: user widget style 2 -->
+                <div class="card card-widget widget-user-2">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                  <div class="widget-user-header bg-warning">
+                    
+                  
+                  </div>
+                  <div class="card-footer p-0">
+                    <ul class="nav flex-column">
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          Subjects <span class="float-right badge bg-primary">{{ my_subject.subjects.all|length }}</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          Total Students <span class="float-right badge bg-info">{{ my_class.participants.all|length }}</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          Class average Grades <span class="float-right badge bg-success">72%</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          Males<span class="float-right badge bg-danger">{{ male_count }}</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" class="nav-link">
+                          Females <span class="float-right badge bg-danger">{{ female_count }}</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-                <div class="room__conversation">
-                    <div class="threads scroll">
-                        {% for post in posts %}
-                        <div class="thread">
-                            <div class="thread__top">
-                                <div class="thread__author">
-                                    <a href="{% url 'profile' post.user.id %}" class="thread__authorInfo">
-                                        <div class="avatar avatar--small">
-                                            <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                                        </div>
-                                        <span>@{{ post.user }}</span>
-                                    </a>
-                                    <span class="thread__date">{{ post.updated_at | timesince }}</span>
-                                </div>
-                                
-                            </div>
-                            <div class="thread__details">
-                                <h2>
-                                    {{ post.title }}
-                                </h2>
-                                <br>
-                                <small>{{ post.post_body }}</small>
-                                {% if post.media != None %}
-                                <h3>media here</h3>
-                                {% endif %}
-                            </div>
-                            <div class="thread__delete">
-                                {% if message.user == request.user %}
-                                <a href="{% url 'edit_post' post.id %}">Edit</a>
-                                <a href="{% url 'delete_post' post.id %}">Delete</a>
-                                {% endif %}
-                            </div>
-                            <br>
+                <!-- /.widget-user -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-4">
+                <!-- Widget: user widget style 1 -->
+                <div class="card card-widget widget-user">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                  <div class="widget-user-header bg-info">
+                    <h3 class="widget-user-username">{{ my_class.teacher }}</h3>
+                    <h5 class="widget-user-desc">Class Teacher</h5>
+                  </div>
+                  <div class="widget-user-image">
+                    <img class="img-circle elevation-2" src="../dist/img/user1-128x128.jpg" alt="User Avatar">
+                  </div>
+                  <div class="card-footer">
+                    <div class="row">
+                      <p>{{ my_class.teacher.bio }}</p>
+                      <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                  </div>
+                </div>
+                <!-- /.widget-user -->
+              </div>
+              <!-- /.col -->
+              <div class="col-md-4">
+                <!-- Widget: user widget style 1 -->
+                <div class="card card-widget widget-user">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                  <div class="widget-user-header text-white"
+                       style="background: url('../dist/img/photo1.png') center center;">
+                    <h3 class="widget-user-username text-right">Elizabeth Pierce</h3>
+                    <h5 class="widget-user-desc text-right">Web Designer</h5>
+                  </div>
+                  <div class="widget-user-image">
+                    <img class="img-circle" src="../dist/img/user3-128x128.jpg" alt="User Avatar">
+                  </div>
+                  <div class="card-footer">
+                    <div class="row">
+                      <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">3,200</h5>
+                          <span class="description-text">SALES</span>
                         </div>
-                        {% endfor %}
-                       
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4 border-right">
+                        <div class="description-block">
+                          <h5 class="description-header">13,000</h5>
+                          <span class="description-text">FOLLOWERS</span>
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
+                      <div class="col-sm-4">
+                        <div class="description-block">
+                          <h5 class="description-header">35</h5>
+                          <span class="description-text">PRODUCTS</span>
+                        </div>
+                        <!-- /.description-block -->
+                      </div>
+                      <!-- /.col -->
                     </div>
+                    <!-- /.row -->
+                  </div>
                 </div>
+                <!-- /.widget-user -->
+              </div>
+              <!-- /.col -->
             </div>
-            <div class="room__message">
-                <form action="" method="POST">
-                    {% csrf_token %}
-                    <input name="post_title" placeholder="Title here..." />
-                    <br>
-                    <input name="content" placeholder="Write your message here..." />
-                    <input type="submit" value="Submit" />
-                </form>
-
-            </div>
+            <!-- /.row -->
+           
+          </div>
+          <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
+           {% include 'class_mates.html' %}
+          </div>
+          <div class="tab-pane fade" id="custom-content-above-messages" role="tabpanel" aria-labelledby="custom-content-above-messages-tab">
+            <p>messages will show here</p>
+          </div>
         </div>
-        <!-- Room End -->
-
-        <!-- classmates  Start -->
-        <div class="participants">
-            <h3 class="participants__top">Class Mates <span>({{ classroom.participants.count }})</span></h3>
-            
-            <div class="participants__list scroll">
-                {% for participant in participants %}
-                <a href="{% url 'profile' participant.id %}" class="participant">
-                    <div class="avatar avatar--medium">
-                        <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                    </div>
-                    <p>
-                        {{ participant.first_name }} {{ participant.last_name }}
-                        <span>@{{ participant.username }}</span>
-                    </p>
-                </a>
-                {% endfor %}
-            </div> 
-        </div>
-        <!-- classmates End -->
+      </div>
+      <!-- /.card -->
     </div>
-</main>
-
+    <!-- /.card -->
+  </div>
+  <!-- /.container-fluid -->
+</section>
+{% endif %}
 {% endblock content %}

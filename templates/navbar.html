@@ -28,6 +28,8 @@
                     </div>
                 </div>
             </form>
+            <!-- Sidebar user panel (optional) -->
+            
         
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
@@ -92,16 +94,16 @@
                         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                            class="fas fa-th-large"></i></a>
-                </li>
             </ul>
-            <!-- Profile button-->
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{% url 'profile' me.id %}" class="nav-link">Profile</a>
-            </li>
             <!-- logout button -->
+            <div class="user-panel mt-1 pb-1 mb-1 d-flex">
+                <div class="image">
+                    <img src="{{ me.profile_picture.url }}" class="img-circle elevation-2" alt="User Image">
+                </div>
+                <div class="info">
+                    <a href="{% url 'profile' me.id %}" class="d-block">{{me.first_name}} {{me.last_name}}</a>
+                </div>
+            </div>
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
             </li>

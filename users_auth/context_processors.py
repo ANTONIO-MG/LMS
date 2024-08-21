@@ -25,6 +25,10 @@ def global_context(request):
             subjects = Subject.objects.all()
             my_class = me.my_class
 
+            # count males versus females participants
+            male_count = my_class.participants.filter(gender='male').count()
+            female_count = my_class.participants.filter(gender='female').count()
+
             messages_count = class_messages.count
             notification_count = notifications.count
             # all_notifications_count = int(messages_count) + int(notification_count)
@@ -54,6 +58,8 @@ def global_context(request):
                 "races": races,
                 "user_types": user_types,
                 "genders": genders,
-                "countries": coountries
+                "countries": coountries,
+                "male_count": male_count,
+                "female_count": female_count
                 }
         return {}

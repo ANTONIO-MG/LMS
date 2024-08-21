@@ -1,0 +1,116 @@
+
+<body>
+    <!-- Timeline tabs from here -->
+<div class="tab-pane" id="timeline">
+    <!-- The timeline -->
+    <div class="timeline timeline-inverse">
+
+        <!-- timeline Daily label -->
+        <div class="time-label">
+            <span class="bg-danger" id="current-date">
+                <!-- Current date will be displayed here -->
+            </span>
+        </div>
+        <!-- /.timeline-label -->
+
+        {% for item in timeline_items %}
+        {% if item.category == 'message' %}
+        <!-- timeline Post start -->
+        <div>
+            <i class="fas fa-comments bg-warning"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="far fa-clock"></i> 27 mins
+                    ago</span>
+
+                <h3 class="timeline-header"><a href="#">Jay White</a> commented
+                    on your post</h3>
+
+                <div class="timeline-body">
+                    Take me to your leader!
+                    Switzerland is small and neutral!
+                    We are more like Germany, ambitious and misunderstood!
+                </div>
+                <div class="timeline-footer">
+                    <a href="#" class="btn btn-warning btn-flat btn-sm">View
+                        comment</a>
+                </div>
+            </div>
+        </div>
+        <!-- END timeline Post -->
+        {% elif item.category == 'Notification' %}
+        <!-- timeline notification starts-->
+        <div>
+            <i class="fas fa-envelope bg-primary"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="far fa-clock"></i> 12:05</span>
+
+                <h3 class="timeline-header"><a href="#">Support Team</a> sent
+                    you an email</h3>
+
+                <div class="timeline-body">
+                    Etsy doostang zoodles disqus groupon greplin oooj voxy
+                    zoodles,
+                    weebly ning heekya handango imeem plugg dopplr jibjab,
+                    movity
+                    jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo
+                    kaboodle
+                    quora plaxo ideeli hulu weebly balihoo...
+                </div>
+                <div class="timeline-footer">
+                    <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                    <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                </div>
+            </div>
+        </div>
+        <!-- END timeline notification-->
+        {% elif item.category == 'task' %}
+        <!-- timeline notice starts -->
+        <div>
+            <i class="fas fa-user bg-info"></i>
+
+            <div class="timeline-item">
+                <span class="time"><i class="far fa-clock"></i> 5 mins
+                    ago</span>
+
+                <h3 class="timeline-header border-0"><a href="#">Sarah Young</a>
+                    accepted your friend request
+                </h3>
+            </div>
+        </div>
+        <!-- END timeline notice-->
+        {% else %}
+        <!-- for now do nothing on the else -->
+        {% endif %}
+        {% endfor %}
+        <div>
+            <i class="far fa-clock bg-gray"></i>
+        </div>
+    </div>
+</div>
+<!-- Timeline tabs till here -->
+<script>
+    function formatDate(date) {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        return date.toLocaleDateString('en-GB', options).replace(/ /g, ' ');
+    }
+
+    function updateDate() {
+        document.getElementById('current-date').textContent = formatDate(new Date());
+    }
+
+    function checkMidnight() {
+        const now = new Date();
+        if (now.getHours() === 0 && now.getMinutes() === 0 && now.getSeconds() === 0) {
+            updateDate();
+        }
+    }
+
+    // Initial date update
+    updateDate();
+
+    // Check every second if it's midnight
+    setInterval(checkMidnight, 1000);
+</script>
+</body>

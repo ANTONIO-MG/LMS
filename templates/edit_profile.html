@@ -3,6 +3,7 @@
 {% load crispy_forms_tags %}
 {% load custom_filters %}
 {% block content %}
+<title>MLH | Edit Profile</title>
 <!-- Content Wrapper. Contains page content -->
 <div >
     <!-- Content Header (Page header) -->
@@ -27,93 +28,21 @@
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
+            <div class="col-md-3">
 
-            <!-- Profile Image -->
-            <!-- Profile Image -->
-            <div class="card card-primary card-outline">
-                <div class="card-body box-profile">
-                    <div class="text-center">
-                        <img class="profile-user-img img-fluid img-circle"
-                            src="{% static 'LTE/dist/img/user4-128x128.jpg' %}" alt="User profile picture">
-                    </div>
-
-                    <h3 class="profile-username text-center">{{ me.first_name }} {{ me.last_name }}</h3>
-
-                    <p class="text-muted text-center">{{me.my_class}}</p>
-
-                    <ul class="list-group list-group-unbordered mb-3">
-                        <li class="list-group-item">
-                            <b>Grades Ave:</b> <a class="float-right">78%</a>
-                        </li>
-                        {% if me.user == request.user %}
-                        <a href="{% url 'edit_profile' me.id %}" class="btn btn-primary btn-block"><b>Update Profile</b></a>
-                        {% endif %}
-                    </ul>
-                </div>
-                <!-- /.card-body -->
             </div>
-            <!-- /.card -->
-
-            <!-- About Me Box -->
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">About Me</h3>
-                </div>
-                <!-- /.card-header -->
-                <div class="card-body">
-                    <strong><i class="fas fa-book mr-1"></i> BIO</strong>
-
-                    <p class="text-muted">
-                        {{me.bio}}
-                    </p>
-
-                    <hr>
-                    <!-- remember to chenge the phone icon here -->
-                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Contact Info</strong>
-
-                    <p class="text-muted"><strong>{{me.contact_number}}</strong> - (Primary)</p>
-                    <p class="text-muted"><strong>{{me.emergency_contact}}</strong> -  (Emergency)</p>
-
-                    <hr>
-
-                    <strong><i class="fas fa-pencil-alt mr-1"></i> Email</strong>
-
-                    <p class="text-muted">
-                        {{me.email}}
-                    </p>
-
-                    <hr>
-
-                    <strong><i class="far fa-file-alt mr-1"></i> More Info</strong>
-
-                    <p class="text-muted">
-                        <strong>Gender: </strong>{{me.gender}}
-                        <br>
-                        <strong>Race: </strong> {{me.race}}
-                        <br>
-                        <strong>Date Of Birth: </strong> {{me.date_of_birth}}
-                        <br>
-                        <strong>Role: </strong> {{me.user_type}}
-                    </p>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-            <!-- /.card -->
-          </div>
           <!-- /.col -->
-          <div class="col-md-9">
+          <div class="col-md-6">
             <div class="card">
-                <div>
+                <div class="card card-warning card-outline">
                     <!-- Update form -->
-                    <div class="card card-warning">
+                    
                       <div class="card-header">
                         <h3 class="card-title">Update Profile Information</h3>
                       </div>
                       <!-- /.card-header -->
                       <div class="card-body">
-                        <form role="form" method="post" enctype="multipart/form-data">
+                        <form role="form" method="post" enctype="multipart/form-data" class="col-md-12">
                             {% csrf_token %}
                             <div class="row">
                                 <!-- Display form errors -->
@@ -205,32 +134,16 @@
                         
                                 <!-- Profile Picture Field -->
                                 <div class="form-group">
-                                    <p>Update Your Profile Picture Here</p>
                                     <label>Profile Picture</label>
                                     <div class="custom-file">
                                         {{ form.profile_picture|add_class:"form-control" }}
-                                        <label class="custom-file-label" for="customFile">Choose file</label>
-                                    </div>
-                                </div>
-
-                                <!-- Country choice -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Country code</label>
-                                        <select class="form-control select2" id="id_country_select" name="country_select" style="width: 100%;">
-                                            <option>
-                                                {% for country in countries %}
-                                                    <option value="{{ country }}">{{ country }}</option>
-                                                {% endfor %}
-                                            </option>
-                                          </select>
                                     </div>
                                 </div>
                                 
                                 <!-- empty div here -->
                                  <div class="col-sm-12">
                                     <div class="form-group">
-                                        <p><strong>Note:</strong>please write the cell number withouth the country code</p>
+                                        <p><strong>Note:</strong> please write the cell number withouth the country code</p>
                                     </div>
                                 </div>
                                 
@@ -271,20 +184,18 @@
                                     <button type="submit" class="btn btn-primary">Update</button>
                                 </div>
                             </div>
-                        </form>
-                        
-                        
+                        </form> 
                       </div>
-                      <!-- /.card-body -->
-                    
-                    <!-- /.card -->
-                  </div>
-            </div>
+                  
+                </div>
             <!-- /.nav-tabs-custom -->
-          </div>
+            </div>
           <!-- /.col -->
         </div>
         <!-- /.row -->
+        <div class="col-md-3">
+
+        </div>
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->

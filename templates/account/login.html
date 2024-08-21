@@ -39,22 +39,11 @@
             </div>
           </form>
     
-          <!-- /social links start-->
-        <!-- <div class="social-auth-links text-center mb-3">
-            <p>- OR -</p>
-            <a href="#" class="btn btn-block btn-danger">
-                <i class="fab fa-google-plus mr-2"></i> Sign in using Google+
-            </a>
-        </div> -->
-        <!-- /social links end-->
-        <!-- /error messages start -->
         {% if form.non_field_errors %}
         <div class="alert alert-danger" role="alert">
             {{ form.non_field_errors }}
         </div>
         {% endif %}
-        <!-- /error messages end -->
-        <!-- /social accounts start -->
         <div class="social-auth-links text-center mb-3">
         <p class="mb-1">
             <a href="{% url 'account_reset_password' %}" class="forgot-password">Forgot your password?</a>
@@ -63,9 +52,6 @@
             <a href="{% url 'account_signup' %}">Sign up here</a>
             </p>
         </div>
-        <!-- /social accounts start -->
-        <!-- /.login-card-body -->
-    
     </div>
     <!-- /.login-box -->
 </body>

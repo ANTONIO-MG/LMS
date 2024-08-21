@@ -8,6 +8,8 @@ from usertasks.models import TaskCompletion, TODO, TimelineItem
 from communication.models import Notification, Message, Post
 from users_auth.models import Classroom, Person, Subject
 from users_auth.countries import country_phone_codes
+from .date_time import get_date_at_midnight
+from threading import Thread
 
 
 
@@ -56,7 +58,8 @@ def Profile(request, pk):
         messages = Message.objects.all()
         notifications = Notification.objects.all()[0:5]
         my_class = me.my_class
-        timeline_items = TimelineItem.objects.filter(user=request.user).all()
+        current_date = get_date_at_midnight
+        timeline_items = TimelineItem.objects.filter(user=me).all()
         context = {
             "classrooms": classrooms, 
             "messages": messages,
@@ -66,8 +69,10 @@ def Profile(request, pk):
             'all_users': all_users, 
             'all_posts': all_posts, 
             'my_class': my_class,
-            'timeline_items': timeline_items
-        }
+            'timeline_items': timeline_items,
+            'current_date': current_date
+        }  
+
         return render(request, 'profile.html', context)  # Added 'context' here
 
 

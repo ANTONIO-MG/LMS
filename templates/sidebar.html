@@ -10,15 +10,6 @@
         
             <!-- Sidebar -->
             <div class="sidebar">
-                <!-- Sidebar user panel (optional) -->
-                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-                    <div class="image">
-                        <img src="{% static 'LTE/dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
-                    </div>
-                    <div class="info">
-                        <a href="{% url 'profile' me.id %}" class="d-block">{{me.first_name}} {{me.last_name}}</a>
-                    </div>
-                </div>
         
                 <!-- Sidebar Menu -->
                 <nav class="mt-2">
@@ -26,7 +17,7 @@
                         <!--The Classesroom-->
                         <li class="nav-item">
                             <a href="{% url 'class' my_class.id %}" class="nav-link">
-                                <i class="fas fa-circle nav-icon"></i>
+                                <i class="fa-solid fa-graduation-cap"></i>
                                 <p>{{my_class}}</p>
                             </a>
                         </li>
@@ -42,12 +33,14 @@
                             <ul class="nav nav-treeview">
                                 <!-- this is for each subject view -->
                                 {% for subject in subjects %}
+                                {% if subject.class_room == me.my_class %}
                                 <li class="nav-item">
                                     <a href="{% url 'subject' subject.id %}" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>{{subject.title}}</p>
                                     </a>
                                 </li>
+                                {% endif %}
                                 {% endfor %}
                             </ul>
                         </li>
@@ -122,7 +115,7 @@
                             <a href="{% url 'conference' %}" class="nav-link">
                                 <i class="nav-icon fas fa-calendar-alt"></i>
                                 <p>
-                                    Conference
+                                    Virtual Classrooms
                                     <span class="badge badge-info right">2</span>
                                 </p>
                             </a>
@@ -137,31 +130,12 @@
                                 </p>
                             </a>
                         </li>
+
                         <li class="nav-item">
-                            <a href="{% url 'finance' %}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>My Finance</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{% url 'store' %}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>School Shop</p>
-                            </a>
-                        </li>
-                                 
-                        <li class="nav-header">USER ACCOUNT</li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-circle nav-icon"></i>
-                                <p>Settings</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" class="nav-link">
-                                <i class="fas fa-circle nav-icon"></i>
-                                <p>Privacy And Protection</p>
-                            </a>
+                            <li class="nav-item">
+                                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                                        class="fas fa-th-large">  </i>Theme Settings</a>
+                            </li>
                         </li>
                     </ul>
                 </nav>

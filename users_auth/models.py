@@ -73,7 +73,8 @@ class Person(models.Model):
     
 class Classroom(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    teacher =  models.CharField(max_length=25, default="HOD")
+    teacher =  models.ForeignKey(
+        Person, null=True, blank=True, on_delete=models.CASCADE, related_name="class_teacher")
     participants =models.ManyToManyField(
         Person, blank=True)
     subjects = models.ManyToManyField('Subject',  blank=True)

@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 
 def create_no_class(sender, **kwargs):
     from .models import Classroom
-    Classroom.objects.get_or_create(name='NO CLASS', defaults={'teacher': 'HOD', 'description': 'Default class for new users'})
+    Classroom.objects.get_or_create(name='NO CLASS', defaults={'description': 'Default class for new users'})
 
 def create_admin_user(sender, **kwargs):
     User = get_user_model()
