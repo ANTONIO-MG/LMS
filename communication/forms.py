@@ -28,7 +28,7 @@ class MessageForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
         # Exclude specific fields
-        exclude_fields = ['subject', 'subjects', 'user', 'class_room']
+        exclude_fields = ['subject', 'sender', 'class_room', 'responce_to', 'recipient']
         for field_name in exclude_fields:
             if field_name in self.fields:
                 del self.fields[field_name]

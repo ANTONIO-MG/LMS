@@ -46,7 +46,8 @@ def Home(request):
     return  render(request, 'home.html', context)
 
 
-from django.shortcuts import render, redirect, get_object_or_404
+def Chat_View(request, pk):
+    return  render(request, 'chat.html')
 
 def Profile(request, pk):
     if request.user.is_authenticated:

@@ -28,6 +28,9 @@ urlpatterns = [
     
     # Here are the classroom URL's
     path('class/<str:pk>', MyClass, name="class"),
+
+    # the chat view
+    path('chat/<str:pk>', Chat_View, name="chat_view"),
      
     # # Here are the message URL's
     path('send_message/', SendMessage, name="send_message"),

@@ -38,9 +38,6 @@
                             <button type="button" class="btn btn-tool" data-card-widget="collapse">
                             <i class="fas fa-minus"></i>
                             </button>
-                            <button type="button" class="btn btn-tool" data-card-widget="remove">
-                            <i class="fas fa-times"></i>
-                            </button>
                         </div>
                         </div>
                         <!-- /.card-header -->
@@ -49,69 +46,23 @@
                             <table class="table m-0">
                             <thead>
                             <tr>
-                                <th>Order ID</th>
-                                <th>Item</th>
+                                <th>Date Range</th>
+                                <th>Title</th>
                                 <th>Status</th>
-                                <th>Popularity</th>
+                                <th>Description</th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for task in assigned_tasks %}
                             <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Call of Duty IV</td>
-                                <td><span class="badge badge-success">Shipped</span></td>
+                                <td><a href="pages/examples/invoice.html">{{ task.starts_date }} - {{ task.end_date }}</a></td>
+                                <td>{{ task.task }}</td>
+                                <div class="sparkbar" data-color="#00a65a" data-height="20">{{ task.task.description }}</div>
                                 <td>
-                                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
+                                <td><span class="badge badge-success">{{ task.status }}</span></td>
                                 </td>
                             </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>iPhone 6 Plus</td>
-                                <td><span class="badge badge-danger">Delivered</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="badge badge-info">Processing</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#00c0ef" data-height="20">90,80,-90,70,-61,83,63</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR1848</a></td>
-                                <td>Samsung Smart TV</td>
-                                <td><span class="badge badge-warning">Pending</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#f39c12" data-height="20">90,80,-90,70,61,-83,68</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR7429</a></td>
-                                <td>iPhone 6 Plus</td>
-                                <td><span class="badge badge-danger">Delivered</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#f56954" data-height="20">90,-80,90,70,-61,83,63</div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td><a href="pages/examples/invoice.html">OR9842</a></td>
-                                <td>Call of Duty IV</td>
-                                <td><span class="badge badge-success">Shipped</span></td>
-                                <td>
-                                <div class="sparkbar" data-color="#00a65a" data-height="20">90,80,90,-70,61,-83,63</div>
-                                </td>
-                            </tr>
+                            {% endfor %}
                             </tbody>
                             </table>
                         </div>
@@ -119,8 +70,8 @@
                         </div>
                         <!-- /.card-body -->
                         <div class="card-footer clearfix">
-                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-left">Prev</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">Next</a>
                         </div>
                         <!-- /.card-footer -->
                     </div>
@@ -174,6 +125,7 @@
                                                 <!-- Conversations are loaded here -->
                                                 <div class="direct-chat-messages">
                                                     <!-- Message. Default to the left -->
+                                                    
                                                     <div class="direct-chat-msg">
                                                     <div class="direct-chat-infos clearfix">
                                                         <span class="direct-chat-name float-left">Alexander Pierce</span>
@@ -340,6 +292,7 @@
                                                 </div>
                                                 <!-- /.card-body -->
                                                 <div class="card-footer">
+                                                    
                                                 <form action="#" method="post">
                                                     <div class="input-group">
                                                     <input type="text" name="message" placeholder="Type Message ..." class="form-control">

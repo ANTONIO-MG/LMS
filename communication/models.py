@@ -24,20 +24,21 @@ COMMS_STATUS = [
 
 # Create your models here.
 class Message(models.Model):
-    user = models.ForeignKey(Person, on_delete=models.CASCADE, blank=True)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, blank=True)
-    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, blank=True)
+    sender = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="sent_messages", blank=True, null=True)
+    recipient = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="received_messages", blank=True, null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, blank=True, null=True)
+    class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, blank=True, null=True)
     content = models.TextField()
     status = models.CharField(max_length=15, choices=COMMS_STATUS, default='unread')
-    responce_to = models.ForeignKey('self', on_delete=models.CASCADE, related_name="replies", null=True, blank=True)
+    response_to = models.ForeignKey('self', on_delete=models.CASCADE, related_name="replies", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['created_at']
 
     def __str__(self):
-        return str(self.content[:50])
+        return f"Message from {self.sender} to {self.recipient}"
     
     
 class Notification(models.Model):

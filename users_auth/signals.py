@@ -104,3 +104,10 @@ def create_or_update_timeline_for_task_completion(sender, instance, created, **k
             updated_at=instance.updated_at,
             content=f'Task: {instance.task.title}, Status: {instance.status}'
         )
+
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Person.objects.create(user=instance)
+    instance.profile.save()

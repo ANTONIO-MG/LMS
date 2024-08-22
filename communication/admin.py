@@ -15,11 +15,11 @@ class NotificationAdmin(admin.ModelAdmin):
 
 class MessageAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
-    list_display = ('user', 'created_at', 'updated_at')
+    list_display = ('sender', 'created_at', 'updated_at')
     # filter the list view by given fields
-    list_filter = ('user', 'updated_at')
+    list_filter = ('sender', 'updated_at')
     # search the list view by given fields
-    search_fields = ('user', 'title')
+    search_fields = ('sender', 'title')
     # show the number of items per page
     list_per_page = 20
 

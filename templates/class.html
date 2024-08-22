@@ -1,178 +1,217 @@
-{% extends 'main.html' %} 
+Here's the corrected and properly indented version of your template:
+
+```html
+{% extends 'main.html' %}
 {% load static %}
 {% block content %}
 {% if request.user.is_authenticated %}
-<!-- here is the page header with site map -->
+<!-- Page header with site map -->
 <section class="content-header">
-  <div class="container-fluid">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h1>{{my_class.name}}</h1>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-          <li class="breadcrumb-item">
-            <a href="{% url 'class' my_class.id %}">My Class</a>
-          </li>
-          <li class="breadcrumb-item active">{{my_class.name}}</li>
-        </ol>
-      </div>
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ my_class.name }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active">{{ my_class.name }}</li>
+                </ol>
+            </div>
+        </div>
     </div>
-  </div>
-  <!-- /.container-fluid -->
 </section>
 
 <!-- Main content -->
 <section class="content">
-  <div class="container-fluid">
-    <!-- before current content -->
-     <div class="card card-primary card-outline">
-      
-      <div class="card-body">
-        <ul class="nav nav-tabs" id="custom-content-above-tab" role="tablist">
-          <li class="nav-item">
-            <a class="nav-link active" id="custom-content-above-home-tab" data-toggle="pill" href="#custom-content-above-home" role="tab" aria-controls="custom-content-above-home" aria-selected="true">About Class</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-profile-tab" data-toggle="pill" href="#custom-content-above-profile" role="tab" aria-controls="custom-content-above-profile" aria-selected="false">Members</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" id="custom-content-above-profile-tab-messages-tab" data-toggle="pill" href="#custom-content-above-messages" role="tab" aria-controls="custom-content-above-messages" aria-selected="false">Messages</a>
-          </li>
-        </ul>
-        <div class="tab-custom-content">
-          <p class="lead mb-0">  {{ my_class.name }}: {{ my_class.description }}</p>
-        </div>
-        <div class="tab-content" id="custom-content-above-tabContent">
-          <!-- about class here -->
-          <div class="tab-pane fade show active col-md-12" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
-            <div class="row">
-              <div class="col-md-4">
-                <!-- Widget: user widget style 2 -->
-                <div class="card card-widget widget-user-2">
-                  <!-- Add the bg color to the header using any of the bg-* classes -->
-                  <div class="widget-user-header bg-warning">
-                    
-                  
-                  </div>
-                  <div class="card-footer p-0">
-                    <ul class="nav flex-column">
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Subjects <span class="float-right badge bg-primary">{{ my_subject.subjects.all|length }}</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Total Students <span class="float-right badge bg-info">{{ my_class.participants.all|length }}</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Class average Grades <span class="float-right badge bg-success">72%</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Males<span class="float-right badge bg-danger">{{ male_count }}</span>
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a href="#" class="nav-link">
-                          Females <span class="float-right badge bg-danger">{{ female_count }}</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <!-- /.widget-user -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4">
-                <!-- Widget: user widget style 1 -->
-                <div class="card card-widget widget-user">
-                  <!-- Add the bg color to the header using any of the bg-* classes -->
-                  <div class="widget-user-header bg-info">
-                    <h3 class="widget-user-username">{{ my_class.teacher }}</h3>
-                    <h5 class="widget-user-desc">Class Teacher</h5>
-                  </div>
-                  <div class="widget-user-image">
-                    <img class="img-circle elevation-2" src="../dist/img/user1-128x128.jpg" alt="User Avatar">
-                  </div>
-                  <div class="card-footer">
-                    <div class="row">
-                      <p>{{ my_class.teacher.bio }}</p>
-                      <!-- /.col -->
+    <div class="container-fluid">
+        <!-- Before current content -->
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="tab-content" id="custom-content-above-tabContent">
+                    <!-- About class here -->
+                    <div class="tab-pane fade show active col-md-12" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 2 -->
+                                <div class="card card-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-warning">
+                                    </div>
+                                    <div class="card-footer p-0">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Subjects <span class="float-right badge bg-primary">{{ my_subject.subjects.all|length }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Total Students <span class="float-right badge bg-info">{{ my_class.participants.all|length }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Class Average Grades <span class="float-right badge bg-success">72%</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Males <span class="float-right badge bg-danger">{{ male_count }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#" class="nav-link">
+                                                    Females <span class="float-right badge bg-danger">{{ female_count }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="card card-widget widget-user">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">{{ my_class.teacher }}</h3>
+                                        <h5 class="widget-user-desc">Class Teacher</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="{{ my_class.teacher.profile_picture.url }}" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <p>{{ my_class.teacher.bio }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="card-footer p-0">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Annual Year of <span class="float-right badge bg-primary">{{ my_subject.subjects.all|length }}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Total Students <span class="float-right badge bg-info">{{ my_class.participants.all|length }}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Class Average Grades <span class="float-right badge bg-success">72%</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Males <span class="float-right badge bg-danger">{{ male_count }}</span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="#" class="nav-link">
+                                                Females <span class="float-right badge bg-danger">{{ female_count }}</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
                     </div>
-                    <!-- /.row -->
-                  </div>
-                </div>
-                <!-- /.widget-user -->
-              </div>
-              <!-- /.col -->
-              <div class="col-md-4">
-                <!-- Widget: user widget style 1 -->
-                <div class="card card-widget widget-user">
-                  <!-- Add the bg color to the header using any of the bg-* classes -->
-                  <div class="widget-user-header text-white"
-                       style="background: url('../dist/img/photo1.png') center center;">
-                    <h3 class="widget-user-username text-right">Elizabeth Pierce</h3>
-                    <h5 class="widget-user-desc text-right">Web Designer</h5>
-                  </div>
-                  <div class="widget-user-image">
-                    <img class="img-circle" src="../dist/img/user3-128x128.jpg" alt="User Avatar">
-                  </div>
-                  <div class="card-footer">
-                    <div class="row">
-                      <div class="col-sm-4 border-right">
-                        <div class="description-block">
-                          <h5 class="description-header">3,200</h5>
-                          <span class="description-text">SALES</span>
+                    <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
-                        <!-- /.description-block -->
-                      </div>
-                      <!-- /.col -->
-                      <div class="col-sm-4 border-right">
-                        <div class="description-block">
-                          <h5 class="description-header">13,000</h5>
-                          <span class="description-text">FOLLOWERS</span>
-                        </div>
-                        <!-- /.description-block -->
-                      </div>
-                      <!-- /.col -->
-                      <div class="col-sm-4">
-                        <div class="description-block">
-                          <h5 class="description-header">35</h5>
-                          <span class="description-text">PRODUCTS</span>
-                        </div>
-                        <!-- /.description-block -->
-                      </div>
-                      <!-- /.col -->
                     </div>
-                    <!-- /.row -->
-                  </div>
+                    <!-- Main content -->
+                    <section class="content">
+                        <!-- Default box -->
+                        <div class="card card-solid">
+                            <div class="card-body pb-0">
+                                <!-- Fix their alignment here -->
+                                <div class="row d-flex align-items-stretch">
+                                    {% for user in my_class.participants.all %}
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                Digital Strategist
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <div class="col-7">
+                                                        <h2 class="lead"><b>{{ user }}</b></h2>
+                                                        <p class="text-muted text-sm"><b>Bio: </b> {{ user.bio }} </p>
+                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: {{ user.contact_number }}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-5 text-center">
+                                                        <img src="{{ user.profile_picture.url }}" alt="" class="img-circle img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="#" class="btn btn-sm bg-teal">
+                                                        <i class="fas fa-comments"></i>
+                                                    </a>
+                                                    <a href="{% url 'profile' user.id %}" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-user"></i> View Profile
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <!-- Fix the next button functionality here -->
+                                <nav aria-label="Contacts Page Navigation">
+                                    <ul class="pagination justify-content-center m-0">
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">5</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">6</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">7</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">8</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- /.content -->
+                    <!-- Card footer start -->
+                    <div class="card-footer clearfix">
+                        <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
+                        <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
+                    </div>
+                    <div class="tab-pane fade" id="custom-content-above-messages" role="tabpanel" aria-labelledby="custom-content-above-messages-tab">
+                        <p>Some messages here</p>
+                    </div>
+                    <div class="tab-pane fade" id="custom-content-above-settings" role="tabpanel" aria-labelledby="custom-content-above-settings-tab">
+                        <p>Some settings here</p>
+                    </div>
                 </div>
-                <!-- /.widget-user -->
-              </div>
-              <!-- /.col -->
             </div>
-            <!-- /.row -->
-           
-          </div>
-          <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
-           {% include 'class_mates.html' %}
-          </div>
-          <div class="tab-pane fade" id="custom-content-above-messages" role="tabpanel" aria-labelledby="custom-content-above-messages-tab">
-            <p>messages will show here</p>
-          </div>
         </div>
-      </div>
-      <!-- /.card -->
     </div>
-    <!-- /.card -->
-  </div>
-  <!-- /.container-fluid -->
 </section>
 {% endif %}
-{% endblock content %}
+{% endblock %}
