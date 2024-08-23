@@ -61,10 +61,10 @@ def handle_task_save(sender, instance, created, **kwargs):
 def create_or_update_timeline_for_message(sender, instance, created, **kwargs):
     if created:
         TimelineItem.objects.create(
-            user=instance.user,
+            user=instance.sender,
             title=f'Message: {instance.content[:50]}',
             content=instance.content,
-            item_type='Message',
+            category='Message',
             item_id=instance.id
         )
     else:
@@ -80,7 +80,7 @@ def create_or_update_timeline_for_notification(sender, instance, created, **kwar
             user=instance.user,
             title=f'Notification: {instance.title}',
             content=instance.content,
-            item_type='Notification',
+            category='Notification',
             item_id=instance.id
         )
     else:
@@ -96,7 +96,7 @@ def create_or_update_timeline_for_task_completion(sender, instance, created, **k
             user=instance.user,
             title=f'TaskCompletion: Task ID {instance.task.id}',
             content=f'Task: {instance.task.title}, Status: {instance.status}',
-            item_type='TaskCompletion',
+            category='TaskCompletion',
             item_id=instance.id
         )
     else:

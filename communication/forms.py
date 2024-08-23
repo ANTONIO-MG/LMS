@@ -20,18 +20,20 @@ class PostForm(ModelForm):
 # form to create a message
 
 
-class MessageForm(ModelForm):
+class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ['content']  # Only include the 'content' field
 
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
-        # Exclude specific fields
-        exclude_fields = ['subject', 'sender', 'class_room', 'responce_to', 'recipient']
-        for field_name in exclude_fields:
-            if field_name in self.fields:
-                del self.fields[field_name]
+        # Modify the 'content' field to use a Bootstrap input field
+        self.fields['content'].widget = forms.TextInput(attrs={
+            'class': 'form-control form-control-md',
+            'placeholder': 'Type a message...',
+            'autocomplete': 'on',
+            'autofocus': 'autofocus',
+        })
 
 # form to create a Notification
 

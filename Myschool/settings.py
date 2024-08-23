@@ -105,7 +105,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'users_auth.context_processors.global_context',
-                'users_auth.context_processors.chat_context',
             ],
         },
     },

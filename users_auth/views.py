@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from pyexpat.errors import messages
 from django.http import HttpResponseForbidden
@@ -6,10 +7,12 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .  forms import PersonForm, PersonEditForm
 from usertasks.models import TaskCompletion, TODO, TimelineItem
 from communication.models import Notification, Message, Post
+from communication.forms import MessageForm
 from users_auth.models import Classroom, Person, Subject
 from users_auth.countries import country_phone_codes
 from .date_time import get_date_at_midnight
 from threading import Thread
+from django.db.models import Q
 
 
 
@@ -47,7 +50,66 @@ def Home(request):
 
 
 def Chat_View(request, pk):
-    return  render(request, 'chat.html')
+    # Fetch the recipient (user you're chatting with) based on the primary key
+    recipient = get_object_or_404(Person, id=pk)
+    
+    # Get the current person (the user who is logged in)
+    current_person = get_object_or_404(Person, user=request.user)
+    # Fetch all messages between the current user and the recipient
+
+    # Handle message submission
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            new_message = form.save(commit=False)
+            new_message.sender = current_person
+            new_message.recipient = recipient
+            new_message.save()
+            return redirect('chat_view', pk=pk)  # Redirect to the same chat view after sending the message
+    else:
+        form = MessageForm()
+
+
+    messages = Message.objects.filter(
+        (Q(sender=current_person) & Q(recipient=recipient)) |
+        (Q(sender=recipient) & Q(recipient=current_person))
+    ).order_by('created_at')
+
+
+    # Get all users who have exchanged messages with the current user
+    chat_users = set()
+    sent_messages = Message.objects.filter(sender=current_person).exclude(recipient=None)
+    received_messages = Message.objects.filter(recipient=current_person)
+    
+    # Add the recipients from sent messages and senders from received messages to the chat_users set
+    for message in sent_messages:   
+        chat_users.add(message.recipient)
+    for message in received_messages:
+        chat_users.add(message.sender)
+
+    
+
+    # Check if there is a message ID in the request to mark as read
+    message_id = request.GET.get('message_id')
+    if message_id:
+        # Fetch the message that needs to be marked as read
+        message = get_object_or_404(Message, id=message_id, recipient=current_person)
+        if not message.read_status:
+            message.read_status = True
+            message.save()
+        return JsonResponse({'status': 'success', 'message': 'Message marked as read.'})
+
+    
+
+    # Render the chat template with the messages and recipient
+    return render(request, 'chat.html', {
+        'messages': messages,
+        'recipient': recipient,
+        'current_person': current_person,
+        'chat_users': chat_users,
+        'form': form
+    })
+    
 
 def Profile(request, pk):
     if request.user.is_authenticated:
@@ -129,9 +191,6 @@ def EditProfile(request, pk):
     # Render the form with the pre-populated data
     context = {'form': form, "country_phone_codes": country_phone_codes}
     return render(request, 'edit_profile.html', context)
-
-
-
 
 
 def MySubject(request, pk):

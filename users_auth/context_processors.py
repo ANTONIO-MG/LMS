@@ -1,11 +1,10 @@
 from .models import Person, Classroom, Subject
-from django.db.models import Q
-from communication.forms import MessageForm
 from communication.models import Message, Notification
 from usertasks.models import TODO, TaskCompletion
 from users_auth.country_code import country_phone_codes
 from users_auth.users_informations import RACE, USER_TYPE_CHOICES, GENDER_CHOICES
 from users_auth.countries import country_names
+from django.shortcuts import get_object_or_404
 """
     this imports the models and then creates general context that will be sent to all the pages to be rendared
 """
@@ -41,7 +40,7 @@ def global_context(request):
             user_types = USER_TYPE_CHOICES
             genders = GENDER_CHOICES
             countries = country_names
-
+            
             return {
                 "classrooms": classrooms,
                 "messages": messages,
@@ -68,29 +67,3 @@ def global_context(request):
                 }
         return {}
     
-def chat_context(request):
-    if request.user.is_authenticated:
-        recipient_id = request.GET.get('recipient_id')
-        recipient = None
-        messages = []
-        form = None
-
-        if recipient_id:
-            try:
-                recipient = Person.objects.get(id=recipient_id)
-                messages = Message.objects.filter(
-                    (Q(sender=request.user) & Q(recipient=recipient)) |
-                    (Q(sender=recipient) & Q(recipient=request.user))
-                ).order_by('created_at')
-            except Person.DoesNotExist:
-                pass
-
-            form = MessageForm()
-
-        return {
-            'chat_messages': messages,
-            'chat_form': form,
-            'chat_recipient': recipient
-        }
-    
-    return {}

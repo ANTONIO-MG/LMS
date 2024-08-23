@@ -18,70 +18,52 @@
 </section>
 
 <div class="row">
-    <div class="col-md-6
-    ">
+    <div class="col-md-6">
       <!-- DIRECT CHAT -->
       <div class="card direct-chat direct-chat-warning">
         <div class="card-header">
-          <h3 class="card-title">Direct Chat</h3>
-
-          <div class="card-tools">
-
-          </div>
+          <h3 class="card-title"><strong>Chat With:</strong> {{recipient}}</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <!-- Conversations are loaded here -->
-           {% for message in chat_message %}
-           {% if message.sender == me %}
-          <div class="direct-chat-messages">
-            <!-- Message. Default to the left -->
-            <div class="direct-chat-msg">
-              <div class="direct-chat-infos clearfix">
-                <span class="direct-chat-name float-left">{{ me }}</span>
-                <span class="direct-chat-timestamp float-right">{{ message.created_at }}</span>
-              </div>
-              <!-- /.direct-chat-infos -->
-              <img class="direct-chat-img" src="{ me.profile_picture.url }" alt="message user image">
-              <!-- /.direct-chat-img -->
-              <div class="direct-chat-text">
-                {{message.content}}
-              </div>
-              <!-- /.direct-chat-text -->
-            </div>
-            <!-- /.direct-chat-msg -->
-            {% elif message.sender == chat_recipient %}
-            <!-- Message to the right -->
-            <div class="direct-chat-msg right">
-              <div class="direct-chat-infos clearfix">
-                <span class="direct-chat-name float-right">{{ chat_recipient }}</span>
-                <span class="direct-chat-timestamp float-left">{{ message.created_at }}</span>
-              </div>
-              <!-- /.direct-chat-infos -->
-              <img class="direct-chat-img" src="{ recipient.profile_picture.url }" alt="message user image">
-              <!-- /.direct-chat-img -->
-              <div class="direct-chat-text">
-                {{message.content}}
-              </div>
-              <!-- /.direct-chat-text -->
-            </div>
-            <!-- /.direct-chat-msg -->
+          <div class="direct-chat-messages" id="chat-messages">
+            {% for message in messages %}
+                {% if message.sender == current_person %}
+                    <!-- Message. Default to the left -->
+                    <div class="direct-chat-msg">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-left">{{ current_person }}</span>
+                            <span class="direct-chat-timestamp float-right">{{ message.created_at }}</span>
+                        </div>
+                        <img class="direct-chat-img" src="{{ current_person.profile_picture.url }}" alt="message user image">
+                        <div class="direct-chat-text">
+                            {{ message.content }}
+                        </div>
+                    </div>
+                {% elif message.sender == recipient %}
+                    <!-- Message to the right -->
+                    <div class="direct-chat-msg right">
+                        <div class="direct-chat-infos clearfix">
+                            <span class="direct-chat-name float-right">{{ recipient }}</span>
+                            <span class="direct-chat-timestamp float-left">{{ message.created_at }}</span>
+                        </div>
+                        <img class="direct-chat-img" src="{{ recipient.profile_picture.url }}" alt="message user image">
+                        <div class="direct-chat-text">
+                            {{ message.content }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
           </div>
           <!--/.direct-chat-messages-->
-          {% endif %}
-          {% endfor %}
-          <!-- Contacts are loaded here -->
-          <!-- /.direct-chat-pane -->
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <form method="post">
+          <form method="post" id="chat-form">
             {% csrf_token %}
             <div class="input-group">
-              <input type="text" name="message" placeholder="Type Message ..." class="form-control">
-              <span class="input-group-append">
-                <button type="button" class="btn btn-warning">Send</button>
-              </span>
+                {{ form.content }}  <!-- Render the input field -->
             </div>
           </form>
         </div>
@@ -96,59 +78,23 @@
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Active Chats</h3>
-
           <div class="card-tools">
             <span class="badge badge-danger">8 New Members</span>
             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-            </button>
-            <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i>
             </button>
           </div>
         </div>
         <!-- /.card-header -->
         <div class="card-body p-0">
           <ul class="users-list clearfix">
+            {% for user in chat_users %}
             <li>
-              <img src="dist/img/user1-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Alexander Pierce</a>
+              <img src="{{ user.profile_picture.url }}" alt="User Image">
+              <a class="users-list-name" href="#">{{ user }}</a>
+              <span class="badge badge-danger">8 New Members</span>
               <span class="users-list-date">Today</span>
             </li>
-            <li>
-              <img src="dist/img/user8-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Norman</a>
-              <span class="users-list-date">Yesterday</span>
-            </li>
-            <li>
-              <img src="dist/img/user7-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Jane</a>
-              <span class="users-list-date">12 Jan</span>
-            </li>
-            <li>
-              <img src="dist/img/user6-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">John</a>
-              <span class="users-list-date">12 Jan</span>
-            </li>
-            <li>
-              <img src="dist/img/user2-160x160.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Alexander</a>
-              <span class="users-list-date">13 Jan</span>
-            </li>
-            <li>
-              <img src="dist/img/user5-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Sarah</a>
-              <span class="users-list-date">14 Jan</span>
-            </li>
-            <li>
-              <img src="dist/img/user4-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Nora</a>
-              <span class="users-list-date">15 Jan</span>
-            </li>
-            <li>
-              <img src="dist/img/user3-128x128.jpg" alt="User Image">
-              <a class="users-list-name" href="#">Nadia</a>
-              <span class="users-list-date">15 Jan</span>
-            </li>
-          </ul>
+            {% endfor %}
           <!-- /.users-list -->
         </div>
         <!-- /.card-body -->
@@ -161,5 +107,25 @@
     </div>
     <!-- /.col -->
   </div>
+
+<script>
+    // Function to scroll to the bottom of the chat
+    function scrollToBottom() {
+        var chatMessages = document.getElementById('chat-messages');
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // Ensure scrolling happens on page load
+    document.addEventListener("DOMContentLoaded", function() {
+        scrollToBottom(); // Scroll to bottom when the page loads
+    });
+
+    // Handle form submission without refreshing the page
+    document.getElementById('chat-form').onsubmit = function(event) {
+        event.preventDefault();
+        this.submit();
+        scrollToBottom(); // Scroll to bottom after submitting the form
+    };
+</script>
 
 {% endblock %}

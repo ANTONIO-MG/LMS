@@ -29,7 +29,7 @@ class Message(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, blank=True, null=True)
     class_room = models.ForeignKey(Classroom, on_delete=models.CASCADE, blank=True, null=True)
     content = models.TextField()
-    status = models.CharField(max_length=15, choices=COMMS_STATUS, default='unread')
+    read_status = models.BooleanField(default=False)
     response_to = models.ForeignKey('self', on_delete=models.CASCADE, related_name="replies", null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
