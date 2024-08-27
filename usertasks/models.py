@@ -76,3 +76,11 @@ class TimelineItem(models.Model):
 
     def __str__(self):
         return f'{self.title} - {self.category  } - {self.user.username}'
+    
+
+class Reminder(models.Model):
+    message = models.CharField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.message

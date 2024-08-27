@@ -12,7 +12,7 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import TodoForm
-from .models import TODO, TaskCompletion, Person
+from .models import TODO, TaskCompletion, Person, Reminder
 
 
 def ToDo(request):
@@ -43,27 +43,38 @@ def MyTask(request, pk):
     return render(request, 'todo.html', context)
 
 
-# this decorator means this function only works if the user is logged
 @login_required
 def CreateTask(request):
     create = True
+    me = Person.objects.get(user=request.user)
     if request.method == "POST":
         form = TodoForm(request.POST)
         if form.is_valid():
-            # Save the task
-            task = form.save()
+            # Save the task, but don't commit to the database yet
+            task = form.save(commit=False)
+
+            # Assign the current logged-in user to the task's user field
+            task.user = me
+
+            # Now save the task with the user field populated
+            task.save()
 
             # Automatically add the task to all participants in the selected subject(s)
+            print("completed the todo")
             selected_subject = form.cleaned_data['subject']
             participants = selected_subject.participants.all()
+            print(participants)
 
-            
             for participant in participants:
-                 # Create TaskCompletion for each participant
+                # Create TaskCompletion for each participant
+                print("started to assign teh taskcompletion")
                 TaskCompletion.objects.create(
-                user=participant,
+                    user=participant,
                     task=task,
-            )
+                    start_date = task.start_date,
+                    end_date = task.end_date,
+                )
+                print("Completed to assign the taskcompletion")
             return redirect('home')
     else:
         form = TodoForm()
@@ -109,7 +120,22 @@ def DeleteTask(request, pk):
 
 @login_required
 def CalenderView(request):
-    all_tasks = TaskCompletion.objects.all()
-    
-    context = {'all_tasks': all_tasks}
-    return render(request, 'calender.html', context)
+    # Fetch ToDo items from the database
+    todos = TODO.objects.all()
+
+    # Create a list of events from ToDo items
+    todo_events = [
+        {
+            'title': todo.title,
+            'start': todo.created_at.isoformat(),  # Assuming `created_at` is the timestamp of the ToDo
+            'backgroundColor': '#3c8dbc',  # You can customize the color
+            'borderColor': '#3c8dbc',
+            'allDay': True,
+        }
+        for todo in todos
+    ]
+
+    context = {
+        'todo_events': todo_events,
+    }
+    return render(request, 'calendar.html', context)

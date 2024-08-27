@@ -1,11 +1,9 @@
 # bellow are the list of classes that map data to teh database
 from django.db import models
 # Create your models here.
-from django.contrib.auth.models import User
 from django.conf import settings
 from django.templatetags.static import static
-from phonenumber_field.modelfields import PhoneNumberField
-from django.contrib.auth.models import AbstractBaseUser
+
 
 GENDER_CHOICES = [
     ('Male', 'Male'),
@@ -60,7 +58,7 @@ class Person(models.Model):
         ordering = ['-updated_at', '-created_at']
 
     def __str__(self):
-        return str(self.first_name + " " + self.last_name)
+        return f"{self.first_name} {self.last_name}"
 
     @property
     def avatar(self):

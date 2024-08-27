@@ -1,8 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import TODO
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Div, Submit
+from .models import TODO, Reminder
 
 
 class TodoForm(ModelForm):
@@ -13,20 +11,20 @@ class TodoForm(ModelForm):
 
         widgets = {
             'task_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
+            'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-control'}),
         }
 
-        def __init__(self, *args, **kwargs):
-            super(TodoForm, self).__init__(*args, **kwargs)
-            self.helper = FormHelper()
-            self.helper.form_method = 'post'
-            self.helper.layout = Layout(
-                Field('title', css_class='form-control'),
-                Field('description', css_class='form-control'),
-                Field('subject', css_class='form-control'),
-                Field('start_date', css_class='form-control'),
-                Field('end_date', css_class='form-control'),
-                Field('start_time', css_class='form-control'),
-                Field('end_time', css_class='form-control'),
-                Field('user', css_class='form-control'),
-            )
+    def __init__(self, *args, **kwargs):
+        super(TodoForm, self).__init__(*args, **kwargs)
+        self.fields['title'].widget.attrs.update({'class': 'form-control'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control'})
+        self.fields['subject'].widget.attrs.update({'class': 'form-control'})
+        self.fields['start_date'].widget.attrs.update({'class': 'form-control'})
+        self.fields['end_date'].widget.attrs.update({'class': 'form-control'})
         
+
+class ReminderForm(forms.ModelForm):
+    class Meta:
+        model = Reminder
+        fields = ['message']

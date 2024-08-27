@@ -1,39 +1,117 @@
 {% extends 'main.html' %}
-
 {% block content %}
+<title>MLH | Notifications</title>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Notifications</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item active">Notifications</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
 
+<section class="content">
+    <div class="row">
+    <div class="col-md-3">
+        <a href="compose.html" class="btn btn-primary btn-block mb-3">Category</a>
 
+        <!-- /.card -->
+        <div class="card">
+        <div class="card-body p-0">
+            <ul class="nav nav-pills flex-column">
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="far fa-circle text-danger"></i>
+                General Notifications
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="far fa-circle text-warning"></i> Class Notifications
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="far fa-circle text-primary"></i>
+                Subject Notifications
+                </a>
+            </li>
+            </ul>
+        </div>
+        <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <div class="col-md-9">
+        <div class="card card-primary card-outline">
+        <div class="card-header">
+            <!-- start teh filter from here, for the different groups of notification -->
+            <h3 class="card-title">Inbox</h3>
 
-<main class="create-room layout">
-    <div class="container">
-        <div class="layout__box">
-            <div class="layout__boxHeader">
-                <div class="layout__boxTitle">
-                    <a href="{% url 'home' %}">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                            viewBox="0 0 32 32">
-                            <title>arrow-left</title>
-                            <path
-                                d="M13.723 2.286l-13.723 13.714 13.719 13.714 1.616-1.611-10.96-10.96h27.625v-2.286h-27.625l10.965-10.965-1.616-1.607z">
-                            </path>
-                        </svg>
-                    </a>
-                    <h3>Important Notifications</h3>
+            <div class="card-tools">
+            <div class="input-group input-group-sm">
+                
+                <input type="text" class="form-control" placeholder="Search Mail">
+                <div class="input-group-append">
+                <div class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </div>
                 </div>
             </div>
-            
-            <div class="scrollable-content">
-                {% include 'notice.html' %}
+            </div>
+            <!-- /.card-tools -->
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body p-0">
+            <div class="table-responsive mailbox-messages">
+            <table class="table table-hover table-striped">
+                <tbody>
+                <tr>
+                <td>
+                    <div class="icheck-primary">
+                    <input type="checkbox" value="" id="check1">
+                    <label for="check1"></label>
+                    </div>
+                </td>
+                <td class="mailbox-star"><a href="#"><i class="fas fa-star text-warning"></i></a></td>
+                <td class="mailbox-name"><a href="read-mail.html">Alexander Pierce</a></td>
+                <td class="mailbox-subject"><b>AdminLTE 3.0 Issue</b> - Trying to find a solution to this problem...
+                </td>
+                <td class="mailbox-date">5 mins ago</td>
+                </tr>
+                <tr> 
+                </tbody>
+            </table>
+            <!-- /.table -->
+            </div>
+            <!-- /.mail-box-messages -->
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer p-0">
+            <div class="float-right">
+                1-50/200
+                <div class="btn-group">
+                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-left"></i></button>
+                <button type="button" class="btn btn-default btn-sm"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <!-- /.btn-group -->
+            </div>
+            <!-- /.float-right -->
             </div>
         </div>
+        </div>
+        <!-- /.card -->
     </div>
-</main>
-
-<style>
-    .scrollable-content {
-  overflow-y: auto;
-  max-height: 600px; /* adjust the height as needed */
-}
-</style>
-
+    <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
 {% endblock content %}

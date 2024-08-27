@@ -7,13 +7,13 @@
                     <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'home' %}" class="nav-link fas fa-house text-warning"></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{% url 'about' %}" class="nav-link">About</a>
+                    <a href="{% url 'about' %}" class="nav-link fas fa-circle-info text-warning"></a>
                 </li>
                 <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{% url 'contact' %}" class="nav-link">Contact</a>
+                    <a href="{% url 'contact' %}" class="nav-link fas fa-phone text-warning"></a>
                 </li>
             </ul>
         
@@ -98,13 +98,18 @@
             <!-- logout button -->
             <div class="user-panel mt-1 pb-1 mb-1 d-flex">
                 <div class="image">
+                    {% if me.profile_picture %}
                     <img src="{{ me.profile_picture.url }}" class="img-circle elevation-2" alt="User Image">
+                    {% else %}
+                        <img src="{% static 'dist/img/user2-160x160.jpg' %}" class="img-circle elevation-2" alt="User Image">
+                    {% endif %}
+
                 </div>
                 <div class="info">
-                    <a href="{% url 'profile' me.id %}" class="d-block">{{me.first_name}} {{me.last_name}}</a>
+                    <a href="{% url 'profile' me.id %}" class="d-block text-warning">{{me.first_name}} {{me.last_name}}</a>
                 </div>
             </div>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="{% url 'account_logout' %}" class="nav-link">Logout</a>
+                <a href="{% url 'account_logout' %}" class="nav-link fas fa-right-from-bracket text-warning"></a>
             </li>
         </nav>

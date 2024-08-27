@@ -14,7 +14,7 @@ from django.contrib import messages
 from .forms import MessageForm, NotificationForm, PostForm
 from usertasks.forms import TodoForm
 from usertasks. models import TaskCompletion, TODO
-from .models import Notification, Message
+from .models import Notification, Message, Post
 from allauth.account.views import SignupView
 from users_auth.models import Person
 from django.db.models.signals import post_save

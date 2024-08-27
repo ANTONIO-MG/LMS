@@ -1,54 +1,69 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from pyexpat.errors import messages
-from django.http import HttpResponseForbidden
 from django.shortcuts import redirect, render, get_object_or_404
-from .  forms import PersonForm, PersonEditForm
+from .  forms import PersonEditForm
 from usertasks.models import TaskCompletion, TODO, TimelineItem
 from communication.models import Notification, Message, Post
 from communication.forms import MessageForm
+from usertasks.models import Reminder
+from usertasks.forms import ReminderForm
 from users_auth.models import Classroom, Person, Subject
-from users_auth.countries import country_phone_codes
 from .date_time import get_date_at_midnight
-from threading import Thread
 from django.db.models import Q
+from django.utils.timezone import now
 
 
 
 
 # The homepage view
+@login_required
 def Home(request):
     """
     classroom: stores all the classroom as objects and can be queried
     messages: stores all the messages on teh database and can be queried
     """
+    form = ReminderForm() 
     # check if the user has updated his profile if not take to profile update
     if request.user.is_authenticated:
-        user_status = Person.objects.get(user=request.user)
-        if not user_status.profile_status:
-            return redirect('edit_profile', pk=user_status.id)
+
+        if request.method == 'POST':
+            form = ReminderForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('home')
+    else:
+        form = ReminderForm()
+
+    reminders = Reminder.objects.all().order_by('-created_at')
+    
+    # Calculate time since creation
+    for reminder in reminders:
+        reminder.time_since = (now() - reminder.created_at).total_seconds()
+
+    # Get the current user status, if profile is updated oir not
+    user_status = Person.objects.get(user=request.user)
+    if not user_status.profile_status:
+        return redirect('edit_profile', pk=user_status.id)
 
     # this are the things that will need to be on every view so that the sidebar and the header remain constant
     me = Person.objects.get(user=request.user)
     classrooms = Classroom.objects.all()
-    messages = Message.objects.all()
     notifications = Notification.objects.all()[0:3]
-    tasks = TODO.objects.all()
     assigned_task = TaskCompletion.objects.filter(user=me)
     subjects = Subject.objects.all()
 
     
     my_class = me.my_class
 
-    context = {"classrooms": classrooms, "messages" : messages,
-               "notifications" : notifications, "tasks": tasks,
+    context = {"classrooms": classrooms,
+               "notifications" : notifications,
                "subjects": subjects, 'my_class': my_class,
                'assigned_task': assigned_task,
-               "me":me}
+               "me":me, 'form': form, 'reminders': reminders}
     return  render(request, 'home.html', context)
 
-
+@login_required
 def Chat_View(request, pk):
     # Fetch the recipient (user you're chatting with) based on the primary key
     recipient = get_object_or_404(Person, id=pk)
@@ -110,7 +125,7 @@ def Chat_View(request, pk):
         'form': form
     })
     
-
+@login_required
 def Profile(request, pk):
     if request.user.is_authenticated:
         me = Person.objects.get(user=request.user)
@@ -138,9 +153,7 @@ def Profile(request, pk):
 
         return render(request, 'profile.html', context)  # Added 'context' here
 
-
-from django.shortcuts import render, redirect, get_object_or_404
-
+@login_required
 def EditProfile(request, pk):
     person = get_object_or_404(Person, id=pk)  # Fetch the Person instance with the given id (pk)
     
@@ -156,11 +169,6 @@ def EditProfile(request, pk):
 
                 # Retrieve the selected country code from the form data
                 selected_country_code = request.POST.get('country_code')
-
-                # Combine the country code with the contact number if a country code was selected
-                if selected_country_code:
-                    new_user.contact_number = combine_country_code(selected_country_code, new_user.contact_number)
-                    new_user.emergency_contact = combine_country_code(selected_country_code, new_user.emergency_contact)
 
                 # Save the changes to the database while updating the user profile status
                 new_user.profile_status = True
@@ -181,7 +189,7 @@ def EditProfile(request, pk):
             except Exception as e:
                 # Handle any exceptions that might occur during the form save process
                 print(f"An error occurred: {e}")
-                context = {'form': form, "country_phone_codes": country_phone_codes, 'error_message': str(e)}
+                context = {'form': form, 'error_message': str(e)}
                 return render(request, 'edit_profile.html', context)
     
     else:
@@ -189,10 +197,10 @@ def EditProfile(request, pk):
         form = PersonEditForm(instance=person)
 
     # Render the form with the pre-populated data
-    context = {'form': form, "country_phone_codes": country_phone_codes}
+    context = {'form': form}
     return render(request, 'edit_profile.html', context)
 
-
+@login_required
 def MySubject(request, pk):
     me = Person.objects.get(user=request.user)
     subj = Subject.objects.get(id=pk)
@@ -216,7 +224,7 @@ def MySubject(request, pk):
                'people': people, 'person': person}
     return render(request, 'subject.html', context)
 
-
+@login_required
 def MyClass(request, pk):
     me = Person.objects.get(user=request.user)
     # create an instance of the of the specific classroom ou want to show using the pk
@@ -246,33 +254,4 @@ def password_reset_from_key(request, uidb36=None, key=None):
         'key': key,
     }
     return render(request, 'account/password_reset_from_key.html', context)
-
-def combine_country_code(country, phone_number):
-    try:
-        # Ensure the country exists in the dictionary
-        if country not in country_phone_codes:
-            raise ValueError(f"Country '{country}' not found.")
-        
-        country_info = country_phone_codes[country]
-        country_code = country_info["code"]
-        example_number = country_info["example"]
-
-        # Remove leading zero if present
-        if phone_number.startswith('0'):
-            phone_number = phone_number[1:]
-
-        # Check if the phone number matches the length of the example number
-        if len(phone_number) != len(example_number):
-            raise ValueError(f"Phone number length for {country} should be {len(example_number)} digits.")
-
-        # Check if the phone number matches the starting pattern of the example
-        if not phone_number.startswith(example_number[:2]):
-            raise ValueError(f"Phone number for {country} should start with '{example_number[:2]}'.")
-
-        # Combine country code and phone number
-        full_number = country_code + phone_number
-        return full_number
-
-    except ValueError as e:
-        return str(e)
 

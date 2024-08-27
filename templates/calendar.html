@@ -1,0 +1,102 @@
+{% extends 'main.html' %}
+{% load static %}
+{% block content %}
+<title>MLH | Calender</title>
+<section class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1>Calendar</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+          <li class="breadcrumb-item active">Calendar</li>
+        </ol>
+      </div>
+    </div>
+  </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- /.col -->
+      <div class="col-md-12">
+        <div class="card card-primary">
+          <div class="card-body p-0">
+            <!-- THE CALENDAR -->
+            <div id="calendar"></div>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+      <!-- /.col -->
+    </div>
+    <!-- /.row -->
+  </div><!-- /.container-fluid -->
+</section>
+<!-- the scripts -->
+<div>
+<!-- jQuery -->
+<script src="{% static 'LTE/plugins/jquery/jquery.min.js' %}"></script>
+<!-- Bootstrap -->
+<script src="{% static 'LTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<!-- jQuery UI -->
+<script src="{% static 'LTE/plugins/jquery-ui/jquery-ui.min.j' %}"></script>
+<!-- AdminLTE App -->
+<script src="{% static 'LTE/dist/js/adminlte.min.js' %}"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="{% static 'LTE/dist/js/demo.js' %}"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="{% static 'LTE/plugins/moment/moment.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-daygrid/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-timegrid/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-interaction/main.min.js' %}"></script>
+<script src="{% static 'LTE/plugins/fullcalendar-bootstrap/main.min.js' %}"></script>
+<!-- Page specific script -->
+</div>
+<!-- the JS -->
+<script>
+  $(function () {
+    // Your existing code...
+
+    var Calendar = FullCalendar.Calendar;
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new Calendar(calendarEl, {
+      plugins: ['bootstrap', 'interaction', 'dayGrid', 'timeGrid'],
+      header: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      // Include the ToDo items passed from the view
+      events: [
+        {% for event in todo_events %}
+        {
+          title: '{{ event.title|escapejs }}',
+          start: '{{ event.start|escapejs }}',
+          backgroundColor: '{{ event.backgroundColor|escapejs }}',
+          borderColor: '{{ event.borderColor|escapejs }}',
+          allDay: {{ event.allDay|yesno:"true,false" }}
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+      ],
+      editable: true,
+      droppable: true, // this allows things to be dropped onto the calendar !!!
+      drop: function(info) {
+        var checkbox = document.getElementById('drop-remove');
+        if (checkbox && checkbox.checked) {
+          info.draggedEl.parentNode.removeChild(info.draggedEl);
+        }
+      }
+    });
+
+    calendar.render();
+  });
+</script>
+
+{% endblock content %}

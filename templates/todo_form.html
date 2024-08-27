@@ -1,62 +1,152 @@
 {% extends 'main.html' %}
+{% load custom_filters %}
 {% load static %}
-{% load crispy_forms_tags %}
-{{ form.media }}
-
 {% block content %}
+<title>MLH | Create Task</title>
 
 
-<main class="update-account layout">
-    <div class="container">
-        <div class="layout__box">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                <h1>{{subj.title}}</h1>
-                </div>
-                <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="#">Layout</a></li>
-                    <li class="breadcrumb-item active">{{subj.title}}</li>
-                </ol>
-                </div>
-            </div>
-            
-            {% if create == True %}
-            <h3>Create Task</h3>
-            {% else %}
-            <h3>Update Task</h3>
-            {% endif %}
-            <div>
-                <form class="form" action="" method="POST">
-                    {% csrf_token %}
-
-                    <div class="col-md-6">
-                        {{ form.title | as_crispy_field }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form.description | as_crispy_field }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form.subject | as_crispy_field }}
-                    </div>
-                    <div class="col-md-6">
-                        {{ form.task_date | as_crispy_field }}
-                    </div>
-
-                    <div class="form__action">
-                        <a class="btn btn--dark" href="{% url 'todo' %}">Cancel</a>
-                        {% if create == True %}
-                        <button class="btn btn--main" type="submit">Create</button>
-                        {% else %}
-                        <button class="btn btn--main" type="submit">Update</button>
-                        {% endif %}
-                    </div>
-                </form>
-            </div>
+<!-- Content Wrapper. Contains page content -->
+<div >
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1>Create Task</h1>
+        </div>
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Create Task</a></li>
+        </ol>
         </div>
     </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-3">
+
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6">
+        <div class="card">
+            <div class="card card-warning card-outline">
+                <!-- Update form -->
+                
+                    <div class="card-header">
+                    <h3 class="card-title">Create a task for your Subject</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <form role="form" method="post" enctype="multipart/form-data" class="col-md-12">
+                            {% csrf_token %}
+                            <div class="row">    
+                                <!-- Title Field -->
+                                 <!-- Subject Field -->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Select The Subject The Task Is For:</label>
+                                        {{ form.subject }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        {{ form.title }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                
+                                <!-- Description Field -->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        {{ form.description }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                        
+                                <!-- Start Date Field -->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>Start Date</label>
+                                        {{ form.start_date }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <!-- End Date Field -->
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label>End Date</label>
+                                        {{ form.end_date }}
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <!-- Display form errors -->
+                                {% if form.errors %}
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            {% for field in form %}
+                                                {% for error in field.errors %}
+                                                    <li>{{ field.label }}: {{ error }}</li>
+                                                {% endfor %}
+                                            {% endfor %}
+                                            {% for error in form.non_field_errors %}
+                                                <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endif %}
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                    </div>
+                                </div>
+                                <!-- Submit and Cancel Buttons -->
+                                <div class="form-group col-sm-12">
+                                    <a class="btn btn-dark" href="{% url 'todo' %}">Cancel</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        {% if create == True %} Create {% else %} Update {% endif %}
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        
+                    </div>
+                
+            </div>
+        <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
     </div>
-</main>
+    <!-- /.row -->
+    <div class="col-md-3">
+
+    </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
 
 {% endblock content %}

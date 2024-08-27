@@ -25,15 +25,31 @@ def global_context(request):
             all_users = Person.objects.all()
             assigned_tasks = TaskCompletion.objects.filter(user=me)[:6]
             subjects = Subject.objects.all()
-            my_class = me.my_class
+            # my_class = Classroom.objects.filter(name=me.my_class)
 
             # count males versus females participants
-            male_count = my_class.participants.filter(gender='male').count()
-            female_count = my_class.participants.filter(gender='female').count()
+            # Initialize counters
+            male_count = 0
+            female_count = 0
+
+            # Get all classrooms
+            classrooms = Classroom.objects.all()
+
+            # Iterate through each classroom
+            for classroom in classrooms:
+                # Get participants of the classroom
+                participants = classroom.participants.all()
+
+                # Count males and females among the participants
+                t_male_count = participants.filter(gender='male').count()
+                t_female_count = participants.filter(gender='female').count()
+
+                # Add to the total counts
+                male_count += t_male_count
+                female_count += t_female_count
 
             messages_count = class_messages.count
             notification_count = notifications.count
-            # all_notifications_count = int(messages_count) + int(notification_count)
             last_message = class_messages.last
             last_notifications = notifications.last
             races = RACE
@@ -47,11 +63,10 @@ def global_context(request):
                 "notifications": notifications,
                 "tasks": tasks,
                 "subjects": subjects,
-                "my_class": my_class,
+                # "my_class": my_class,
                 "all_users": all_users,
                 "assigned_tasks": assigned_tasks,
                 "me": me,
-                # 'all_notifications_count': all_notifications_count,
                 'last_message': last_message,
                 'last_notifications': last_notifications,
                 "class_messages": class_messages,

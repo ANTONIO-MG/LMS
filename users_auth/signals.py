@@ -2,14 +2,16 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from allauth.account.signals import user_signed_up, user_logged_in
 from django.conf import settings
-from .models import Person, Classroom
+from .models import Person, Classroom,Subject
 from usertasks.models import TODO, TaskCompletion, TimelineItem
 from communication.models import Message, Notification
+import os
 
 # Helper function to create or ensure a Person profile
 def create_or_get_person(user):
-    no_class1, created = Classroom.objects.get_or_create(name='NO CLASS')
-    no_class2, created = Classroom.objects.get_or_create(name='GOBAL CLASS')
+    no_class1, created = Classroom.objects.get_or_create(name='BASE CLASS', description="This is the default class for all users")
+    no_class2, created = Classroom.objects.get_or_create(name='GOBAL CLASS', description="This is a testing class")
+    default_image_path = os.path.join('default.png')
     person, created = Person.objects.get_or_create(
         user=user,
         defaults={
@@ -18,10 +20,19 @@ def create_or_get_person(user):
             'nickname': user.username,
             'email': user.email,
             'my_class': no_class1,
+            'profile_picture': default_image_path
         }
     )
     if created:
         no_class1.participants.add(person)
+
+    # Add the person to the BASE CLASS participants if the Person object was just created
+    if created:
+        no_class1.participants.add(person)
+        
+        # Create the two subjects under the BASE CLASS
+        Subject.objects.get_or_create(name='General Information', class_room=no_class1)
+        Subject.objects.get_or_create(name='Special Information', class_room=no_class1)
     return person
 
 # Signal handler for user signup
@@ -43,18 +54,39 @@ def handle_task_save(sender, instance, created, **kwargs):
     participants = selected_subject.participants.all()
 
     if created:
+        # Create TaskCompletion objects for each participant
+        task_completions = []
         for participant in participants:
-            TaskCompletion.objects.create(
+            task_completions.append(TaskCompletion(
                 user=participant,
                 task=instance,
                 start_date=instance.start_date,
                 end_date=instance.end_date,
-            )
+            ))
+        TaskCompletion.objects.bulk_create(task_completions)
+
     else:
+        # Update TaskCompletion objects for existing task
         TaskCompletion.objects.filter(task=instance).update(
             start_date=instance.start_date,
             end_date=instance.end_date,
         )
+
+    # Handle cases where participants are added after task creation
+    existing_task_completions = TaskCompletion.objects.filter(task=instance)
+    existing_participants = existing_task_completions.values_list('user_id', flat=True)
+
+    new_participants = participants.exclude(id__in=existing_participants)
+    if new_participants.exists():
+        task_completions = [
+            TaskCompletion(
+                user=participant,
+                task=instance,
+                start_date=instance.start_date,
+                end_date=instance.end_date,
+            ) for participant in new_participants
+        ]
+        TaskCompletion.objects.bulk_create(task_completions)
 
 
 @receiver(post_save, sender=Message)

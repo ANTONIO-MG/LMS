@@ -6,201 +6,201 @@
 <title>MLH | Edit Profile</title>
 <!-- Content Wrapper. Contains page content -->
 <div >
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <div class="container-fluid">
-        <div class="row mb-2">
-          <div class="col-sm-6">
-            <h1>Edit Profile</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item"><a href="#">Profile</a></li>
-              <li class="breadcrumb-item active">Edit Profile</li>
-            </ol>
-          </div>
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-sm-6">
+        <h1>Edit Profile</h1>
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-3">
-
-            </div>
-          <!-- /.col -->
-          <div class="col-md-6">
-            <div class="card">
-                <div class="card card-warning card-outline">
-                    <!-- Update form -->
-                    
-                      <div class="card-header">
-                        <h3 class="card-title">Update Profile Information</h3>
-                      </div>
-                      <!-- /.card-header -->
-                      <div class="card-body">
-                        <form role="form" method="post" enctype="multipart/form-data" class="col-md-12">
-                            {% csrf_token %}
-                            <div class="row">
-                                <!-- Display form errors -->
-                                {% if form.errors %}
-                                    <div class="alert alert-danger">
-                                        <ul>
-                                            {% for field in form %}
-                                                {% for error in field.errors %}
-                                                    <li>{{ field.label }}: {{ error }}</li>
-                                                {% endfor %}
-                                            {% endfor %}
-                                            {% for error in form.non_field_errors %}
-                                                <li>{{ error }}</li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
-                                {% endif %}
-                                
-                                <!-- First Name Field -->
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <!-- Render the label with appropriate attributes -->
-                                        <label>First Name</label>
-                                        
-                                        <!-- Render the input field with necessary classes and attributes -->
-                                        {{ form.first_name|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Last Name Field -->
-                                <div class="col-sm-6">
-                                    <!-- text input -->
-                                    <div class="form-group">
-                                        <!-- Render the label with appropriate attributes -->
-                                        <label>Last Name</label>
-                                        <!-- Render the input field with necessary classes and attributes -->
-                                        {{ form.last_name|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Nickname Field -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Nickname</label>
-                                        {{ form.nickname|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                        
-                                <!-- Date of Birth Field -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Date Of Birth</label>
-                                        {{ form.date_of_birth|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Gender Field -->
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Gender</label>
-                                        {{ form.gender|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Race Field -->
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Ethnicity</label>
-                                        {{ form.race|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Class Field -->
-                                <div class="col-sm-4">
-                                    <div class="form-group">
-                                        <label>Class</label>
-                                        {{ form.my_class|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Bio Field -->
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label>Bio</label>
-                                        {{ form.bio|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                        
-                                <!-- Profile Picture Field -->
-                                <div class="form-group">
-                                    <label>Profile Picture</label>
-                                    <div class="custom-file">
-                                        {{ form.profile_picture|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- empty div here -->
-                                 <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <p><strong>Note:</strong> please write the cell number withouth the country code</p>
-                                    </div>
-                                </div>
-                                
-                                <!-- Contact Number Field -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Contact Number</label>
-                                        {{ form.contact_number|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- Emergency Contact Field -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>Emergency Number</label>
-                                        {{ form.emergency_contact|add_class:"form-control" }}
-                                    </div>
-                                </div>
-                                
-                                <!-- User Type Field -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label>User Type</label>
-                                        {{ form.user_type|add_class:"form-control" }}
-                                    </div>
-                                </div>
-
-                                <!-- empty div for spacing -->
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        
-                                    </div>
-                                </div>
-                        
-                                <!-- Submit and Cancel Buttons -->
-                                <div class="form-group">
-                                    <a class="btn btn-dark" href="{% url 'profile' request.user.id %}">Cancel</a>
-                                    <button type="submit" class="btn btn-primary">Update</button>
-                                </div>
-                            </div>
-                        </form> 
-                      </div>
-                  
-                </div>
-            <!-- /.nav-tabs-custom -->
-            </div>
-          <!-- /.col -->
+        <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Profile</a></li>
+            <li class="breadcrumb-item active">Edit Profile</li>
+        </ol>
         </div>
-        <!-- /.row -->
+    </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+    <div class="row">
         <div class="col-md-3">
 
         </div>
-      </div><!-- /.container-fluid -->
-    </section>
-    <!-- /.content -->
-  </div>
-  <!-- /.content-wrapper -->
+        <!-- /.col -->
+        <div class="col-md-6">
+        <div class="card">
+            <div class="card card-warning card-outline">
+                <!-- Update form -->
+                
+                    <div class="card-header">
+                    <h3 class="card-title">Update Profile Information</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                    <form role="form" method="post" enctype="multipart/form-data" class="col-md-12">
+                        {% csrf_token %}
+                        <div class="row">
+                            <!-- Display form errors -->
+                            {% if form.errors %}
+                                <div class="alert alert-danger">
+                                    <ul>
+                                        {% for field in form %}
+                                            {% for error in field.errors %}
+                                                <li>{{ field.label }}: {{ error }}</li>
+                                            {% endfor %}
+                                        {% endfor %}
+                                        {% for error in form.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% endif %}
+                            
+                            <!-- First Name Field -->
+                            <div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <!-- Render the label with appropriate attributes -->
+                                    <label>First Name</label>
+                                    
+                                    <!-- Render the input field with necessary classes and attributes -->
+                                    {{ form.first_name|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Last Name Field -->
+                            <div class="col-sm-6">
+                                <!-- text input -->
+                                <div class="form-group">
+                                    <!-- Render the label with appropriate attributes -->
+                                    <label>Last Name</label>
+                                    <!-- Render the input field with necessary classes and attributes -->
+                                    {{ form.last_name|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Nickname Field -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Nickname</label>
+                                    {{ form.nickname|add_class:"form-control" }}
+                                </div>
+                            </div>
+                    
+                            <!-- Date of Birth Field -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Date Of Birth</label>
+                                    {{ form.date_of_birth|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Gender Field -->
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Gender</label>
+                                    {{ form.gender|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Race Field -->
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Ethnicity</label>
+                                    {{ form.race|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Class Field -->
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label>Class</label>
+                                    {{ form.my_class|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Bio Field -->
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label>Bio</label>
+                                    {{ form.bio|add_class:"form-control" }}
+                                </div>
+                            </div>
+                    
+                            <!-- Profile Picture Field -->
+                            <div class="form-group">
+                                <label>Profile Picture</label>
+                                <div class="custom-file">
+                                    {{ form.profile_picture|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- empty div here -->
+                                <div class="col-sm-12">
+                                <div class="form-group">
+                                    <p><strong>Note:</strong> please write the cell number withouth the country code</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Contact Number Field -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Contact Number</label>
+                                    {{ form.contact_number|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- Emergency Contact Field -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>Emergency Number</label>
+                                    {{ form.emergency_contact|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            
+                            <!-- User Type Field -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label>User Type</label>
+                                    {{ form.user_type|add_class:"form-control" }}
+                                </div>
+                            </div>
+
+                            <!-- empty div for spacing -->
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    
+                                </div>
+                            </div>
+                    
+                            <!-- Submit and Cancel Buttons -->
+                            <div class="form-group">
+                                <a class="btn btn-dark" href="{% url 'profile' request.user.id %}">Cancel</a>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </div>
+                    </form> 
+                    </div>
+                
+            </div>
+        <!-- /.nav-tabs-custom -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+    <div class="col-md-3">
+
+    </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+</div>
+<!-- /.content-wrapper -->
     
 
 {% endblock content %}

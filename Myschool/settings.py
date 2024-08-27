@@ -39,10 +39,6 @@ INSTALLED_APPS = [
     # the allauth authentication
     'allauth',
     'allauth.account',
-    'allauth.socialaccount',
-
-    # Social providers
-    'allauth.socialaccount.providers.google',
     # clean up the duplicate files with teh following library
     'django_cleanup.apps.CleanupConfig',
     # python library for cellphone number fields
@@ -88,9 +84,8 @@ ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 ACCOUNT_EMAIL_NOTIFICATIONS = True
 ACCOUNT = True
 ACCOUNT_SIGNUP = True
-SOCIALACCOUNT = True
-SOCIALACCOUNT_SIGNUP = False
-SOCIALACCOUNT_AUTO_SIGNUP = False
+
+
 
 
 TEMPLATES = [
@@ -199,7 +194,7 @@ JAZZMIN_SETTINGS = {
     "site_title": "MY Learning Hub",
     "site_header": "My Learning Hub",
     "site_brand": "MLH",
-    "site_logo": "books/img/logo.png",
+    "site_logo": "media/coding.png",
     "login_logo": None,
     "login_logo_dark": None,
     "site_icon": None,
@@ -223,5 +218,5 @@ JAZZMIN_SETTINGS = {
     # Whether to link font from fonts.googleapis.com (use custom_css to supply font otherwise)
     "use_google_fonts_cdn": True,
     # Whether to show the UI customizer on the sidebar
-    "show_ui_builder": True,
+    "show_ui_builder": False,
 }

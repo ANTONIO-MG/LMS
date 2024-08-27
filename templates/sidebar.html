@@ -1,145 +1,145 @@
 {% load static %}
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="{% url 'home' %}" class="brand-link">
+        <img src="{% static 'LTE/dist/img/coding.png' %}" alt="My Learning Hub Logo"
+            class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light"><strong>My Learning Hub</strong></span>
+    </a>
 
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
-            <!-- Brand Logo -->
-            <a href="{% url 'home' %}" class="brand-link">
-                <img src="{% static 'LTE/dist/img/AdminLTELogo.png' %}" alt="My Learning Hub Logo"
-                    class="brand-image img-circle elevation-3" style="opacity: .8">
-                <span class="brand-text font-weight-light">My Learning Hub</span>
-            </a>
-        
-            <!-- Sidebar -->
-            <div class="sidebar">
-        
-                <!-- Sidebar Menu -->
-                <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                        <!--The Classesroom-->
-                        <li class="nav-item">
-                            <a href="{% url 'class' my_class.id %}" class="nav-link">
-                                <i class="fa-solid fa-graduation-cap"></i>
-                                <p>{{my_class}}</p>
-                            </a>
-                        </li>
-                        <!-- the subjects under that specific class -->
-                        <li class="nav-item has-treeview menu-open">
-                            <a href="{% url 'class' my_class.id %}" class="nav-link active">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
-                                <p>
-                                    Subjects
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <!-- this is for each subject view -->
-                                {% for subject in subjects %}
-                                {% if subject.class_room == me.my_class %}
-                                <li class="nav-item">
-                                    <a href="{% url 'subject' subject.id %}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{subject.title}}</p>
-                                    </a>
-                                </li>
-                                {% endif %}
-                                {% endfor %}
-                            </ul>
-                        </li>
-                        <!--All Tasks-->
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon fas fa-edit"></i>
-                                <p>
-                                    Tasks
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <!--All uncompleted Tasks-->
-                                <li class="nav-item">
-                                    <a href="{% url 'my_tasks' %}" class="nav-link">
-                                        <i class="nav-icon far fa-circle text-danger"></i>
-                                        <p>Uncompleted Tasks</p>
-                                    </a>
-                                </li>
-                                <!--All Completed Tasks-->
-                                <li class="nav-item">
-                                    <a href="{% url 'my_tasks' %}" class="nav-link">
-                                        <i class="nav-icon far fa-circle text-info"></i>
-                                        <p>Completed Tasks</p>
-                                    </a>
-                                </li>
-                                <!--All upcoming Tasks-->
-                                <li class="nav-item">
-                                    <a href="{% url 'my_tasks' %}" class="nav-link">
-                                        <i class="nav-icon far fa-circle text-warning"></i>
-                                        <p>Upcoming Tasks</p>
-                                    </a>
-                                </li>
+    <!-- Sidebar -->
+    <div class="sidebar">
 
-                            </ul>
-                        </li>
-
-                        <li class="nav-item has-treeview">
-                            <a href="#" class="nav-link">
-                                <i class="nav-icon far fa-envelope"></i>
-                                <p>
-                                    Communication
-                                    <i class="fas fa-angle-left right"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="{% url 'my_notifications' %}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>General Communication</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="#" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Messages</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{% url 'all_posts' %}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Posts</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <!--All communication-->
-                        <li class="nav-header">SCHOOL RELATED</li>
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!--The Classesroom-->
+                <li class="nav-item">
+                    <a href="{% url 'class' me.my_class.id %}" class="nav-link">
+                        <i class="fa-solid fa-landmark"></i>
+                        <p>{{me.my_class}}</p>
+                    </a>
+                </li>
+                <!-- the subjects under that specific class -->
+                <li class="nav-item has-treeview menu-open">
+                    <a href="{% url 'class' me.my_class %}" class="nav-link active">
+                        <i class="nav-icon fas fa-book-open-reader"></i>
+                        <p>
+                            Subjects
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!-- this is for each subject view -->
+                        {% for subject in subjects %}
+                        {% if subject.class_room == me.my_class %}
                         <li class="nav-item">
-                            <!--All Calender-->
-                            <a href="{% url 'conference' %}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <p>
-                                    Virtual Classrooms
-                                    <span class="badge badge-info right">2</span>
-                                </p>
+                            <a href="{% url 'subject' subject.id %}" class="nav-link">
+                                <i class="fa-solid fa-book text-success"></i>
+                                <p>{{subject.title}}</p>
                             </a>
                         </li>
+                        {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+                <!--All Tasks-->
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fas fa-list-check"></i>
+                        <p>
+                            Tasks
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <!--All uncompleted Tasks-->
                         <li class="nav-item">
-                            <!--All Calender-->
-                            <a href="{% url 'calender' %}" class="nav-link">
-                                <i class="nav-icon fas fa-calendar-alt"></i>
-                                <p>
-                                    Calendar
-                                    <span class="badge badge-info right">2</span>
-                                </p>
+                            <a href="{% url 'create_task' %}" class="nav-link">
+                                <i class="nav-icon far fa-pen-to-square text-danger"></i>
+                                <p>Create Task</p>
+                            </a>
+                        </li>
+                        <!--All Completed Tasks-->
+                        <li class="nav-item">
+                            <a href="{% url 'my_tasks' %}" class="nav-link">
+                                <i class="nav-icon far fa-pen-to-square text-success"></i>
+                                <p>Completed Tasks</p>
+                            </a>
+                        </li>
+                        <!--All upcoming Tasks-->
+                        <li class="nav-item">
+                            <a href="{% url 'my_tasks' %}" class="nav-link">
+                                <i class="nav-icon far fa-pen-to-square text-warning"></i>
+                                <p>Upcoming Tasks</p>
                             </a>
                         </li>
 
+                    </ul>
+                </li>
+
+                <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon far fa-message"></i>
+                        <p>
+                            Communication
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <li class="nav-item">
-                                <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
-                                        class="fas fa-th-large">  </i>Theme Settings</a>
-                            </li>
+                            <a href="{% url 'my_notifications' %}" class="nav-link">
+                                <i class="far fa-comment-dots text-warning nav-icon"></i>
+                                <p>Notifications</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'chat_view' me.id %}" class="nav-link">
+                                <i class="far fa-comments text-warning nav-icon"></i>
+                                <p>Chats</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{% url 'all_posts' %}" class="nav-link">
+                                <i class="fa-solid fa-envelopes-bulk text-warning nav-icon"></i>
+                                <p>Posts</p>
+                            </a>
                         </li>
                     </ul>
-                </nav>
-                <!-- /.sidebar-menu -->
-            </div>
-            <!-- /.sidebar -->
-        </aside>
+                </li>
+                <!--All communication-->
+                <li class="nav-header">SCHOOL RELATED</li>
+                <li class="nav-item">
+                    <!--All Calender-->
+                    <a href="{% url 'conference' %}" class="nav-link">
+                        <i class="nav-icon fas fa-video text-warning"></i>
+                        <p>
+                            Virtual Classrooms
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <!--All Calender-->
+                    <a href="{% url 'calender' %}" class="nav-link">
+                        <i class="nav-icon fas fa-calendar-alt text-warning"></i>
+                        <p>
+                            Calendar
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                </li>
+                {% if me.user_type == 'Staff' %}
+                <li class="nav-item">
+                    <li class="nav-item">
+                        <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#"><i
+                                class="fas fa-th-large">  </i>Theme Settings</a>
+                    </li>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
