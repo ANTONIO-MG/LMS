@@ -1,6 +1,5 @@
 {% extends 'main.html' %}
 {% load static %}
-{% load crispy_forms_tags %}
 {% load custom_filters %}
 {% block content %}
 <title>MLH | Edit Profile</title>
@@ -117,12 +116,21 @@
                             </div>
                             
                             <!-- Class Field -->
+                             {% if me.profile_status %}
+                             <div class="col-sm-4">
+                                <div class="form-group" disabled="disabled">
+                                    <label>Class</label>
+                                    {{ form.my_class|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            {% else %}
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label>Class</label>
                                     {{ form.my_class|add_class:"form-control" }}
                                 </div>
                             </div>
+                            {% endif %}
                             
                             <!-- Bio Field -->
                             <div class="col-sm-12">
@@ -164,20 +172,27 @@
                             </div>
                             
                             <!-- User Type Field -->
+                             {% if me.profile_status %}
+                            <div class="col-sm-6">
+                                <div class="form-group" isabled="disabled">
+                                    <label>User Type</label>
+                                    {{ form.user_type|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            {% else %}
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label>User Type</label>
                                     {{ form.user_type|add_class:"form-control" }}
                                 </div>
                             </div>
-
+                            {% endif %}
                             <!-- empty div for spacing -->
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     
                                 </div>
                             </div>
-                    
                             <!-- Submit and Cancel Buttons -->
                             <div class="form-group">
                                 <a class="btn btn-dark" href="{% url 'profile' request.user.id %}">Cancel</a>

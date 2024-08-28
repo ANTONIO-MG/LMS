@@ -74,7 +74,7 @@ Here's the corrected and properly indented version of your template:
                             <div class="col-md-4">
                                 <!-- Widget: user widget style 1 -->
                                 <div class="card card-widget widget-user">
-                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    {% if me.my_class.teacher %}
                                     <div class="widget-user-header bg-info">
                                         <h3 class="widget-user-username">{{ me.my_class.teacher }}</h3>
                                         <h5 class="widget-user-desc">Class Teacher</h5>
@@ -87,6 +87,20 @@ Here's the corrected and properly indented version of your template:
                                             <p>{{ me.my_class.teacher.bio }}</p>
                                         </div>
                                     </div>
+                                    {% else %}
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">Temporary Educator</h3>
+                                        <h5 class="widget-user-desc">Default Teacher</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="{% static 'LTE/dist/img/user8-128x128.jpg' %}" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <p style="text-align: center;">{{subj.description}}</p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
                                 </div>
                             </div>
                             <!-- /.col -->

@@ -1,123 +1,210 @@
 {% extends 'main.html' %}
+{% load static %}
 {% block content %}
-<!-- Content Header (Page header) -->
+<title>MLH | Subject</title>
+<!-- Page header with site map -->
 <section class="content-header">
     <div class="container-fluid">
-    <div class="row mb-2">
-        <div class="col-sm-6">
-        <h1>{{subj.title}}</h1>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{% url 'class' my_class.id %}">My Class</a></li>
-                <li class="breadcrumb-item active">{{subj.title}}</li>
-            </ol>
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>{{ subj.title }}</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                    <li class="breadcrumb-item active">{{ subj.title }}</li>
+                </ol>
+            </div>
         </div>
     </div>
-    </div><!-- /.container-fluid -->
 </section>
 
-<!-- the body content here -->
-<div class="container">
-    <!-- Room Start -->
-        <div class="room__box scroll">
-            <!-- Room Host Here -->
-            <div class="room__header scroll">
-                <div class="room__info">
-                    <h3>{{ subj.title }}</h3>
-                    <span>Subject Of: {{subj.class_room}} Class</span>
-                </div>
-                <div class="room__hosted">
-                    <p>Educator</p>
-                    <a href="{% url 'profile' subj.teacher 
-                    
-                    %}" class="room__author">
-                        <div class="avatar avatar--small">
-                            <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                        </div>
-                        <span>{{ subj.teacher.first_name }} {{ subj.teacher.last_name }}
-                    </a>
-                </div>
-                <div class="room__details">
-                    {{ subj.description }}
-                </div>
-                <span class="room__topics">Total Tasks: {{subj.todo_set.all.count}}</span>
-            </div>
-            <!-- messages Here -->
-            
-            <div class="room__conversation">
-                <div class="threads scroll">
-                    {% for message in messages %}
-                    {% if message.subject == subj %}
-                    <div class="thread">
-                        <div class="thread__top">
-                            <div class="thread__author">
-                                <a href="{% url 'profile' message.user.id %}" class="thread__authorInfo">
-                                    <div class="avatar avatar--small">
-                                        <img src="https://randomuser.me/api/portraits/men/37.jpg" />
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <!-- Before current content -->
+        <div class="card card-primary card-outline">
+            <div class="card-body">
+                <div class="tab-content" id="custom-content-above-tabContent">
+                    <!-- About class here -->
+                    <div class="tab-pane fade show active col-md-12" id="custom-content-above-home" role="tabpanel" aria-labelledby="custom-content-above-home-tab">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 2 -->
+                                <div class="card card-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-warning">
                                     </div>
-                                    <span>@{{ message.user }}</span>
-                                </a>
-                                <span class="thread__date">{{ message.updated_at | timesince }}</span>
+                                    <div class="card-footer p-0">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Total Participants <span class="float-right badge bg-info">{{ subj.participants.all|length }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Average Grades <span class="float-right badge bg-info">72%</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Males <span class="float-right badge bg-info">{{ male_count }}</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Females <span class="float-right badge bg-info">{{ female_count }}</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 1 -->
+                                <div class="card card-widget widget-user">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                     {% if subj.teacher %}
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">{{ subj.teacher }}</h3>
+                                        <h5 class="widget-user-desc">Educator</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="{{ subj.teacher.profile_picture.url }}" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <p>{{ subj.teacher.bio }}</p>
+                                        </div>
+                                    </div>
+                                    {% else %}
+                                    <div class="widget-user-header bg-info">
+                                        <h3 class="widget-user-username">Temporary Educator</h3>
+                                        <h5 class="widget-user-desc">Default Teacher</h5>
+                                    </div>
+                                    <div class="widget-user-image">
+                                        <img class="img-circle elevation-2" src="{% static 'LTE/dist/img/user8-128x128.jpg' %}" alt="User Avatar">
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="row">
+                                            <p style="text-align: center;">{{subj.description}}</p>
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-md-4">
+                                <!-- Widget: user widget style 2 -->
+                                <div class="card card-widget widget-user-2">
+                                    <!-- Add the bg color to the header using any of the bg-* classes -->
+                                    <div class="widget-user-header bg-warning">
+                                    </div>
+                                    <div class="card-footer p-0">
+                                        <ul class="nav flex-column">
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Academic Year <span class="float-right badge bg-info">2024</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Total Tasks <span class="float-right badge bg-info">72</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Completed Tasks<span class="float-right badge bg-info">12</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a class="nav-link">
+                                                    Remaining Tasks <span class="float-right badge bg-info">50</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+                    </div>
+                    <div class="tab-pane fade" id="custom-content-above-profile" role="tabpanel" aria-labelledby="custom-content-above-profile-tab">
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Main content -->
+                    <section class="content">
+                        <!-- Default box -->
+                        <div class="card card-solid">
+                            <div class="card-body pb-0">
+                                <!-- Fix their alignment here -->
+                                <div class="row d-flex align-items-stretch">
+                                    {% for user in me.my_class.participants.all %}
+                                    <div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch">
+                                        <div class="card bg-light">
+                                            <div class="card-header text-muted border-bottom-0">
+                                                
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="row">
+                                                    <div class="col-7">
+                                                        <h2 class="lead"><b>{{ user }}</b></h2>
+                                                        <p class="text-muted text-sm"><b>Bio: </b> {{ user.bio }} </p>
+                                                        <ul class="ml-4 mb-0 fa-ul text-muted">
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-building"></i></span> Address: Demo Street 123, Demo City 04312, NJ</li>
+                                                            <li class="small"><span class="fa-li"><i class="fas fa-lg fa-phone"></i></span> Phone #: {{ user.contact_number }}</li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="col-5 text-center">
+                                                        <img src="{{ user.profile_picture.url }}" alt="" class="img-circle img-fluid">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <div class="text-right">
+                                                    <a href="{% url 'chat_view' user.id %}" class="btn btn-sm bg-teal">
+                                                        <i class="fas fa-comments"></i> Mesage
+                                                    </a>
+                                                    <a href="{% url 'profile' user.id %}" class="btn btn-sm btn-primary">
+                                                        <i class="fas fa-user"></i> View Profile
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                                <!-- Fix the next button functionality here -->
+                                <nav aria-label="Contacts Page Navigation">
+                                    <ul class="pagination justify-content-center m-0">
+                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                    </ul>
+                                </nav>
                             </div>
                         </div>
-                        <div class="thread__details">
-                            <small>
-                                {{ message.content|linebreaksbr }}
-                            </small>
-                        </div>
-                        <br>
-                        <h4>
-                            {% if message.user == request.user %}
-                            <a href="{% url 'edit_message' message.id %}">Edit</a>
-                            <a href="{% url 'delete_message' message.id %}">Delete</a>
-                            {% endif %}
-                        </h4>
-                    </div>
-                    {% endif %}
-                    {% endfor %}
+                    </section>
+                    <!-- /.content -->
+                    <!-- Card footer start -->
                 </div>
             </div>
-            
         </div>
-        <div class="room__message">
-            
-            <form action="" method="POST">
-                {% csrf_token %}
-                <input name="message"  placeholder="Write your message here..." />
-            </form>
-        </div>
-    <!-- Room End -->
-
-    <!--   Start -->
-    
-    <div class="participants">
-        <h3 class="participants__top">Subject Peers <span>({{ participants.count }})</span></h3>
-        <div class="participants__list scroll">
-            {% for user in participants %}
-            <a href="{% url 'profile' user.id %}" class="participant">
-                <div class="avatar avatar--medium">
-                    <img src="https://randomuser.me/api/portraits/men/37.jpg" />
-                </div>
-                <p>
-                    {{ user.first_name }} {{ user.last_name }}
-                    <span>@{{ user }}</span>
-                </p>
-            </a>
-            {% endfor %}
-        </div>
-        <a class="btn btn--link" href="topics.html">
-            More
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                <title>chevron-down</title>
-                <path d="M16 21l-13-13h-3l16 16 16-16h-3l-13 13z"></path>
-            </svg>
-        </a>
     </div>
-    
-    <!--  End -->
-</div>
+</section>
 
 
 

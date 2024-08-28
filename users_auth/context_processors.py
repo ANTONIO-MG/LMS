@@ -23,9 +23,7 @@ def global_context(request):
             notifications = Notification.objects.all()
             tasks = TODO.objects.all()
             all_users = Person.objects.all()
-            assigned_tasks = TaskCompletion.objects.filter(user=me)[:6]
             subjects = Subject.objects.all()
-            # my_class = Classroom.objects.filter(name=me.my_class)
 
             # count males versus females participants
             # Initialize counters
@@ -55,7 +53,6 @@ def global_context(request):
             races = RACE
             user_types = USER_TYPE_CHOICES
             genders = GENDER_CHOICES
-            countries = country_names
             
             return {
                 "classrooms": classrooms,
@@ -63,9 +60,7 @@ def global_context(request):
                 "notifications": notifications,
                 "tasks": tasks,
                 "subjects": subjects,
-                # "my_class": my_class,
                 "all_users": all_users,
-                "assigned_tasks": assigned_tasks,
                 "me": me,
                 'last_message': last_message,
                 'last_notifications': last_notifications,
@@ -76,7 +71,6 @@ def global_context(request):
                 "races": races,
                 "user_types": user_types,
                 "genders": genders,
-                "countries": countries,
                 "male_count": male_count,
                 "female_count": female_count
                 }

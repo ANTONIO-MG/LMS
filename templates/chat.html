@@ -79,7 +79,7 @@
         <div class="card-header">
           <h3 class="card-title">Active Chats</h3>
           <div class="card-tools">
-            <span class="badge badge-danger">8 New Members</span>
+            <span class="badge badge-danger">{{ chat_users|length }}</span>
             <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
             </button>
           </div>
@@ -90,8 +90,8 @@
             {% for user in chat_users %}
             <li>
               <img src="{{ user.profile_picture.url }}" alt="User Image">
-              <a class="users-list-name" href="#">{{ user }}</a>
-              <span class="badge badge-danger">8 New Members</span>
+              <a class="users-list-name" href="{% url 'chat_view' user.id %}">{{ user }}</a>
+              <span class="badge badge-danger">New Message</span>
               <span class="users-list-date">Today</span>
             </li>
             {% endfor %}

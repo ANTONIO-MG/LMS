@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static 'LTE/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static 'LTE/dist/css/adminlte.min.css' %}">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+  <style>
+    .container {
+        display: flex;
+        flex-direction: column; /* Change to column for vertical alignment */
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        gap: 20px; /* Adjust the gap as needed */
+    }
+
+    .box-container {
+        display: flex;
+        flex-direction: row; /* Horizontal alignment for boxes */
+        gap: 20px; /* Adjust the gap as needed */
+    }
+
+    .box {
+        width: 30%; /* Adjust the width to fit three boxes side by side */
+        padding: 20px; /* Adjust the padding as needed */
+        margin: 10px; /* Adjust the margin as needed */
+        background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+        border-radius: 10px; /* Rounded corners */
+        text-align: center;
+    }
+  </style>
+  
+</head>
+<body class="hold-transition login-page background-image">
+    <title>MLH | Landing</title>
+    <div class="container">
+        <div class="login-logo">
+            <a href="">My<b>Learning</b>Hub</a>
+        </div>
+        <!-- /.login-logo --> 
+        <div class="box-container">
+            <div class="box">
+                
+                <h4 ><b>Why My Learning Hub (MLH)</b></h4>
+                <br>
+                <p><strong>
+                    The Learner Management System(LMS)
+                    is designed to revolutionize how education
+                    is delivered and managed.
+
+                    It centralizes all aspects of the learning
+                    process, making it easier for educators to manage
+                    classrooms, track student progress, and enhance
+                    communication with students and parents.</strong></p>
+            </div>
+            <div class="box">
+                <h4><b>Key Features </b></h4>
+                <br>
+                <p>
+                    <br>
+                    <strong>
+                    Centralized Student Management<br>
+
+                    Real-Time Communication<br>
+
+                    Customizable Courses and Subjects<br>
+                    
+                    Performance Tracking and Reporting<br>
+
+                    Secure Data Handling</strong>
+                </p>
+            </div>
+            <div class="box">
+                <h4><b>How to Get Started</b></h4>
+                <br>
+                <p ><strong>
+                    1- Registering an account with just 
+                    a few clicks.<br> 
+                    2- Once registered, you'll receive a 
+                    verification email—be sure to confirm
+                    your email address to activate your account.<br> 
+                    3- After verification, take a moment to
+                    update your profile, ensuring that your 
+                    information matches the correct class 
+                    and subjects.<br>
+                    
+                    4- With everything set up, you're ready
+                     to dive into your learning journey. 
+                    Happy learning!</strong></p>
+            </div>
+            
+        </div>
+        <div class="get-started-btn">
+            <a href="{% url 'account_login' %}"><button class="btn btn-md btn-info">Get Started</button></a>
+        </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{% static 'LTE/plugins/jquery/jquery.min.js' %}"></script>
+    <!-- Bootstrap 4 -->
+    <script src="{% static 'LTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- AdminLTE App -->
+    <script src="{% static 'LTE/dist/js/adminlte.min.js' %}"></script>
+</body>
+</html>

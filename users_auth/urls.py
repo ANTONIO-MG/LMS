@@ -24,7 +24,12 @@ urlpatterns = [
     path('Contact_us', ContctUs, name="contact"),
     path('store', Store, name="store"),
     path('finance', Finance, name="finance"),
+
+    # Landing Page
+    path('', landing_page_view, name='landing_page'),
     
+    # Reminders
+    path('delete_reminder/<int:reminder_id>/', delete_reminder, name='delete_reminder'),
     
     # Here are the classroom URL's
     path('class/<str:pk>', MyClass, name="class"),

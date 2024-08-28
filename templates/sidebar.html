@@ -8,6 +8,7 @@
     </a>
 
     <!-- Sidebar -->
+     {% if me.profile_status %}
     <div class="sidebar">
 
         <!-- Sidebar Menu -->
@@ -136,10 +137,23 @@
                                 class="fas fa-th-large">  </i>Theme Settings</a>
                     </li>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <!--All Calender-->
+                    <a href="{% url 'account_login' %}" class="nav-link">
+                        <i class="nav-icon fas fa-user-tie text-warning"></i>
+                        <p>
+                            Admin Control
+                            <span class="badge badge-info right"></span>
+                        </p>
+                    </a>
+                </li>
                 {% endif %}
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>
+    {% else %}
+    {% endif %}
     <!-- /.sidebar -->
 </aside>

@@ -81,6 +81,7 @@ class TimelineItem(models.Model):
 class Reminder(models.Model):
     message = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(Person, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.message

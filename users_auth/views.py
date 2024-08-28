@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from pyexpat.errors import messages
@@ -14,7 +15,8 @@ from django.db.models import Q
 from django.utils.timezone import now
 
 
-
+def landing_page_view(request):
+    return render(request, 'landing_page.html')
 
 # The homepage view
 @login_required
@@ -23,15 +25,30 @@ def Home(request):
     classroom: stores all the classroom as objects and can be queried
     messages: stores all the messages on teh database and can be queried
     """
-    form = ReminderForm() 
+    # this are the things that will need to be on every view so that the sidebar and the header remain constant
+    me = Person.objects.get(user=request.user)
+    classrooms = Classroom.objects.all()
+    notifications = Notification.objects.all()[0:3]
+    assigned_tasks = TaskCompletion.objects.filter(user=me.id)[:6]
+    subjects = Subject.objects.all()
+    my_class = me.my_class
+
+    # date functions
+    current_date = now().date()
+    current_date_plus = current_date + timedelta(days=1)
+    current_date_minus = current_date - timedelta(days=1)
+
+    form = ReminderForm()
     # check if the user has updated his profile if not take to profile update
     if request.user.is_authenticated:
 
         if request.method == 'POST':
             form = ReminderForm(request.POST)
             if form.is_valid():
-                form.save()
-                return redirect('home')
+                reminder = form.save(commit=False)  # Create form instance but don't save yet
+                reminder.user = me  # Set the user field to the requesting user
+                reminder.save()  # Save the form instance
+                return redirect('home')  # Redirect to the home page after saving the reminder
     else:
         form = ReminderForm()
 
@@ -39,29 +56,28 @@ def Home(request):
     
     # Calculate time since creation
     for reminder in reminders:
-        reminder.time_since = (now() - reminder.created_at).total_seconds()
+        reminder.time_since = (now() - reminder.created_at).total_seconds() / 60
 
     # Get the current user status, if profile is updated oir not
     user_status = Person.objects.get(user=request.user)
     if not user_status.profile_status:
         return redirect('edit_profile', pk=user_status.id)
 
-    # this are the things that will need to be on every view so that the sidebar and the header remain constant
-    me = Person.objects.get(user=request.user)
-    classrooms = Classroom.objects.all()
-    notifications = Notification.objects.all()[0:3]
-    assigned_task = TaskCompletion.objects.filter(user=me)
-    subjects = Subject.objects.all()
-
-    
-    my_class = me.my_class
-
     context = {"classrooms": classrooms,
                "notifications" : notifications,
                "subjects": subjects, 'my_class': my_class,
-               'assigned_task': assigned_task,
-               "me":me, 'form': form, 'reminders': reminders}
+               'assigned_tasks': assigned_tasks,
+               "me":me, 'form': form, 'reminders': reminders,
+               'current_date': current_date,
+                'current_date_plus': current_date_plus,
+                'current_date_minus': current_date_minus,}
     return  render(request, 'home.html', context)
+
+@login_required
+def delete_reminder(request, reminder_id):
+    reminder = get_object_or_404(Reminder, id=reminder_id)
+    reminder.delete()
+    return redirect('home')
 
 @login_required
 def Chat_View(request, pk):
