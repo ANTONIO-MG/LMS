@@ -2,30 +2,24 @@ from django import forms
 from django.forms import ModelForm
 from allauth.account.forms import SignupForm
 from .models import Classroom, Person
-from communication.forms import MessageForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Field, Fieldset, Div, Submit
-from phonenumber_field.formfields import PhoneNumberField
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from crispy_forms.layout import Layout, Field, Submit
 
-
-
-# form to create a classroom
+# Form to create a classroom
 class ClassRoomForm(ModelForm):
     class Meta:
         model = Classroom
         fields = '__all__'
 
-
     def __init__(self, *args, **kwargs):
         super(ClassRoomForm, self).__init__(*args, **kwargs)
-        # Exclude specific fields
+        # Exclude specific fields from the form
         exclude_fields = ['subject', 'subjects', 'user', 'class_room']
         for field_name in exclude_fields:
             if field_name in self.fields:
                 del self.fields[field_name]
 
-
+# Form to create or update a Person
 class PersonForm(forms.ModelForm):
     class Meta:
         model = Person
@@ -48,7 +42,6 @@ class PersonForm(forms.ModelForm):
             Field('gender', css_class='form-control'),
             Field('race', css_class='form-control'),
             Field('user_type', css_class='form-control'),
-            # Field('my_class', css_class='form-control'),
             Field('contact_number', css_class='form-control'),
             Field('emergency_contact', css_class='form-control'),
             Submit('submit', 'Submit', css_class='btn btn-primary')
@@ -57,9 +50,9 @@ class PersonForm(forms.ModelForm):
     my_class = forms.ModelChoiceField(
         queryset=Classroom.objects.all(), required=True)
 
-
+# Form to edit a Person's profile
 class PersonEditForm(ModelForm):
-    """ this one is used for user profile editor"""
+    """Form used for user profile editing"""
 
     class Meta:
         model = Person
@@ -91,7 +84,7 @@ class PersonEditForm(ModelForm):
             Submit('submit', 'Submit', css_class='btn btn-primary')
         )
 
-
+# Custom signup form for user registration
 class CustomSignupForm(SignupForm):
     is_superuser = forms.BooleanField(required=False, label="Register as superuser")
 

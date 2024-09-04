@@ -4,9 +4,6 @@ URL configuration for Myschool project.
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from users_auth import views, urls
-from communication import views, urls
-from usertasks import views, urls
 from Myschool import settings
 from users_auth.views import password_reset_from_key
 

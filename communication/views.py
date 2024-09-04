@@ -1,43 +1,39 @@
 """" 
-Function based vies for the base app, the base app is the application running all
-User, Tasks, Notifications, Messages, Classrooms, Subjects CRUD (create, read, update, Delete) functions
-This also manages the database sessions and data management
+Function-based views for the base app. The base app handles all CRUD (Create, Read, Update, Delete) operations for Users, Tasks, Notifications, Messages, Classrooms, and Subjects. It also manages database sessions and data management.
 """
 
-# the imports
+# Imports
 from django.utils import timezone
 from django.shortcuts import get_object_or_404, render, redirect
-from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
 from .forms import MessageForm, NotificationForm, PostForm
 from usertasks.forms import TodoForm
-from usertasks. models import TaskCompletion, TODO
 from .models import Notification, Message, Post
-from allauth.account.views import SignupView
 from users_auth.models import Person
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
 @login_required
 def Conference(request):
+    """
+    View to render the conference page.
+    """
     me = Person.objects.get(user=request.user)
-    
     context = {'me': me.first_name + " " + me.last_name}
     return render(request, 'conference.html', context)
 
-
 @login_required
 def SendMessage(request):
+    """
+    View to handle sending a message.
+    """
     create = True
     form = MessageForm
     me = Person.objects.get(user=request.user)
-    form.user =  me
+    form.user = me
     if request.method == "POST":
         form = MessageForm(request.POST)
-        if  form.is_valid():
+        if form.is_valid():
             new = form.save(commit=False)
             new.user = me
             return redirect('home')
@@ -45,10 +41,11 @@ def SendMessage(request):
     context = {'form': form, 'create': create}
     return render(request, 'message_form.html', context)
 
-
 @login_required
 def EditMessage(request, pk):
-    
+    """
+    View to handle editing a message.
+    """
     create = False
     me = Person.objects.get(user=request.user)
     message = get_object_or_404(Message, id=pk)
@@ -64,14 +61,13 @@ def EditMessage(request, pk):
     context = {'form': form, 'create': create}
     return render(request, 'message_form.html', context)
 
-
 @login_required
 def DeleteMessage(request, pk):
+    """
+    View to handle deleting a message.
+    """
     message = Message.objects.get(id=pk)
     me = Person.objects.get(user=request.user)
-    
-    if me != message.user:
-        return HttpResponse("Not Allowed to delete")
     
     if request.method == "POST":
         message.delete()
@@ -79,9 +75,11 @@ def DeleteMessage(request, pk):
 
     return render(request, 'delete_message.html', {'obj': message})
 
-
 @login_required
 def SendNotification(request):
+    """
+    View to handle sending a notification.
+    """
     me = Person.objects.get(user=request.user)
     form = NotificationForm
     if request.method == "POST":
@@ -97,6 +95,9 @@ def SendNotification(request):
 
 @login_required
 def EditNotification(request, pk):
+    """
+    View to handle editing a notification.
+    """
     create = False
     note = get_object_or_404(Notification, id=pk)
     me = Person.objects.get(user=request.user)
@@ -104,10 +105,10 @@ def EditNotification(request, pk):
     if request.method == "POST":
         form = NotificationForm(request.POST, instance=note)
         if form.is_valid():
-            # Delete the existing post
+            # Delete the existing notification
             note.delete()
 
-            # Save the updated post
+            # Save the updated notification
             form.instance.user = me
             new_instance = form.save()
 
@@ -118,9 +119,11 @@ def EditNotification(request, pk):
     context = {'form': form, 'create': create}
     return render(request, 'notification_form.html', context)
 
-
 @login_required
 def DeleteNotification(request, pk):
+    """
+    View to handle deleting a notification.
+    """
     notification = Notification.objects.get(id=pk)
     if request.method == "POST":
         notification.delete()
@@ -129,54 +132,60 @@ def DeleteNotification(request, pk):
     return render(request, 'delete_notification.html', {'obj': notification})
 
 def MyNotification(request, pk):
+    """
+    View to display a specific notification.
+    """
     notification = Notification.objects.get(id=pk)
     context = {'notification': notification}
     return render(request, 'notification.html', context)
 
 def MyNotifications(request):
-
+    """
+    View to display all notifications for the logged-in user.
+    """
     me = Person.objects.get(id=request.user.pk)
     notifications = Notification.objects.all()
     my_class = me.my_class
     context = {'notifications': notifications, 'my_class': my_class}
     return render(request, 'notifications_tab.html', context)
 
-
 @login_required
 def MyNotice(request, pk):
-    # create an instance of the of the specific notification ou want to show using the pk
+    """
+    View to display a specific notice.
+    """
     notification = Notification.objects.get(id=pk)
-    # pass the context to be rendered on the page
     context = {"notification": notification}
     return render(request, 'notice.html', context)
 
 @login_required
 def CreatePost(request):
-    
+    """
+    View to handle creating a new post.
+    """
     create = True
     me = Person.objects.get(user=request.user)
     form = PostForm(request.POST)
 
     if request.method == 'POST':
         new_post = Post.objects.create(
-            user = me,
-            title = request.POST.get('title'),
-            post_body = request.POST.get('post'),
-            picture = request.POST.get('post_picture'),
-            media = request.POST.get('post_media'),
-            
+            user=me,
+            title=request.POST.get('title'),
+            post_body=request.POST.get('post'),
+            picture=request.POST.get('post_picture'),
+            media=request.POST.get('post_media'),
         )
         return redirect('home')
     context = {'form': form, 'create': create}
 
     return render(request, 'post_form.html', context)
 
-
 @login_required
 def EditPost(request, pk):
-    
+    """
+    View to handle editing a post.
+    """
     create = False
-    # Get the original task
     original_post = Post.objects.get(id=pk)
 
     if request.method == "POST":
@@ -185,7 +194,7 @@ def EditPost(request, pk):
             # Delete the original post
             original_post.delete()
 
-            # Create a new task with updated information
+            # Create a new post with updated information
             new_post = form.save(commit=False)
             new_post.created_at = original_post.created_at  # Keep the original creation date
             new_post.updated_at = timezone.now()  # Update the updated date to now
@@ -198,9 +207,11 @@ def EditPost(request, pk):
     context = {'form': form, 'create': create}
     return render(request, 'post_form.html', context)
 
-
 @login_required
 def DeletePost(request, pk):
+    """
+    View to handle deleting a post.
+    """
     post = Post.objects.get(id=pk)
     if request.method == "POST":
         post.delete()
@@ -208,37 +219,33 @@ def DeletePost(request, pk):
 
     return render(request, 'delete_post.html', {'obj': post})
 
-
 @login_required
 def AllPosts(request):
+    """
+    View to display all posts.
+    """
     all_posts = Post.objects.all()
-
     context = {'all_posts': all_posts}
     return render(request, 'all_posts.html', context)
 
-
 @login_required
 def MyPost(request, pk):
+    """
+    View to display a specific post.
+    """
     post = Post.objects.get(id=pk)
-
     return render(request, 'delete_task.html', {'obj': post})
 
 @login_required
 def About(request):
-
+    """
+    View to display the about page.
+    """
     return render(request, 'about.html')
 
 @login_required
 def ContctUs(request):
-
+    """
+    View to display the contact us page.
+    """
     return render(request, 'contact.html')
-
-@login_required
-def Finance(request):
-
-    return render(request, 'finance.html')
-
-@login_required
-def Store(request):
-
-    return render(request, 'store.html')

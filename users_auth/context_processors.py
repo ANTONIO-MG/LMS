@@ -1,10 +1,7 @@
 from .models import Person, Classroom, Subject
 from communication.models import Message, Notification
-from usertasks.models import TODO, TaskCompletion
-from users_auth.country_code import country_phone_codes
+from usertasks.models import TODO
 from users_auth.users_informations import RACE, USER_TYPE_CHOICES, GENDER_CHOICES
-from users_auth.countries import country_names
-from django.shortcuts import get_object_or_404
 """
     this imports the models and then creates general context that will be sent to all the pages to be rendared
 """

@@ -14,15 +14,14 @@ SECRET_KEY = 'django-insecure-8sylj%6z7%b_9j(c1kgwr9)()u8w3p&va@e6_c5*-c0%b3a#nd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Hosts/domain names that are valid for this site
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']
 
-
 # Application definition
-
 INSTALLED_APPS = [
-    # fetching forms data
-    # "django_htmx,",
+    # Admin interface customization
     'jazzmin',
+    # Default Django apps
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -30,18 +29,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
-    # list of apps in this project
+    # Project-specific apps
     'communication',
     'usertasks',
     'users_auth',
-    # this is the app that restores the save data from the backups
+    # App for scheduled tasks
     'django_crontab',
-    # the allauth authentication
+    # Authentication with allauth
     'allauth',
     'allauth.account',
-    # clean up the duplicate files with teh following library
+    # Cleanup app to remove duplicate files
     'django_cleanup.apps.CleanupConfig',
-    # python library for cellphone number fields
+    # Form handling libraries
     "crispy_forms",
     "crispy_bootstrap4",
 ]
@@ -54,11 +53,13 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Add the account middleware for the allauth
+    # Middleware for allauth
     "allauth.account.middleware.AccountMiddleware",
+    # Middleware for HTMX
     "django_htmx.middleware.HtmxMiddleware",
 ]
 
+# URL configuration module
 ROOT_URLCONF = 'Myschool.urls'
 
 # Authentication backends
@@ -67,7 +68,8 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
-SITE_ID = 1  # Add this if not already present, setting the ID of the current site
+# Site ID for the sites framework
+SITE_ID = 1
 
 # Django Allauth settings
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
@@ -79,15 +81,13 @@ ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGOUT_REDIRECT_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = 'home'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION= True  
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True  
 ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 5
 ACCOUNT_EMAIL_NOTIFICATIONS = True
 ACCOUNT = True
 ACCOUNT_SIGNUP = True
 
-
-
-
+# Template settings
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -105,24 +105,22 @@ TEMPLATES = [
     },
 ]
 
+# WSGI application
 WSGI_APPLICATION = 'Myschool.wsgi.application'
 
-# Database
+# Database configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'base001',
-        'HOST':  '127.0.0.1',
+        'HOST': '127.0.0.1',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': '27031992',
     }
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -138,14 +136,13 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
+# Internationalization settings
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Default static folders and the media root folders
+# Static and media files settings
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "/media/"
@@ -155,8 +152,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'auth.User'
 
-
-# configure the different social accounts that you can authenticate by
+# Social account providers configuration
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -170,7 +166,7 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
-# Email backend for sending emails using SMTP
+# Email backend configuration for sending emails using SMTP
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
@@ -184,12 +180,11 @@ EMAIL_HOST_PASSWORD = 'llkj qsay dple izwd'  # Or use an App Password
 # Default "from" email address
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-#CRISPY FORMS
+# Crispy forms settings
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-
-# the settings that controls the jazzmin admin pannel template
+# Jazzmin admin panel settings
 JAZZMIN_SETTINGS = {
     "site_title": "MY Learning Hub",
     "site_header": "My Learning Hub",
@@ -210,9 +205,6 @@ JAZZMIN_SETTINGS = {
     # Icons that are used when one is not manually specified
     "default_icon_parents": "fas fa-chevron-circle-right",
     "default_icon_children": "fas fa-circle",
-    #############
-    # UI Tweaks #
-    #############
     # Relative paths to custom CSS/JS scripts (must be present in static files)
     "custom_css": None,
     "custom_js": None,

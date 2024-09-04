@@ -3,7 +3,7 @@ from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from pyexpat.errors import messages
 from django.shortcuts import redirect, render, get_object_or_404
-from .  forms import PersonEditForm
+from .forms import PersonEditForm
 from usertasks.models import TaskCompletion, TODO, TimelineItem
 from communication.models import Notification, Message, Post
 from communication.forms import MessageForm
@@ -14,7 +14,7 @@ from .date_time import get_date_at_midnight
 from django.db.models import Q
 from django.utils.timezone import now
 
-
+# View for the landing page
 def landing_page_view(request):
     return render(request, 'landing_page.html')
 
@@ -22,26 +22,24 @@ def landing_page_view(request):
 @login_required
 def Home(request):
     """
-    classroom: stores all the classroom as objects and can be queried
-    messages: stores all the messages on teh database and can be queried
+    Home view that displays the user's dashboard with classrooms, notifications, tasks, and reminders.
     """
-    # this are the things that will need to be on every view so that the sidebar and the header remain constant
+    # Get the current user
     me = Person.objects.get(user=request.user)
     classrooms = Classroom.objects.all()
-    notifications = Notification.objects.all()[0:3]
+    notifications = Notification.objects.all()[:3]
     assigned_tasks = TaskCompletion.objects.filter(user=me.id)[:6]
     subjects = Subject.objects.all()
     my_class = me.my_class
 
-    # date functions
+    # Date functions
     current_date = now().date()
     current_date_plus = current_date + timedelta(days=1)
     current_date_minus = current_date - timedelta(days=1)
 
     form = ReminderForm()
-    # check if the user has updated his profile if not take to profile update
+    # Check if the user has updated their profile; if not, redirect to profile update
     if request.user.is_authenticated:
-
         if request.method == 'POST':
             form = ReminderForm(request.POST)
             if form.is_valid():
@@ -54,31 +52,38 @@ def Home(request):
 
     reminders = Reminder.objects.all().order_by('-created_at')
     
-    # Calculate time since creation
+    # Calculate time since creation for each reminder
     for reminder in reminders:
         reminder.time_since = (now() - reminder.created_at).total_seconds() / 60
 
-    # Get the current user status, if profile is updated oir not
+    # Get the current user status, if profile is updated or not
     user_status = Person.objects.get(user=request.user)
     if not user_status.profile_status:
         return redirect('edit_profile', pk=user_status.id)
 
-    context = {"classrooms": classrooms,
-               "notifications" : notifications,
-               "subjects": subjects, 'my_class': my_class,
-               'assigned_tasks': assigned_tasks,
-               "me":me, 'form': form, 'reminders': reminders,
-               'current_date': current_date,
-                'current_date_plus': current_date_plus,
-                'current_date_minus': current_date_minus,}
-    return  render(request, 'home.html', context)
+    context = {
+        "classrooms": classrooms,
+        "notifications": notifications,
+        "subjects": subjects,
+        'my_class': my_class,
+        'assigned_tasks': assigned_tasks,
+        "me": me,
+        'form': form,
+        'reminders': reminders,
+        'current_date': current_date,
+        'current_date_plus': current_date_plus,
+        'current_date_minus': current_date_minus,
+    }
+    return render(request, 'home.html', context)
 
+# View to delete a reminder
 @login_required
 def delete_reminder(request, reminder_id):
     reminder = get_object_or_404(Reminder, id=reminder_id)
     reminder.delete()
     return redirect('home')
 
+# View for the chat functionality
 @login_required
 def Chat_View(request, pk):
     # Fetch the recipient (user you're chatting with) based on the primary key
@@ -86,7 +91,6 @@ def Chat_View(request, pk):
     
     # Get the current person (the user who is logged in)
     current_person = get_object_or_404(Person, user=request.user)
-    # Fetch all messages between the current user and the recipient
 
     # Handle message submission
     if request.method == 'POST':
@@ -100,12 +104,11 @@ def Chat_View(request, pk):
     else:
         form = MessageForm()
 
-
+    # Fetch all messages between the current user and the recipient
     messages = Message.objects.filter(
         (Q(sender=current_person) & Q(recipient=recipient)) |
         (Q(sender=recipient) & Q(recipient=current_person))
     ).order_by('created_at')
-
 
     # Get all users who have exchanged messages with the current user
     chat_users = set()
@@ -118,8 +121,6 @@ def Chat_View(request, pk):
     for message in received_messages:
         chat_users.add(message.sender)
 
-    
-
     # Check if there is a message ID in the request to mark as read
     message_id = request.GET.get('message_id')
     if message_id:
@@ -130,8 +131,6 @@ def Chat_View(request, pk):
             message.save()
         return JsonResponse({'status': 'success', 'message': 'Message marked as read.'})
 
-    
-
     # Render the chat template with the messages and recipient
     return render(request, 'chat.html', {
         'messages': messages,
@@ -140,7 +139,8 @@ def Chat_View(request, pk):
         'chat_users': chat_users,
         'form': form
     })
-    
+
+# View for the user profile
 @login_required
 def Profile(request, pk):
     if request.user.is_authenticated:
@@ -150,7 +150,7 @@ def Profile(request, pk):
         subjects = me.participants.all()
         classrooms = Classroom.objects.all()
         messages = Message.objects.all()
-        notifications = Notification.objects.all()[0:5]
+        notifications = Notification.objects.all()[:5]
         my_class = me.my_class
         current_date = get_date_at_midnight
         timeline_items = TimelineItem.objects.filter(user=me).all()
@@ -167,8 +167,9 @@ def Profile(request, pk):
             'current_date': current_date
         }  
 
-        return render(request, 'profile.html', context)  # Added 'context' here
+        return render(request, 'profile.html', context)
 
+# View to edit the user profile
 @login_required
 def EditProfile(request, pk):
     person = get_object_or_404(Person, id=pk)  # Fetch the Person instance with the given id (pk)
@@ -189,7 +190,6 @@ def EditProfile(request, pk):
                 # Save the changes to the database while updating the user profile status
                 new_user.profile_status = True
                 new_user.save()
-
 
                 # Handle class and subjects
                 selected_class = new_user.my_class
@@ -216,6 +216,7 @@ def EditProfile(request, pk):
     context = {'form': form}
     return render(request, 'edit_profile.html', context)
 
+# View for a specific subject
 @login_required
 def MySubject(request, pk):
     me = Person.objects.get(user=request.user)
@@ -231,43 +232,82 @@ def MySubject(request, pk):
             user=me,
             content=request.POST.get('message'),  # Corrected line
             subject=subj,
-            class_room =subj.class_room
+            class_room=subj.class_room
         )
         return redirect('subject', pk=subj.id)
 
-    context = {"subj": subj, 'messages': messages,
-               'participants': participants, 'classroom': classroom,
-               'people': people, 'person': person}
+    context = {
+        "subj": subj,
+        'messages': messages,
+        'participants': participants,
+        'classroom': classroom,
+        'people': people,
+        'person': person
+    }
     return render(request, 'subject.html', context)
+
 
 @login_required
 def MyClass(request, pk):
+    """
+    View to display a specific classroom and handle post creation within that classroom.
+    
+    Args:
+        request: The HTTP request object.
+        pk: The primary key of the classroom to be displayed.
+    
+    Returns:
+        A rendered HTML page displaying the classroom details, subjects, participants, and posts.
+    """
+    # Get the current logged-in user
     me = Person.objects.get(user=request.user)
-    # create an instance of the of the specific classroom ou want to show using the pk
+    
+    # Get the specific classroom using the primary key (pk)
     classroom = Classroom.objects.get(id=pk)
-    # pass the context to be rendered on the page
+    
+    # Get all subjects (classrooms), participants of the specific classroom, and all posts
     subjects = Classroom.objects.all()
     participants = classroom.participants.all()
     posts = Post.objects.all()
     
+    # Handle post creation if the request method is POST
     if request.method == 'POST':
         new_post = Post.objects.create(
             user=me,
             title=request.POST.get('post_title'),
             post_body=request.POST.get('content'),
-
         )
+        # Redirect to the subject view of the classroom after creating the post
         return redirect('subject', pk=classroom.id)
     
-    context = {"classroom": classroom, 'subjects': subjects,
-               'participants': participants, 'posts': posts}
+    # Context to be passed to the template
+    context = {
+        "classroom": classroom,
+        'subjects': subjects,
+        'participants': participants,
+        'posts': posts
+    }
+    
+    # Render the class.html template with the context
     return render(request, 'class.html', context)
 
-# Ensure that the view passing the context to the template includes uidb36 and key.
 def password_reset_from_key(request, uidb36=None, key=None):
+    """
+    View to handle password reset from a key.
+    
+    Args:
+        request: The HTTP request object.
+        uidb36: The base36 encoded user ID.
+        key: The password reset key.
+    
+    Returns:
+        A rendered HTML page for password reset.
+    """
+    # Context to be passed to the template
     context = {
         'uidb36': uidb36,
         'key': key,
     }
+    
+    # Render the password_reset_from_key.html template with the context
     return render(request, 'account/password_reset_from_key.html', context)
-

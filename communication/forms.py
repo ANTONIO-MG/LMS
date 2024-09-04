@@ -4,44 +4,37 @@ from .models import Message, Notification
 from users_auth.models import Classroom
 from communication.models import Post
 
-
-# form to create a classroom
+# Form to create a Classroom
 class ClassRoomForm(ModelForm):
     class Meta:
-        model = Classroom
-        fields = '__all__'
+        model = Classroom  # Specify the model to use
+        fields = '__all__'  # Include all fields from the model
 
-
+# Form to create a Post
 class PostForm(ModelForm):
     class Meta:
-        model = Post
-        fields = '__all__'
+        model = Post  # Specify the model to use
+        fields = '__all__'  # Include all fields from the model
 
-# form to create a message
-
-
+# Form to create a Message
 class MessageForm(forms.ModelForm):
     class Meta:
-        model = Message
+        model = Message  # Specify the model to use
         fields = ['content']  # Only include the 'content' field
 
     def __init__(self, *args, **kwargs):
         super(MessageForm, self).__init__(*args, **kwargs)
         # Modify the 'content' field to use a Bootstrap input field
         self.fields['content'].widget = forms.TextInput(attrs={
-            'class': 'form-control form-control-md',
-            'placeholder': 'Type a message...',
-            'autocomplete': 'on',
-            'autofocus': 'autofocus',
+            'class': 'form-control form-control-md',  # Add Bootstrap class for styling
+            'placeholder': 'Type a message...',  # Placeholder text for the input field
+            'autocomplete': 'on',  # Enable autocomplete
+            'autofocus': 'autofocus',  # Autofocus the input field when the form is loaded
         })
 
-# form to create a Notification
-
-
+# Form to create a Notification
 class NotificationForm(ModelForm):
     class Meta:
-        model = Notification
-        fields = '__all__'
-        exclude = ['user']
-
-
+        model = Notification  # Specify the model to use
+        fields = '__all__'  # Include all fields from the model
+        exclude = ['user']  # Exclude the 'user' field from the form

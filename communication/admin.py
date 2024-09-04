@@ -9,30 +9,28 @@ class NotificationAdmin(admin.ModelAdmin):
     # filter the list view by given fields
     list_filter = ('user', 'notification_group')
     # search the list view by given fields
-    search_fields = ('user', 'notification_group')
+    search_fields = ('user', 'title')
     # show the number of items per page
     list_per_page = 20
 
 class MessageAdmin(admin.ModelAdmin):
     # show the list view on the admin panel
-    list_display = ('sender', 'created_at', 'updated_at')
+    list_display = ('sender', 'recipient')
     # filter the list view by given fields
-    list_filter = ('sender', 'updated_at')
+    list_filter = ('sender', 'recipient')
     # search the list view by given fields
-    search_fields = ('sender', 'title')
+    search_fields = ('sender', 'recipient')
     # show the number of items per page
     list_per_page = 20
 
 class PostAdmin(admin.ModelAdmin):
     # show the list 
-    list_display = ('title', 'created_at', 'user')
+    list_display = ('user', 'title', 'notification_group')
     # filter the list view by given fields
-    list_filter = ('user', 'title', 'created_at')
+    list_filter = ('user', 'title', 'notification_group')
     # search the list view by given fields
-    search_fields = ('user', 'title', 'created_at', 'post_body')
+    search_fields = ('user', 'title', 'notification_group')
     # show the fields that are not editable
-    readonly_fields = ()
-     # show the number of items per page
     list_per_page = 20
 
 admin.site.register(Notification, NotificationAdmin)

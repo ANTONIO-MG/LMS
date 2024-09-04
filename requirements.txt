@@ -12,10 +12,8 @@ django-phonenumber-field
 djangorestframework
 mysqlclient
 google-auth
-phonenumbers
-phonenumberslite
 pillow
 pip
 pytz
 sqlparse
-tzdata
+tzdataq
